@@ -4,19 +4,19 @@
     "titolo": "Nuovo Tempio 27/29 · Comune NA",
     "stato": "da_decidere",
     "destinatario": "tutela.patrimonio@pec.comune.napoli.it",
-    "label_stato": "Sopralluogo 15/10",
+    "label_stato": "Attende sì PEC · 15/10",
     "thread": [
       {
         "ruolo": "nota",
         "canale": "sistema",
         "quando": "2026-10-07",
-        "testo": "OCCASIONE VERA ×2. Attesa sì Andrea per PEC sopralluogo."
+        "testo": "Avviso+PDF letti. Locazione 6+6, gara al rialzo canone. Senza PEC sopralluogo entro 15/10 12:00 = esclusi."
       },
       {
         "ruolo": "prossima",
         "canale": "pec",
         "quando": "2026-10-15",
-        "testo": "PEC tutela.patrimonio@pec.comune.napoli.it entro 12:00. Plico offerte 28/10."
+        "testo": "Andrea sì/no → Outreach PEC da villacristina-srl@pec.it. Plico 28/10."
       }
     ]
   },

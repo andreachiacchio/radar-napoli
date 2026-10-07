@@ -14,25 +14,28 @@
     "priorita": "alta",
     "occupazione": "libero",
     "pro": [
-      "stesso bando",
-      "€425/mese",
-      "SRL ok",
-      "interrato potenzialmente utile"
+      "stesso bando del 27 · base €425/mese",
+      "~66 mq PT + interrato (potenziale utile se sgombero)",
+      "SRL ok · 6+6",
+      "canone basso vs mercato privato"
     ],
     "contro": [
-      "interrato ostruito",
-      "zona periferica",
-      "sanatorie a carico"
+      "interrato ostruito da materiale",
+      "zona periferica · risk aeroportuale D",
+      "sanatorie/difformità a carico",
+      "gara al rialzo · cauzione 2 mensilità",
+      "sopralluogo separato obbligatorio"
     ],
     "verdetto": "conviene",
-    "motivo": "Gemello 27 ancora agibile; valutare interrato in sopralluogo.",
+    "motivo": "Gemello del 27 ancora agibile; valutare interrato in sopralluogo prima di plico.",
     "occasione_vera": true,
-    "note_partecipazione": "Sopralluogo separato per n.29; due plichi se entrambi",
+    "note_partecipazione": "Sopralluogo separato n.29. Stesse scadenze: PEC 15/10 12:00 · plico 28/10 12:00. Due plichi se vuoi entrambi.",
     "destinatario": "tutela.patrimonio@pec.comune.napoli.it",
     "esito_invio": "non_inviato",
     "stato_contatto": "da_decidere",
     "prossimo_passo": "Andrea: sì/no PEC sopralluogo entro 15/10 12:00",
-    "canale": "pec"
+    "canale": "pec",
+    "mq": 66
   },
   {
     "id": "comune-na-nuovo-tempio-27",
@@ -49,26 +52,29 @@
     "priorita": "alta",
     "occupazione": "libero",
     "pro": [
-      "sopralluogo fino 15/10",
-      "C/1 libero 68mq €435/mese",
-      "SRL eleggibile",
-      "6+6 anni",
-      "edge patrimonio comunale"
+      "C/1 libero ~68 mq PT · 2 vani + bagno cortile",
+      "base €435/mese · 6+6 L.392/78",
+      "SRL eleggibile (commerciale/artigianato/servizi)",
+      "edge patrimonio comunale · canone basso vs privato",
+      "sopralluogo ancora apribile entro 15/10 12:00"
     ],
     "contro": [
-      "zona periferica da verificare",
-      "difformità a carico",
-      "obbligo attività in loco"
+      "zona periferica S. Pietro a Patierno · risk aeroportuale D",
+      "difformità / arredi / rifiuti a carico tu",
+      "obbligo attività in loco · attività escluse (armi, gioco, compro-oro, adulti…)",
+      "gara al rialzo canone (vince offerta più alta ≥ base)",
+      "cauzione tipica 2 mensilità in aggiudicazione"
     ],
     "verdetto": "conviene",
-    "motivo": "Finestra comunale agibile: canone ok, libero, SRL fit.",
+    "motivo": "Locazione comunale C/1 libera, canone base ok per ingresso SRL. Conviene solo dopo sopralluogo: zona e difformità da verificare.",
     "occasione_vera": true,
-    "note_partecipazione": "PEC tutela.patrimonio@pec.comune.napoli.it entro 15/10 12:00; plico 28/10",
+    "note_partecipazione": "1) PEC sopralluogo tutela.patrimonio@pec.comune.napoli.it entro 15/10 ore 12 (senza = esclusi). 2) Sopralluogo Modello C in doppio. 3) Plico offerte entro 28/10 ore 12 Piazza Municipio (Mod. A+B + attestato C). Due locali = due plichi. Canone ISTAT dopo.",
     "destinatario": "tutela.patrimonio@pec.comune.napoli.it",
     "esito_invio": "non_inviato",
     "stato_contatto": "da_decidere",
     "prossimo_passo": "Andrea: sì/no PEC sopralluogo entro 15/10 12:00",
-    "canale": "pec"
+    "canale": "pec",
+    "mq": 68
   },
   {
     "id": "demanio-caivano-fondo-peschiera-nab0005",
