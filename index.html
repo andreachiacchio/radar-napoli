@@ -254,6 +254,7 @@ const THREADS = [{"id": "comune-na-nuovo-tempio", "titolo": "Nuovo Tempio 27/29 
 let dismissed = new Set(JSON.parse(localStorage.getItem(LS_KEY)||'[]'));
 let favorites = new Set(JSON.parse(localStorage.getItem(LS_FAV)||'[]'));
 let interesse = new Set(JSON.parse(localStorage.getItem(LS_INT)||'[]'));
+let watch = new Set(JSON.parse(localStorage.getItem(LS_WATCH)||'[]'));
 
 function saveDismissed(){ localStorage.setItem(LS_KEY, JSON.stringify([...dismissed])); }
 function saveFavorites(){ localStorage.setItem(LS_FAV, JSON.stringify([...favorites])); }
