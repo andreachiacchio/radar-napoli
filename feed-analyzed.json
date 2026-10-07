@@ -31,7 +31,8 @@
     "destinatario": "tutela.patrimonio@pec.comune.napoli.it",
     "esito_invio": "non_inviato",
     "stato_contatto": "da_decidere",
-    "prossimo_passo": "Andrea: sì/no PEC sopralluogo entro 15/10 12:00"
+    "prossimo_passo": "Andrea: sì/no PEC sopralluogo entro 15/10 12:00",
+    "canale": "pec"
   },
   {
     "id": "comune-na-nuovo-tempio-27",
@@ -66,7 +67,8 @@
     "destinatario": "tutela.patrimonio@pec.comune.napoli.it",
     "esito_invio": "non_inviato",
     "stato_contatto": "da_decidere",
-    "prossimo_passo": "Andrea: sì/no PEC sopralluogo entro 15/10 12:00"
+    "prossimo_passo": "Andrea: sì/no PEC sopralluogo entro 15/10 12:00",
+    "canale": "pec"
   },
   {
     "id": "demanio-caivano-fondo-peschiera-nab0005",
