@@ -2,9 +2,9 @@
   {
     "id": "comune-na-nuovo-tempio",
     "titolo": "Nuovo Tempio 27/29 · Comune NA",
-    "stato": "da_decidere",
+    "stato": "chiuso",
     "destinatario": "tutela.patrimonio@pec.comune.napoli.it",
-    "label_stato": "Attende sì PEC · 15/10",
+    "label_stato": "Scartato · Andrea passa",
     "thread": [
       {
         "ruolo": "nota",
@@ -23,6 +23,12 @@
         "canale": "pec",
         "quando": "2026-10-15",
         "testo": "Andrea sì/no → Outreach PEC da villacristina-srl@pec.it. Plico 28/10."
+      },
+      {
+        "ruolo": "nota",
+        "canale": "sistema",
+        "quando": "2026-10-07",
+        "testo": "Andrea: passa. Richiede attività in loco, non investimento. Niente PEC. Follow-up: chiudi deadline 15/10."
       }
     ]
   },
