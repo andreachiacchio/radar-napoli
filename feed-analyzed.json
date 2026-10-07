@@ -1,5 +1,39 @@
 [
   {
+    "id": "demanio-caivano-fondo-peschiera-nab0005",
+    "fonte": "Agenzia del Demanio – DR Campania",
+    "categoria": "enti",
+    "tipo": "demanio",
+    "titolo": "Locazione di valorizzazione – Fondo Peschiera (Caivano NA) FV/agrivoltaico",
+    "zona": "Caivano (NA)",
+    "base": null,
+    "omin": null,
+    "fascia": null,
+    "scadenza": "2026-12-21",
+    "link": "https://www.agenziademanio.it/it/gare-aste/immobiliare/gara/Avviso-di-gara-per-la-locazione-di-valorizzazione-ex-art.-3-bis-D.L.-n.-351-2001-convertito-con-modificazioni-in-L.-n.-410-2001-di-un-terreno-di-proprieta-dello-Stato-situato-in-Caivano-Na-Fondo-Peschiera-per-la-progettazione-costruzione-e-gestione-",
+    "priorita": "media",
+    "occupazione": "n/d",
+    "rendimento": null,
+    "pro": [
+      "aperta fino 21/12/2026",
+      "10360 mq Stato SRL/RTI ammesse",
+      "canone min €252/anno durata 6–50 anni",
+      "cauzione €2000"
+    ],
+    "contro": [
+      "oggetto FV non residenziale/commerciale",
+      "serve partner energy",
+      "contaminazione in caratterizzazione",
+      "PEF+progetto impegno alto"
+    ],
+    "verdetto": "dubbio",
+    "motivo": "Unica gara Demanio Campania aperta; profilo energy — solo con partner tecnico.",
+    "occasione_vera": false,
+    "note_partecipazione": "Art.3-bis DL 351/2001. RUP Scarpati. Sopralluogo entro 13/11. CT fg.12 p.lla 26 NAB0005.",
+    "destinatario": "",
+    "esito_invio": "non_inviato"
+  },
+  {
     "id": "B2431206",
     "fonte": "astalegale",
     "categoria": "asta",
