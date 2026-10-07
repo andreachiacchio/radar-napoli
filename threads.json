@@ -13,6 +13,12 @@
         "testo": "Avviso+PDF letti. Locazione 6+6, gara al rialzo canone. Senza PEC sopralluogo entro 15/10 12:00 = esclusi."
       },
       {
+        "ruolo": "nota",
+        "canale": "sistema",
+        "quando": "2026-10-07",
+        "testo": "Sublocazione vietata 2 anni. Mercato zona ~€300–610/mese vs base 425–435. Solo se attività SRL reale. Primo bando, non deserta."
+      },
+      {
         "ruolo": "prossima",
         "canale": "pec",
         "quando": "2026-10-15",

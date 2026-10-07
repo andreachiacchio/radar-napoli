@@ -17,17 +17,20 @@
       "stesso bando del 27 · base €425/mese",
       "~66 mq PT + interrato (potenziale utile se sgombero)",
       "SRL ok · 6+6",
-      "canone basso vs mercato privato"
+      "canone basso vs mercato privato",
+      "Primo bando pubblico 29/09/2026 (DD 103) su questi civici — non risulta giro precedente deserto"
     ],
     "contro": [
       "interrato ostruito da materiale",
       "zona periferica · risk aeroportuale D",
       "sanatorie/difformità a carico",
       "gara al rialzo · cauzione 2 mensilità",
-      "sopralluogo separato obbligatorio"
+      "sopralluogo separato obbligatorio",
+      "sublocazione VIETATA primi 2 anni (causa risoluzione) — attività in proprio",
+      "base già a metà mercato zona (~4,4–9 €/mq → ~€300–610/mese): spread subaffitto sottile"
     ],
     "verdetto": "conviene",
-    "motivo": "Gemello del 27 ancora agibile; valutare interrato in sopralluogo prima di plico.",
+    "motivo": "Canone base ok ma non è deal da subaffitto: vietato 2 anni + spread stretto vs OMI. Conviene solo se Villa Cristina ci mette attività reale dopo sopralluogo. Primo bando (non deserta).",
     "occasione_vera": true,
     "note_partecipazione": "Sopralluogo separato n.29. Stesse scadenze: PEC 15/10 12:00 · plico 28/10 12:00. Due plichi se vuoi entrambi.",
     "destinatario": "tutela.patrimonio@pec.comune.napoli.it",
@@ -35,7 +38,8 @@
     "stato_contatto": "da_decidere",
     "prossimo_passo": "Andrea: sì/no PEC sopralluogo entro 15/10 12:00",
     "canale": "pec",
-    "mq": 66
+    "mq": 66,
+    "rendimento_nota": "OMI E3 affitto ~4,4–9 €/mq/mese; base Comune già mid-market"
   },
   {
     "id": "comune-na-nuovo-tempio-27",
@@ -56,17 +60,20 @@
       "base €435/mese · 6+6 L.392/78",
       "SRL eleggibile (commerciale/artigianato/servizi)",
       "edge patrimonio comunale · canone basso vs privato",
-      "sopralluogo ancora apribile entro 15/10 12:00"
+      "sopralluogo ancora apribile entro 15/10 12:00",
+      "Primo bando pubblico 29/09/2026 (DD 103) su questi civici — non risulta giro precedente deserto"
     ],
     "contro": [
       "zona periferica S. Pietro a Patierno · risk aeroportuale D",
       "difformità / arredi / rifiuti a carico tu",
       "obbligo attività in loco · attività escluse (armi, gioco, compro-oro, adulti…)",
       "gara al rialzo canone (vince offerta più alta ≥ base)",
-      "cauzione tipica 2 mensilità in aggiudicazione"
+      "cauzione tipica 2 mensilità in aggiudicazione",
+      "sublocazione VIETATA primi 2 anni (causa risoluzione) — attività in proprio",
+      "base già a metà mercato zona (~4,4–9 €/mq → ~€300–610/mese): spread subaffitto sottile"
     ],
     "verdetto": "conviene",
-    "motivo": "Locazione comunale C/1 libera, canone base ok per ingresso SRL. Conviene solo dopo sopralluogo: zona e difformità da verificare.",
+    "motivo": "Canone base ok ma non è deal da subaffitto: vietato 2 anni + spread stretto vs OMI. Conviene solo se Villa Cristina ci mette attività reale dopo sopralluogo. Primo bando (non deserta).",
     "occasione_vera": true,
     "note_partecipazione": "1) PEC sopralluogo tutela.patrimonio@pec.comune.napoli.it entro 15/10 ore 12 (senza = esclusi). 2) Sopralluogo Modello C in doppio. 3) Plico offerte entro 28/10 ore 12 Piazza Municipio (Mod. A+B + attestato C). Due locali = due plichi. Canone ISTAT dopo.",
     "destinatario": "tutela.patrimonio@pec.comune.napoli.it",
@@ -74,7 +81,8 @@
     "stato_contatto": "da_decidere",
     "prossimo_passo": "Andrea: sì/no PEC sopralluogo entro 15/10 12:00",
     "canale": "pec",
-    "mq": 68
+    "mq": 68,
+    "rendimento_nota": "OMI E3 affitto ~4,4–9 €/mq/mese; base Comune già mid-market"
   },
   {
     "id": "demanio-caivano-fondo-peschiera-nab0005",
