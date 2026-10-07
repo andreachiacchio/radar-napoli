@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta name="radar-cache-bust" content="v16">
+<meta name="radar-cache-bust" content="v17">
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Radar Napoli — Operativo</title>
@@ -205,6 +205,22 @@ a:hover{text-decoration:underline}
 .perizia strong{color:var(--text)}
 .pill.watch{background:#dbeafe;color:#1e3a8a}
 .pill.enti{background:#ecfdf5;color:#065f46}
+
+.qa-list{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.qa-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 14px;box-shadow:var(--shadow)}
+.qa-row .qa-title{font-weight:700;font-size:14px;margin:0 0 4px}
+.qa-row .qa-meta{font-size:12px;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.qa-row .qa-next{font-size:12px;margin-top:6px;color:var(--text)}
+.qa-row .qa-next strong{font-weight:700}
+.qa-pills{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+.pill.st-attende{background:#fef3c7;color:#92400e}
+.pill.st-inviata{background:#dcfce7;color:#166534}
+.pill.st-risposta{background:#dbeafe;color:#1e3a8a}
+.pill.st-chiuso{background:#f1f5f9;color:#64748b}
+.piano-hero{background:linear-gradient(135deg,#ecfdf5,#eff6ff);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:14px}
+.piano-hero h4{margin:0 0 4px;font-size:15px}
+.piano-hero .sub{margin:0}
+
 </style>
 <meta property="og:title" content="Radar Napoli" />
 <meta property="og:description" content="Dashboard operativa per il monitoraggio e la valutazione di opportunità immobiliari e aste a Napoli." />
@@ -251,7 +267,7 @@ const LS_FAV = 'radar-napoli-favorites-v1';
 const LS_INT = 'radar-napoli-interesse-v1';
 const LS_OUTBOX = 'radar-napoli-outreach-outbox-v1';
 const LS_WATCH = 'radar-napoli-watch-v1';
-const THREADS = [{"id": "comune-na-nuovo-tempio", "titolo": "Nuovo Tempio 27/29 · Comune NA", "stato": "chiuso", "destinatario": "tutela.patrimonio@pec.comune.napoli.it", "label_stato": "Scartato · Andrea passa", "thread": [{"ruolo": "nota", "canale": "sistema", "quando": "2026-10-07", "testo": "Avviso+PDF letti. Locazione 6+6, gara al rialzo canone. Senza PEC sopralluogo entro 15/10 12:00 = esclusi."}, {"ruolo": "nota", "canale": "sistema", "quando": "2026-10-07", "testo": "Sublocazione vietata 2 anni. Mercato zona ~€300–610/mese vs base 425–435. Solo se attività SRL reale. Primo bando, non deserta."}, {"ruolo": "prossima", "canale": "pec", "quando": "2026-10-15", "testo": "Andrea sì/no → Outreach PEC da villacristina-srl@pec.it. Plico 28/10."}, {"ruolo": "nota", "canale": "sistema", "quando": "2026-10-07", "testo": "Andrea: passa. Richiede attività in loco, non investimento. Niente PEC. Follow-up: chiudi deadline 15/10."}]}, {"id": "B2431206", "titolo": "Scherillo 13 · Pendino/Garibaldi", "stato": "in_attesa_risposta", "destinatario": "daniela.cicirello@gmail.com", "label_stato": "In attesa", "thread": [{"ruolo": "domanda", "canale": "email", "quando": "2026-10-07", "testo": "Info + perizia + possesso/condo → daniela.cicirello@gmail.com"}, {"ruolo": "nota", "canale": "sistema", "quando": "2026-10-07", "testo": "Verdetto → dubbio (abusi non sanabili + no agibilità). 3 email, 0 reply. Non OCCASIONE VERA."}, {"ruolo": "prossima", "canale": "email", "quando": "2026-10-10", "testo": "Richiamo/#3 solo su richiesta. Scarta → Follow-up chiude."}]}];
+const THREADS = [{"id": "B2431206", "titolo": "Scherillo 13 · commerciale Pendino", "stato": "Inviata", "canale": "Gmail", "destinatario": "daniela.cicirello@gmail.com", "prossimo_passo": "Attendi reply Cicirello · richiamo solo su richiesta · offerte 12/10", "thread": []}];
 let dismissed = new Set(JSON.parse(localStorage.getItem(LS_KEY)||'[]'));
 let favorites = new Set(JSON.parse(localStorage.getItem(LS_FAV)||'[]'));
 let interesse = new Set(JSON.parse(localStorage.getItem(LS_INT)||'[]'));
@@ -690,7 +706,7 @@ function renderMain(){
   const nConv = baseItems().filter(i=>i.verdetto==='conviene').length;
   const nDub = baseItems().filter(i=>i.verdetto==='dubbio').length;
   const titles = {
-    oggi:'Oggi', decidi:'Da decidere', preferiti:'Preferiti', qa:'Domanda / Risposta', piano:'Piano → 100 · Crescita SRL',
+    oggi:'Oggi', decidi:'Da decidere', preferiti:'Preferiti', qa:'Domanda / Risposta', piano:'Piano / Crescita · Villa Cristina',
     mappa:'Mappa', mercato:'Mercato',
     whatsapp:'WhatsApp', email:'Email / PEC', fonti:'Fonti'
   };
@@ -778,72 +794,112 @@ function renderMain(){
 }
 
 
-function renderQA(){
-  let html = `<div class="panel-block" style="margin-bottom:14px">
-    <h4>Domanda / Risposta</h4>
-    <div class="sub" style="margin-top:6px">Thread Follow-up (domanda → risposta).<br>
-    <strong>Gmail/WA</strong>: dopo invio reale vedi stato in Email.<br>
-    <strong>PEC</strong>: resta “attende sì” finché non approvi; poi Outreach manda la PEC.</div>
-  </div>`;
-  html += `<div class="section-head"><h3>Thread attivi</h3><span class="n">${THREADS.length}</span></div>`;
-  for(const t of THREADS){
-    const pecish = /pec\.it/i.test(t.destinatario||'') || /PEC|sopralluogo/i.test((t.label_stato||'')+(t.titolo||''));
-    const kind = pecish ? 'PEC' : 'Gmail';
-    html += `<div class="panel-block" style="margin-bottom:12px"><h4>${escapeHtml(t.titolo||t.id)} · <span class="pill ${kind==='PEC'?'warn':'ok'}">${kind}</span> · <span class="pill wait">${escapeHtml(t.label_stato||t.stato||'')}</span>${t.destinatario?` · <span class="muted">${escapeHtml(t.destinatario)}</span>`:''}</h4>`;
-    for(const m of (t.thread||[])){
-      const label = m.ruolo==='domanda'?'Domanda':m.ruolo==='risposta'?'Risposta':m.ruolo==='prossima'?'Prossima':'Nota';
-      html += `<div class="move" style="margin-top:8px"><div class="mt">${escapeHtml(label)} · ${escapeHtml(m.canale||'')} · ${escapeHtml(m.quando||'')}</div><div class="md">${escapeHtml(m.testo||'')}</div></div>`;
-    }
-    html += `</div>`;
+function qaStato(t){
+  const raw = (t.stato || t.label_stato || '').toLowerCase();
+  if(/chiuso|scartat/.test(raw)) return 'Chiuso';
+  if(/risposta|reply/.test(raw)) return 'Risposta';
+  if(/inviata|in attesa|attesa/.test(raw)) return 'Inviata';
+  if(/attende|da.?decid|sopralluogo|s[iì]/.test(raw)) return 'Attende sì';
+  // infer from esito on linked item
+  const it = findItem(t.id);
+  if(it){
+    const e = it.esito_invio||'';
+    if(e==='email_inviata_wa_skip'||e==='email_inviata'||e==='inviato'||e==='pec_inviata') return 'Inviata';
+    if(isPecItem(it) && (it.stato_contatto==='da_decidere'||e==='non_inviato')) return 'Attende sì';
   }
-  if(!THREADS.length) html += `<div class="empty">Nessun thread — Follow-up alimenta questa sezione</div>`;
+  return 'Attende sì';
+}
+function qaCanale(t){
+  if(t.canale){
+    const c = String(t.canale).toLowerCase();
+    if(c==='pec'||c.includes('pec')) return 'PEC';
+    if(c==='wa'||c.includes('whatsapp')) return 'WA';
+    if(c==='email'||c.includes('gmail')||c.includes('mail')) return 'Gmail';
+  }
+  if(/pec\.it/i.test(t.destinatario||'')) return 'PEC';
+  const it = findItem(t.id);
+  if(it){
+    if(isPecItem(it)) return 'PEC';
+    const cc = parseContacts(it.destinatario||'');
+    if(cc.mobiles.length && !cc.emails.length) return 'WA';
+    if(cc.emails.length) return 'Gmail';
+  }
+  return 'Gmail';
+}
+function qaPillClass(st){
+  if(st==='Inviata') return 'st-inviata';
+  if(st==='Risposta') return 'st-risposta';
+  if(st==='Chiuso') return 'st-chiuso';
+  return 'st-attende';
+}
+function renderQA(){
+  const active = THREADS.filter(t => qaStato(t) !== 'Chiuso');
+  let html = `<div class="panel-block" style="margin-bottom:14px">
+    <h4>Contatti in corso</h4>
+    <div class="sub" style="margin-top:6px">Una riga = un thread. Stati: <strong>Attende sì</strong> · <strong>Inviata</strong> · <strong>Risposta</strong> · <strong>Chiuso</strong> (nascosti). Canale: Gmail · WA · PEC.</div>
+  </div>`;
+  html += `<div class="section-head"><h3>Attivi</h3><span class="n">${active.length}</span></div>`;
+  if(!active.length){
+    html += `<div class="empty">Nessun contatto attivo — Follow-up / Outreach aggiornano qui</div>`;
+    return html;
+  }
+  html += `<div class="qa-list">`;
+  for(const t of active){
+    const st = qaStato(t);
+    const ch = qaCanale(t);
+    const next = t.prossimo_passo || (t.thread||[]).filter(m=>m.ruolo==='prossima').slice(-1)[0]?.testo || '—';
+    const dest = t.destinatario || '';
+    html += `<article class="qa-row" data-id="${escapeHtml(t.id)}">
+      <div>
+        <div class="qa-title">${escapeHtml(t.titolo||t.id)}</div>
+        <div class="qa-meta">${dest?`<span>${escapeHtml(dest)}</span>`:''}<span class="muted">${escapeHtml(t.id)}</span></div>
+        <div class="qa-next"><strong>Prossimo:</strong> ${escapeHtml(next)}</div>
+      </div>
+      <div class="qa-pills">
+        <span class="pill ${qaPillClass(st)}">${st}</span>
+        <span class="pill ${ch==='PEC'?'warn':(ch==='WA'?'blue':'ok')}">${ch}</span>
+        <button type="button" class="btn sm" data-act="chat-scheda" data-id="${escapeHtml(t.id)}">Chat team</button>
+      </div>
+    </article>`;
+  }
+  html += `</div>`;
   return html;
 }
 
+function isCrescitaSrl(item){
+  if(!item || item.verdetto==='no') return false;
+  if(dismissed.has(item.id)) return false;
+  if(item.categoria==='enti') return true;
+  if(item.tipo==='demanio'||item.tipo==='bando'||item.tipo==='locazione_locale_commerciale') return true;
+  // commerciali fit società (non residenziale)
+  if(item.tipo==='commerciale' || item.tipo==='Aste locali' || /commerciale|negozio|locale/i.test(item.titolo||'')){
+    if(item.verdetto==='conviene'||item.verdetto==='dubbio') return true;
+  }
+  return false;
+}
 function renderPiano(){
-  const base = baseItems();
-  const nConv = base.filter(i=>i.verdetto==='conviene').length;
-  const nDub = base.filter(i=>i.verdetto==='dubbio').length;
-  const nOV = base.filter(i=>i.occasione_vera).length;
-  const nEnti = base.filter(i=>i.categoria==='enti' || i.fonte==='enti').length;
-  const nComm = base.filter(i=>i.tipo==='commerciale' || /negozio|commerciale/i.test(i.titolo||'')).length;
-  const cur = 0;
-  return `
-  <div class="sub" style="margin-bottom:12px">Villa Cristina Srl · target 100 case + crescita fatturato. Badge <strong>OCCASIONE VERA</strong> = vai (oggi ${nOV}).</div>
-  <div class="piano-card">
-    <h4>Oggi · portfolio target</h4>
-    <ul>
-      <li><strong>Villa Cristina Srl</strong> — crescita verso 100 case</li>
-      <li>Budget occasione <strong>≤€150k</strong></li>
-      <li>In vista: <strong>${nConv} conviene</strong> · <strong>${nDub} dubbio</strong> · OV ${nOV} · commerciali ${nComm} · enti ${nEnti}</li>
-    </ul>
-  </div>
-  <div class="piano-card">
-    <h4>Tappe verso 100</h4>
-    <div class="tappe">
-      <div class="tappa now"><div class="n">${cur}/1</div><div class="l">Partenza</div></div>
-      <div class="tappa"><div class="n">0/10</div><div class="l">Base</div></div>
-      <div class="tappa"><div class="n">0/25</div><div class="l">Scala</div></div>
-      <div class="tappa"><div class="n">0/50</div><div class="l">Metà</div></div>
-      <div class="tappa"><div class="n">0/100</div><div class="l">Target</div></div>
+  const cards = FEED.filter(isCrescitaSrl).filter(i=>!isExcluded(i));
+  const nConv = cards.filter(i=>i.verdetto==='conviene').length;
+  const nDub = cards.filter(i=>i.verdetto==='dubbio').length;
+  const nOV = cards.filter(i=>i.occasione_vera).length;
+  let html = `<div class="piano-hero">
+    <h4>Villa Cristina Srl · crescita</h4>
+    <p class="sub">Solo gare, concessioni, demanio e commerciali fit società. Operativa · ATECO 55.20.42 · PEC villacristina-srl@pec.it. Target portfolio 100 case resta su Mercato/Oggi.</p>
+    <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px">
+      <span class="pill conviene">${nConv} conviene</span>
+      <span class="pill dubbio">${nDub} dubbio</span>
+      ${nOV?`<span class="pill warn">${nOV} occasione vera</span>`:''}
+      <span class="pill soft">${cards.length} in sezione</span>
     </div>
-  </div>
-  <h3 style="margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)">Crescita Villa Cristina Srl</h3>
-  <div class="sub" style="margin-bottom:8px"><strong>Villa Cristina Srl operativa</strong> (visura 18/06/2026 · ATECO 55.20.42 · PEC villacristina-srl@pec.it). Feed enti da Radar.</div>
-  <div class="crescita-grid">
-    <div class="crescita-card"><span class="tag">1 · focus</span><h4>Bandi, concessioni & gare</h4><p>Invitalia, Regione, Comune, Demanio, gare d'appalto — SRL ammessa. Delta <code>enti</code> in Mercato/Oggi.</p></div>
-    <div class="crescita-card"><span class="tag">2</span><h4>Demanio / alienazioni</h4><p>Campania–Napoli: valorizzazioni, locazioni Stato, locali da enti.</p></div>
-    <div class="crescita-card"><span class="tag">3</span><h4>Commerciale / uso società</h4><p>≤€150k — sede/operativo. Abusi non sanabili → max dubbio.</p></div>
-    <div class="crescita-card"><span class="tag">4</span><h4>Ricavi ricorrenti</h4><p>Locazioni / short-term (Praiano + Napoli) per fatturato SRL.</p></div>
-  </div>
-  <div class="piano-card" style="margin-top:14px">
-    <h4>Regola verdetto + OCCASIONE VERA</h4>
-    <ul>
-      <li>Ogni scheda: <strong>pro / contro / verdetto / motivo</strong></li>
-      <li>Abusi non sanabili / no agibilità → max <strong>dubbio</strong></li>
-      <li><strong>OCCASIONE VERA</strong> (raro): rapporto a fondo, zone forti, ≤150k, ROI/spread solido, zero abusi non sanabili → vai</li>
-    </ul>
   </div>`;
+  html += section('Opportunità società (carte)', cards);
+  if(!cards.length){
+    html += `<div class="empty">Nessuna gara/ente attiva ora — Radar manda qui i delta <code>enti</code> filtrati SRL (no FV, no residenziale puro).</div>`;
+  }
+  html += `<div class="crescita-grid" style="margin-top:16px">
+    <div class="crescita-card"><span class="tag">filoni</span><h4>Cosa cerchiamo</h4><p>Bandi / concessioni · Demanio locali · Commerciale uso società ≤€150k · Ricavi ricorrenti. Niente FV/agrivoltaico.</p></div>
+  </div>`;
+  return html;
 }
 
 function section(title, items, tone){

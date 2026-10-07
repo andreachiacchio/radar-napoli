@@ -1,62 +1,11 @@
 [
   {
-    "id": "comune-na-nuovo-tempio",
-    "titolo": "Nuovo Tempio 27/29 · Comune NA",
-    "stato": "chiuso",
-    "destinatario": "tutela.patrimonio@pec.comune.napoli.it",
-    "label_stato": "Scartato · Andrea passa",
-    "thread": [
-      {
-        "ruolo": "nota",
-        "canale": "sistema",
-        "quando": "2026-10-07",
-        "testo": "Avviso+PDF letti. Locazione 6+6, gara al rialzo canone. Senza PEC sopralluogo entro 15/10 12:00 = esclusi."
-      },
-      {
-        "ruolo": "nota",
-        "canale": "sistema",
-        "quando": "2026-10-07",
-        "testo": "Sublocazione vietata 2 anni. Mercato zona ~€300–610/mese vs base 425–435. Solo se attività SRL reale. Primo bando, non deserta."
-      },
-      {
-        "ruolo": "prossima",
-        "canale": "pec",
-        "quando": "2026-10-15",
-        "testo": "Andrea sì/no → Outreach PEC da villacristina-srl@pec.it. Plico 28/10."
-      },
-      {
-        "ruolo": "nota",
-        "canale": "sistema",
-        "quando": "2026-10-07",
-        "testo": "Andrea: passa. Richiede attività in loco, non investimento. Niente PEC. Follow-up: chiudi deadline 15/10."
-      }
-    ]
-  },
-  {
     "id": "B2431206",
-    "titolo": "Scherillo 13 · Pendino/Garibaldi",
-    "stato": "in_attesa_risposta",
+    "titolo": "Scherillo 13 · commerciale Pendino",
+    "stato": "Inviata",
+    "canale": "Gmail",
     "destinatario": "daniela.cicirello@gmail.com",
-    "label_stato": "In attesa",
-    "thread": [
-      {
-        "ruolo": "domanda",
-        "canale": "email",
-        "quando": "2026-10-07",
-        "testo": "Info + perizia + possesso/condo → daniela.cicirello@gmail.com"
-      },
-      {
-        "ruolo": "nota",
-        "canale": "sistema",
-        "quando": "2026-10-07",
-        "testo": "Verdetto → dubbio (abusi non sanabili + no agibilità). 3 email, 0 reply. Non OCCASIONE VERA."
-      },
-      {
-        "ruolo": "prossima",
-        "canale": "email",
-        "quando": "2026-10-10",
-        "testo": "Richiamo/#3 solo su richiesta. Scarta → Follow-up chiude."
-      }
-    ]
+    "prossimo_passo": "Attendi reply Cicirello · richiamo solo su richiesta · offerte 12/10",
+    "thread": []
   }
 ]
