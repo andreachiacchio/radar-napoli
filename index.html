@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta name="radar-cache-bust" content="v17">
+<meta name="radar-cache-bust" content="v18">
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Radar Napoli — Operativo</title>
@@ -867,14 +867,13 @@ function renderQA(){
 }
 
 function isCrescitaSrl(item){
+  // Solo enti fit Villa Cristina: gare/concessioni/demanio/locali comunali.
+  // Mai aste portfolio (es. Scherillo) né privati Immobiliare.
   if(!item || item.verdetto==='no') return false;
   if(dismissed.has(item.id)) return false;
+  if(item.categoria==='asta' || item.categoria==='privato') return false;
   if(item.categoria==='enti') return true;
-  if(item.tipo==='demanio'||item.tipo==='bando'||item.tipo==='locazione_locale_commerciale') return true;
-  // commerciali fit società (non residenziale)
-  if(item.tipo==='commerciale' || item.tipo==='Aste locali' || /commerciale|negozio|locale/i.test(item.titolo||'')){
-    if(item.verdetto==='conviene'||item.verdetto==='dubbio') return true;
-  }
+  if(item.tipo==='demanio'||item.tipo==='bando'||item.tipo==='concessione'||item.tipo==='locazione_locale_commerciale') return true;
   return false;
 }
 function renderPiano(){
