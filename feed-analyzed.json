@@ -249,14 +249,30 @@
     "destinatario": null,
     "esito_invio": "non_inviato",
     "verdetto": "dubbio",
-    "motivo": "Locato Centro storico — aspetta sì Andrea prima di contatto",
+    "motivo": "Perizia: abusi parzialmente sanabili + finestra bagno non sanabile; agibilità n/d; locato sotto mercato. Dubbio — grezzo/cash only.",
     "pro": [
-      "Potenziale da verificare"
+      "omin €45k base €60k",
+      "Centro storico",
+      "locato €258/mese dal 2003 (mercato CTU ~€400)",
+      "art.2923 canone basso"
     ],
     "contro": [
-      "Locato Centro storico — aspetta sì Andrea prima di contatto"
+      "abusi layout+soppalco bagno sanatoria parziale ~€3800",
+      "finestra bagno su strada NON sanabile (chiusura ~€1000)",
+      "agibilità non verificabile",
+      "impianti non conformi ~€3000",
+      "condo insoluto €511"
     ],
-    "occasione_vera": false
+    "occasione_vera": false,
+    "perizia": {
+      "ctu": "Arch. Cosimo Alterio",
+      "abusi_sanabili": "parziale layout",
+      "abusi_non_sanabili": "finestra bagno su strada",
+      "agibilita": "n/d",
+      "canone": 258,
+      "canone_mercato_mese": 400,
+      "costi_regolarizzazione_stimati": 8300
+    }
   },
   {
     "id": "B2428207",
