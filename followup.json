@@ -1,0 +1,20 @@
+{
+  "updated": "2026-10-07T13:14:00+02:00",
+  "items": [
+    {
+      "id": "B2431206",
+      "fonte": "follow-up",
+      "stato_contatto": "in_attesa_risposta",
+      "qa": [
+        {
+          "domanda": "info + perizia + possesso/condo",
+          "risposta": null,
+          "canale": "email",
+          "destinatario": "daniela.cicirello@gmail.com"
+        }
+      ],
+      "prossimo_passo": "attesa reply; richiamo 10/10 sera se silenzio",
+      "scadenza": "2026-10-12T23:59"
+    }
+  ]
+}

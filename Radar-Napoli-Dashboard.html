@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Radar Napoli — Operativo</title>
+<link rel="preconnect" href="https://unpkg.com"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+:root{
+  --bg:#f5f5f4; --bg2:#fafafa; --card:#ffffff; --border:#e7e5e4; --border2:#d6d3d1;
+  --text:#1c1917; --muted:#78716c; --muted2:#a8a29e;
+  --blue:#2563eb; --blue-soft:#eff6ff; --blue-border:#bfdbfe; --blue-dark:#1d4ed8;
+  --asta:#ea580c; --asta-soft:#fff7ed; --asta-border:#fed7aa;
+  --priv:#059669; --priv-soft:#ecfdf5; --priv-border:#a7f3d0;
+  --enti:#7c3aed; --enti-soft:#f5f3ff; --enti-border:#ddd6fe;
+  --warn:#dc2626; --warn-soft:#fef2f2; --ok:#16a34a; --ok-soft:#f0fdf4;
+  --shadow:0 1px 2px rgba(28,25,23,.04),0 4px 16px rgba(28,25,23,.06);
+  --radius:14px; --radius-sm:10px;
+  --font:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;height:100%;background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline}
+
+.app{display:grid;grid-template-columns:220px 1fr 340px;height:100vh;max-height:100dvh;overflow:hidden}
+
+/* SIDEBAR */
+.sidebar{background:var(--card);border-right:1px solid var(--border);padding:20px 14px;display:flex;flex-direction:column;gap:8px;overflow-y:auto}
+.brand{padding:4px 10px 18px;border-bottom:1px solid var(--border);margin-bottom:8px}
+.brand h1{margin:0;font-size:16px;font-weight:700;letter-spacing:-.02em}
+.brand p{margin:4px 0 0;color:var(--muted);font-size:12px}
+.nav-btn{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border:0;background:transparent;border-radius:10px;color:var(--text);cursor:pointer;text-align:left;font-weight:500;transition:background .15s}
+.nav-btn:hover{background:#f5f5f4}
+.nav-btn.active{background:var(--blue-soft);color:var(--blue-dark)}
+.nav-btn .ico{width:20px;text-align:center;opacity:.7;font-size:15px}
+.nav-btn.active .ico{opacity:1}
+.nav-btn .badge{margin-left:auto;background:#f5f5f4;color:var(--muted);font-size:11px;font-weight:600;padding:2px 7px;border-radius:999px}
+.nav-btn.active .badge{background:#fff;color:var(--blue)}
+.side-foot{margin-top:auto;padding:12px 10px 4px;border-top:1px solid var(--border);font-size:11px;color:var(--muted2)}
+.side-foot strong{color:var(--muted);font-weight:600}
+
+/* MAIN */
+.main{overflow:auto;padding:24px 28px 48px;background:var(--bg)}
+.main-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:20px}
+.main-head h2{margin:0;font-size:22px;font-weight:700;letter-spacing:-.03em}
+.main-head .sub{color:var(--muted);font-size:13px;margin-top:4px}
+.view-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+
+/* FILTERS */
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;padding:12px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+.filters select,.filters input{border:1px solid var(--border2);background:#fff;border-radius:8px;padding:7px 10px;color:var(--text);min-width:0}
+.filters select:focus,.filters input:focus{outline:2px solid var(--blue-border);border-color:var(--blue)}
+.filters .chip-count{margin-left:auto;font-size:12px;color:var(--muted);align-self:center;padding:0 4px}
+.btn-ghost{border:1px solid var(--border2);background:#fff;border-radius:8px;padding:7px 12px;cursor:pointer;color:var(--muted);font-weight:500}
+.btn-ghost:hover{background:#fafafa;color:var(--text)}
+
+/* CARDS / ROWS */
+.section{margin-bottom:22px}
+.section-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.section-head h3{margin:0;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.section-head .n{font-size:12px;font-weight:600;background:var(--card);border:1px solid var(--border);padding:2px 8px;border-radius:999px;color:var(--text)}
+.list{display:flex;flex-direction:column;gap:8px}
+.row{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;box-shadow:var(--shadow);display:grid;grid-template-columns:1fr auto;gap:10px;align-items:start;transition:border-color .15s,box-shadow .15s}
+.row:hover{border-color:var(--border2);box-shadow:0 2px 8px rgba(28,25,23,.08)}
+.row.dim{opacity:.55}
+.row-main{min-width:0}
+.row-top{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-bottom:4px}
+.row-title{font-weight:600;font-size:14px;letter-spacing:-.01em;margin:0}
+.row-title a{color:var(--text)}
+.row-title a:hover{color:var(--blue)}
+.row-meta{display:flex;flex-wrap:wrap;gap:6px 10px;color:var(--muted);font-size:12.5px;margin-top:6px}
+.row-meta span{display:inline-flex;align-items:center;gap:4px}
+.row-mossa{margin-top:8px;font-size:12.5px;color:var(--text);background:#fafafa;border:1px dashed var(--border);border-radius:8px;padding:6px 10px}
+.row-mossa strong{color:var(--muted);font-weight:600;margin-right:4px}
+.row-actions{display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end;max-width:220px}
+.pill{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:650;padding:2px 8px;border-radius:999px;border:1px solid transparent;letter-spacing:.01em}
+.pill.asta{background:var(--asta-soft);color:var(--asta);border-color:var(--asta-border)}
+.pill.privato{background:var(--priv-soft);color:var(--priv);border-color:var(--priv-border)}
+.pill.enti{background:var(--enti-soft);color:var(--enti);border-color:var(--enti-border)}
+.pill.soft{background:#f5f5f4;color:var(--muted);border-color:var(--border)}
+.pill.warn{background:var(--warn-soft);color:var(--warn);border-color:#fecaca}
+.pill.ok{background:var(--ok-soft);color:var(--ok);border-color:#bbf7d0}
+.pill.blue{background:var(--blue-soft);color:var(--blue);border-color:var(--blue-border)}
+.strong-zone{box-shadow:inset 3px 0 0 var(--blue)}
+
+.btn{border:1px solid var(--border2);background:#fff;border-radius:8px;padding:6px 10px;cursor:pointer;font-size:12px;font-weight:600;color:var(--text);white-space:nowrap}
+.btn:hover{background:#fafafa}
+.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn.primary:hover{background:var(--blue-dark)}
+.btn.danger{color:var(--warn);border-color:#fecaca;background:var(--warn-soft)}
+.btn.danger:hover{background:#fee2e2}
+.btn.sm{padding:5px 8px;font-size:11.5px}
+
+.empty{padding:28px;text-align:center;color:var(--muted);background:var(--card);border:1px dashed var(--border2);border-radius:var(--radius)}
+
+/* RADAR */
+.radar-wrap{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;margin-bottom:22px}
+.radar-wrap .rh{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:10px;flex-wrap:wrap}
+.radar-wrap .rh h3{margin:0;font-size:15px;font-weight:700}
+.radar-legend{display:flex;gap:12px;font-size:12px;color:var(--muted)}
+.radar-legend i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px}
+.radar-legend i.asta{background:var(--asta)}
+.radar-legend i.priv{background:var(--priv)}
+.radar-box{position:relative;width:100%;max-width:420px;margin:0 auto;aspect-ratio:1}
+.radar-box svg{width:100%;height:100%;display:block}
+.radar-tip{position:absolute;pointer-events:none;background:#1c1917;color:#fff;font-size:11px;padding:6px 8px;border-radius:6px;white-space:nowrap;z-index:5;opacity:0;transform:translate(-50%,-120%);transition:opacity .12s}
+.radar-tip.show{opacity:1}
+
+/* RIGHT PANEL */
+.right{background:var(--card);border-left:1px solid var(--border);padding:18px 16px;overflow-y:auto;display:flex;flex-direction:column;gap:16px}
+.cta{background:linear-gradient(160deg,#eff6ff 0%,#dbeafe 100%);border:1px solid var(--blue-border);border-radius:var(--radius);padding:16px}
+.cta h3{margin:0 0 4px;font-size:14px;font-weight:700;color:var(--blue-dark)}
+.cta .hint{font-size:12px;color:#3b82f6;margin-bottom:12px}
+.cta-item{background:#fff;border:1px solid var(--blue-border);border-radius:10px;padding:10px 12px;margin-bottom:8px}
+.cta-item:last-child{margin-bottom:0}
+.cta-item .t{font-weight:600;font-size:13px;margin-bottom:2px}
+.cta-item .d{font-size:12px;color:var(--muted);margin-bottom:8px}
+.cta-actions{display:flex;gap:6px;flex-wrap:wrap}
+
+.kpi-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.kpi{background:#fafafa;border:1px solid var(--border);border-radius:10px;padding:10px 8px;text-align:center}
+.kpi .v{font-size:20px;font-weight:750;letter-spacing:-.03em}
+.kpi .l{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;font-weight:600;margin-top:2px}
+.kpi.warn .v{color:var(--warn)}
+.kpi.blue .v{color:var(--blue)}
+.kpi.ok .v{color:var(--ok)}
+
+.panel-block h4{margin:0 0 10px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.move{background:#fafafa;border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:8px}
+.move .mt{font-weight:600;font-size:12.5px;margin-bottom:2px}
+.move .md{font-size:11.5px;color:var(--muted);margin-bottom:8px}
+.move .ma{display:flex;flex-wrap:wrap;gap:5px}
+
+.dismissed-bar{font-size:12px;color:var(--muted);padding:8px 10px;background:#fafafa;border:1px dashed var(--border2);border-radius:8px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+
+/* MAP */
+#map{height:min(70vh,620px);border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow)}
+
+/* MOBILE */
+.tabs-mobile{display:none}
+@media (max-width:1100px){
+  .app{grid-template-columns:1fr;grid-template-rows:auto 1fr auto;height:auto;min-height:100dvh;overflow:visible}
+  .sidebar{display:none}
+  .right{border-left:0;border-top:1px solid var(--border);order:3}
+  .main{order:2;padding:16px}
+  .tabs-mobile{display:flex;position:sticky;top:0;z-index:20;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);overflow-x:auto;padding:8px;gap:4px;order:1}
+  .tabs-mobile button{flex:0 0 auto;border:1px solid var(--border);background:#fff;border-radius:999px;padding:7px 12px;font-size:12px;font-weight:600;cursor:pointer}
+  .tabs-mobile button.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+  .row{grid-template-columns:1fr}
+  .row-actions{justify-content:flex-start;max-width:none}
+}
+
+.pill.conviene{background:#f0fdf4;color:#16a34a;border-color:#bbf7d0}
+.pill.dubbio{background:#fffbeb;color:#d97706;border-color:#fde68a}
+.pill.no{background:#f5f5f4;color:#78716c;border-color:#e7e5e4}
+.pill.fav{background:#fef3c7;color:#b45309;border-color:#fcd34d}
+.btn.star{font-size:14px;padding:4px 8px;line-height:1;min-width:32px}
+.btn.star.on{background:#fef3c7;border-color:#fcd34d;color:#b45309}
+.motivo{margin-top:6px;font-size:12px;color:var(--muted);line-height:1.4}
+.piano-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);margin-bottom:14px}
+.piano-card h4{margin:0 0 8px;font-size:14px;font-weight:700}
+.piano-card ul{margin:0;padding-left:18px;color:var(--muted);font-size:13px}
+.piano-card li{margin:4px 0}
+.tappe{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.tappa{flex:1;min-width:70px;background:#fafafa;border:1px solid var(--border);border-radius:10px;padding:10px 8px;text-align:center}
+.tappa .n{font-size:18px;font-weight:750}
+.tappa .l{font-size:10px;color:var(--muted);text-transform:uppercase;font-weight:600}
+.tappa.done{background:var(--ok-soft);border-color:#bbf7d0}
+.tappa.now{background:var(--blue-soft);border-color:var(--blue-border)}
+.verdetto-bar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;align-items:center}
+.verdetto-bar button{border:1px solid var(--border2);background:#fff;border-radius:999px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;color:var(--muted)}
+.verdetto-bar button.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.verdetto-bar .hint{font-size:12px;color:var(--muted);margin-left:4px}
+
+.muted{opacity:.65;font-size:12px}
+.pill.wait{background:#fef3c7;color:#92400e}
+.procon{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.procon ul{margin:0;padding-left:16px;font-size:12px;color:var(--muted)}
+.procon .pro strong{color:#166534}.procon .contro strong{color:#9a3412}
+.procon li{margin:2px 0}
+.crescita-grid{display:grid;gap:10px;margin-top:12px}
+.crescita-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+.crescita-card h4{margin:0 0 6px;font-size:14px}.crescita-card p{margin:0;font-size:12px;color:var(--muted);line-height:1.45}
+.crescita-card .tag{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:2px 7px;border-radius:999px;background:#e0e7ff;color:#3730a3;margin-bottom:6px}
+.pill.wait{background:#fef3c7;color:#92400e}
+.muted{opacity:.65;font-size:12px}
+\.pill.ov{background:linear-gradient(90deg,#b45309,#f59e0b);color:#fff;font-weight:800;letter-spacing:.03em;box-shadow:0 0 0 2px #fde68a}
+.row.ov-row{border-color:#f59e0b;box-shadow:0 0 0 2px #fde68a55}
+</style>
+<meta property="og:title" content="Radar Napoli" />
+<meta property="og:description" content="Dashboard operativa per il monitoraggio e la valutazione di opportunità immobiliari e aste a Napoli." />
+<meta property="og:url" content="https://timber-aura-xt25.here.now/" />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="https://here.now/og/timber-aura-xt25.jpg" />
+<meta property="og:image:width" content="1280" />
+<meta property="og:image:height" content="720" />
+<meta name="twitter:image" content="https://here.now/og/timber-aura-xt25.jpg" />
+<meta name="twitter:card" content="summary_large_image" /></head>
+<body>
+<div class="tabs-mobile" id="tabsMobile"></div>
+<div class="app">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main" id="main"></main>
+  <aside class="right" id="right"></aside>
+</div>
+<script>
+const FEED = [{"id": "B2431206", "fonte": "astalegale", "categoria": "asta", "tipo": "commerciale", "titolo": "Fabbricato commerciale via G. Scherillo 13", "zona": "Napoli Centro - Pendino/Garibaldi", "base": 72375, "omin": 54300, "fascia": "50-100k", "occupazione": "occupato", "scadenza": "2026-10-12T23:59:00+02:00", "link": "https://www.astalegale.net/Aste/Detail/B2431206-Fabbricato-commerciale-via-Giovanni-Scherillo-n-13-Napoli", "priorita": "alta", "lat": 40.847761, "lon": 14.2007705, "stato_contatto": "in_attesa_risposta", "prossimo_passo": "monitor Cicirello; se silenzio entro 10/10 sera → richiamo email; scadenze offerte 12/10 23:59", "canale": "email", "destinatario": "daniela.cicirello@gmail.com", "esito_invio": "email_inviata_wa_skip", "verdetto": "dubbio", "motivo": "Spread prezzo ok ma soppalco non sanabile + no agibilità: rischio operativo/finanziario alto per SRL. Solo se uso grezzo/cash e ok liberazione.", "rendimento": 17, "pro": ["Base/omin ~€54k vs CTU ~€113k (spread forte)", "Zona Pendino/Garibaldi — commerciale centrale", "Rendimento stimato alto se locabile"], "contro": ["Soppalco / abusi non sanabili", "Niente agibilità → mutuo/assicurazione/rivendita difficili", "Occupato senza titolo — serve liberazione esecutata", "Uso grezzo/cash only per SRL sana"], "occasione_vera": false}, {"id": "B2427439", "fonte": "astalegale", "categoria": "asta", "tipo": "Aste case", "titolo": "Abitazione Via Pallucci 59", "zona": "Pianura", "base": 163550, "omin": 122663, "fascia": "100-150k", "occupazione": "occupato", "scadenza": "2026-10-12", "link": "https://www.astalegale.net/Aste/Detail/B2427439-Abitazione-di-tipo-civile-Via-Pallucci-59-Napoli--Napoli", "priorita": "alta", "lat": 40.8611141, "lon": 14.1631028, "stato_contatto": "da_valutare", "prossimo_passo": "Andrea conferma se ok omin €122663 (base €163550 sopra budget); poi richiesta info; termine offerte 12/10", "canale": null, "destinatario": "335365404 / avvgiovfolchino@libero.it", "esito_invio": "non_inviato", "verdetto": "no", "motivo": "Occupato + base sopra budget; Andrea ha detto No", "pro": [], "contro": ["Occupato + base sopra budget; Andrea ha detto No"], "occasione_vera": false}, {"id": "B2427662", "fonte": "astalegale", "categoria": "asta", "tipo": "Aste case", "titolo": "Abitazione Vico S. Caterina a Formiello 20/1", "zona": "Centro storico", "base": 9500, "omin": null, "fascia": "0-50k", "occupazione": "n/d", "scadenza": "2026-11-03T16:00:00+01:00", "link": "https://www.astalegale.net/Aste/Detail/B2427662-Abitazione-di-tipo-civile-Vico-Santa-Caterina-a-Formiello-20int-1-80139-Napoli-NA-Italia-Napoli", "priorita": "pipeline", "lat": 40.8551355, "lon": 14.2639128, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "conviene", "motivo": "Centro storico ultra-low €9.5k — forte upside se titolo ok", "pro": ["Centro storico ultra-low €9.5k — forte upside se titolo ok"], "contro": ["Rapporto completo in arrivo da Radar Mattina"], "occasione_vera": false}, {"id": "B2431349", "fonte": "astalegale", "categoria": "asta", "tipo": "Aste case", "titolo": "Abitazione Vico Tessitori ai Miracoli 26", "zona": "Centro storico", "base": 63000, "omin": 47250, "fascia": "0-50k", "occupazione": "n/d", "scadenza": "2026-11-10T15:00:00+01:00", "link": "https://www.astalegale.net/Aste/Detail/B2431349-Abitazione-di-tipo-civile-Vico-Tessitori-ai-Miracoli-n-26--80137-Napoli-NA-Italia-Napoli", "priorita": "pipeline", "lat": 40.8594343, "lon": 14.2562403, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "conviene", "motivo": "Centro storico omin €47k — zona forte sotto 50k", "pro": ["Centro storico omin €47k — zona forte sotto 50k"], "contro": ["Rapporto completo in arrivo da Radar Mattina"], "occasione_vera": false}, {"id": "B2428206", "fonte": "astalegale", "categoria": "asta", "tipo": "Aste case", "titolo": "Abitazione Rua Catalana 102", "zona": "Centro storico", "base": 60000, "omin": 45000, "fascia": "0-50k", "occupazione": "locato", "scadenza": "2026-11-24T15:30:00+01:00", "link": "https://www.astalegale.net/Aste/Detail/B2428206-Abitazione-di-tipo-civile-Rua-Catalana-102-80133-Napoli-NA-Italia-Napoli", "priorita": "pipeline", "lat": 40.8420295, "lon": 14.2539982, "stato_contatto": "da_decidere", "prossimo_passo": "Andrea decide sì/no prima di qualsiasi contatto", "canale": null, "destinatario": null, "esito_invio": "non_inviato", "verdetto": "dubbio", "motivo": "Locato Centro storico — aspetta sì Andrea prima di contatto", "pro": ["Potenziale da verificare"], "contro": ["Locato Centro storico — aspetta sì Andrea prima di contatto"], "occasione_vera": false}, {"id": "B2428207", "fonte": "astalegale", "categoria": "asta", "tipo": "Aste locali", "titolo": "Commerciale Vico Carceri S. Felice 25", "zona": "Centro storico", "base": 116000, "omin": 87000, "fascia": "50-100k", "occupazione": "n/d", "scadenza": "2026-11-24T15:30:00+01:00", "link": "https://www.astalegale.net/Aste/Detail/B2428207-Fabbricato-commerciale-Vico-Carceri-S-Felice-25-80134-Napoli-NA-Italia-Napoli", "priorita": "pipeline", "lat": null, "lon": null, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "dubbio", "motivo": "Commerciale Centro storico omin €87k", "pro": ["Potenziale da verificare"], "contro": ["Commerciale Centro storico omin €87k"], "occasione_vera": false}, {"id": "B2433270", "fonte": "astalegale", "categoria": "asta", "tipo": "Aste case", "titolo": "Abitazione Vico II Strettola agli Orefici 3", "zona": "Centro storico", "base": 118000, "omin": 88500, "fascia": "50-100k", "occupazione": "n/d", "scadenza": "2026-11-24T15:30:00+01:00", "link": "https://www.astalegale.net/Aste/Detail/B2433270-Abitazione-di-tipo-civile-Vico-II-Strettola-agli-Orefici-n-3-Napoli", "priorita": "pipeline", "lat": 40.8456458, "lon": 14.2602885, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "conviene", "motivo": "Centro storico omin €88.5k — zona forte residenziale", "pro": ["Centro storico omin €88.5k — zona forte residenziale"], "contro": ["Rapporto completo in arrivo da Radar Mattina"], "occasione_vera": false}, {"id": "B2432053", "fonte": "astalegale", "categoria": "asta", "tipo": "Aste locali", "titolo": "Commerciale Via M.A. Severino 39", "zona": "Centro storico", "base": 51000, "omin": 38250, "fascia": "0-50k", "occupazione": "n/d", "scadenza": "2026-11-24T16:00:00+01:00", "link": "https://www.astalegale.net/Aste/Detail/B2432053-Fabbricato-commerciale-Via-Marco-Aurelio-Severino-39-80137-Napoli-NA-Italia-Napoli", "priorita": "pipeline", "lat": 40.8658816, "lon": 14.26717, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "dubbio", "motivo": "Commerciale Centro storico omin €38k — verificare destinazione", "pro": ["Potenziale da verificare"], "contro": ["Commerciale Centro storico omin €38k — verificare destinazione"], "occasione_vera": false}, {"id": "B2426985", "fonte": "astalegale", "categoria": "asta", "tipo": "Aste case", "titolo": "Abitazione Via S. Agostino alla Zecca 9", "zona": "Centro storico", "base": 101500, "omin": 76125, "fascia": "50-100k", "occupazione": "n/d", "scadenza": "2026-11-17T16:30:00+01:00", "link": "https://www.astalegale.net/Aste/Detail/B2426985-Abitazione-di-tipo-civile-Via-S-Agostino-alla-Zecca-9-80139-Napoli-NA-Italia-Napoli", "priorita": "pipeline", "lat": 40.8502791, "lon": 14.2620535, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "conviene", "motivo": "Centro storico omin €76k — buon ingresso", "pro": ["Centro storico omin €76k — buon ingresso"], "contro": ["Rapporto completo in arrivo da Radar Mattina"], "occasione_vera": false}, {"id": "B2434059", "fonte": "astalegale", "categoria": "asta", "tipo": "Aste case", "titolo": "Abitazione Via Santa Lucia al Monte 9", "zona": "Centro", "base": 129750, "omin": 97312, "fascia": "50-100k", "occupazione": "n/d", "scadenza": "2026-12-01T15:30:00+01:00", "link": "https://www.astalegale.net/Aste/Detail/B2434059-Abitazione-di-tipo-civile-Via-Santa-Lucia-al-Monte-n-9-Napoli", "priorita": "pipeline", "lat": 40.8451936, "lon": 14.2447944, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "no", "motivo": "Centro €97k — fuori focus zone forti", "pro": [], "contro": ["Centro €97k — fuori focus zone forti"], "occasione_vera": false}, {"id": "B2433404", "fonte": "astalegale", "categoria": "asta", "tipo": "Aste case", "titolo": "Abitazione Via Carriera Grande 32", "zona": "Centro storico", "base": 90000, "omin": 67500, "fascia": "50-100k", "occupazione": "n/d", "scadenza": "2026-12-15T10:00:00+01:00", "link": "https://www.astalegale.net/Aste/Detail/B2433404-Abitazione-di-tipo-civile-Via-Carriera-Grande-32-80139-Napoli-NA-Italia-Napoli", "priorita": "pipeline", "lat": 40.8537374, "lon": 14.266706, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "conviene", "motivo": "Centro storico omin €67.5k — buon ingresso", "pro": ["Centro storico omin €67.5k — buon ingresso"], "contro": ["Rapporto completo in arrivo da Radar Mattina"], "occasione_vera": false}, {"id": "B2427784", "fonte": "astalegale", "categoria": "asta", "tipo": "Aste case", "titolo": "Abitazione Via Pisani 183", "zona": "Pianura", "base": 43664, "omin": 32748, "fascia": "0-50k", "occupazione": "n/d", "scadenza": "2026-11-17T15:30:00+01:00", "link": "https://www.astalegale.net/Aste/Detail/B2427784-Abitazione-di-tipo-civile-Via-Pisani-183-80126-Napoli-NA-Italia-Napoli", "priorita": "pipeline", "lat": 40.8576008, "lon": 14.1506085, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "dubbio", "motivo": "Pianura omin €33k — OK zone ma non core", "pro": ["Potenziale da verificare"], "contro": ["Pianura omin €33k — OK zone ma non core"], "occasione_vera": false}, {"id": "B2435070", "fonte": "astalegale", "categoria": "asta", "tipo": "Aste locali", "titolo": "Commerciale Via Paolo della Valle 86", "zona": "Soccavo/Pianura", "base": 85000, "omin": 63750, "fascia": "50-100k", "occupazione": "n/d", "scadenza": "2026-12-15T15:30:00+01:00", "link": "https://www.astalegale.net/Aste/Detail/B2435070-Fabbricato-commerciale-Via-Paolo-della-Valle-86-80126-Napoli-NA-Italia-Napoli", "priorita": "pipeline", "lat": 40.8461136, "lon": 14.2044128, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "no", "motivo": "Commerciale Soccavo/Pianura — fuori focus residenziale", "pro": [], "contro": ["Commerciale Soccavo/Pianura — fuori focus residenziale"], "occasione_vera": false}, {"id": "B2435264", "fonte": "astalegale", "categoria": "asta", "tipo": "Aste case", "titolo": "Abitazione Via Carditello 109", "zona": "Frattamaggiore", "base": 83741, "omin": 62806, "fascia": "50-100k", "occupazione": "n/d", "scadenza": "2026-12-16T10:30:00+01:00", "link": "https://www.astalegale.net/Aste/Detail/B2435264-Abitazione-di-tipo-civile-via-Carditello-109-Frattamaggiore", "priorita": "pipeline", "lat": 40.9413694, "lon": 14.2797365, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "conviene", "motivo": "Frattamaggiore omin €63k — zona forte target", "pro": ["Frattamaggiore omin €63k — zona forte target"], "contro": ["Rapporto completo in arrivo da Radar Mattina"], "occasione_vera": false}, {"id": "immobiliare-132641462", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Monolocale", "titolo": "Monolocale corso Italia 230", "zona": "Costiera amalfitana - Sorrento", "base": 150000, "omin": null, "fascia": "100-150k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/132641462/", "priorita": "media", "lat": null, "lon": null, "stato_contatto": "nuovo", "prossimo_passo": "Valutare annuncio privato", "canale": null, "destinatario": null, "esito_invio": "non_inviato", "verdetto": "no", "motivo": "OK zone — priorità alle zone forti", "pro": [], "contro": ["OK zone — priorità alle zone forti"], "occasione_vera": false}, {"id": "immobiliare-133175520", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Monolocale", "titolo": "Monolocale via Primo Turino, Raito", "zona": "Costiera amalfitana - Vietri sul Mare", "base": 49000, "omin": null, "fascia": "0-50k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/133175520/", "priorita": "alta", "lat": null, "lon": null, "stato_contatto": "nuovo", "prossimo_passo": "Valutare annuncio privato", "canale": null, "destinatario": null, "esito_invio": "non_inviato", "verdetto": "no", "motivo": "Costiera Vietri €49k — fuori pipeline selettiva", "pro": [], "contro": ["Costiera Vietri €49k — fuori pipeline selettiva"], "occasione_vera": false}, {"id": "immobiliare-125398069", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Monolocale", "titolo": "Monolocale via Pellegrino Primo 9, Centro", "zona": "Costiera amalfitana - Vietri sul Mare", "base": 79000, "omin": null, "fascia": "50-100k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/125398069/", "priorita": "alta", "lat": null, "lon": null, "stato_contatto": "nuovo", "prossimo_passo": "Valutare annuncio privato", "canale": null, "destinatario": null, "esito_invio": "non_inviato", "verdetto": "no", "motivo": "Costiera Vietri €79k — fuori pipeline selettiva", "pro": [], "contro": ["Costiera Vietri €79k — fuori pipeline selettiva"], "occasione_vera": false}, {"id": "immobiliare-132414046", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Monolocale", "titolo": "Monolocale via Scialli Secondo 31, Centro", "zona": "Costiera amalfitana - Vietri sul Mare", "base": 85000, "omin": null, "fascia": "50-100k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/132414046/", "priorita": "alta", "lat": null, "lon": null, "stato_contatto": "nuovo", "prossimo_passo": "Valutare annuncio privato", "canale": null, "destinatario": null, "esito_invio": "non_inviato", "verdetto": "no", "motivo": "Costiera Vietri €85k — fuori pipeline selettiva", "pro": [], "contro": ["Costiera Vietri €85k — fuori pipeline selettiva"], "occasione_vera": false}, {"id": "immobiliare-130079812", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Quadrilocale", "titolo": "Quadrilocale V. Selce, Benincasa", "zona": "Costiera amalfitana - Vietri sul Mare", "base": 120000, "omin": null, "fascia": "100-150k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/130079812/", "priorita": "alta", "lat": null, "lon": null, "stato_contatto": "nuovo", "prossimo_passo": "Valutare annuncio privato", "canale": null, "destinatario": null, "esito_invio": "non_inviato", "verdetto": "no", "motivo": "OK zone — priorità alle zone forti", "pro": [], "contro": ["OK zone — priorità alle zone forti"], "occasione_vera": false}, {"id": "immobiliare-132518032", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Bilocale", "titolo": "Bilocale via Iaconti 23, Dragonea", "zona": "Costiera amalfitana - Vietri sul Mare", "base": 120000, "omin": null, "fascia": "100-150k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/132518032/", "priorita": "media", "lat": null, "lon": null, "stato_contatto": "nuovo", "prossimo_passo": "Valutare annuncio privato", "canale": null, "destinatario": null, "esito_invio": "non_inviato", "verdetto": "no", "motivo": "OK zone — priorità alle zone forti", "pro": [], "contro": ["OK zone — priorità alle zone forti"], "occasione_vera": false}, {"id": "immobiliare-133258626", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Bilocale", "titolo": "Bilocale via Strettola 24, Centro", "zona": "Costiera amalfitana - Vietri sul Mare", "base": 125000, "omin": null, "fascia": "100-150k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/133258626/", "priorita": "media", "lat": null, "lon": null, "stato_contatto": "nuovo", "prossimo_passo": "Valutare annuncio privato", "canale": null, "destinatario": null, "esito_invio": "non_inviato", "verdetto": "no", "motivo": "OK zone — priorità alle zone forti", "pro": [], "contro": ["OK zone — priorità alle zone forti"], "occasione_vera": false}, {"id": "immobiliare-124390049", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "bilocale", "titolo": "Bilocale buono stato, primo piano, Frattamaggiore", "zona": "Frattamaggiore", "base": 59000, "omin": null, "fascia": "50-100k", "occupazione": "ambigua: locato maggio 2026 (canone n/d)", "scadenza": null, "link": "https://www.immobiliare.it/annunci/124390049/", "priorita": "media", "lat": null, "lon": null, "stato_contatto": "nuovo", "prossimo_passo": "Valutare annuncio privato", "canale": null, "destinatario": "Home Immobiliare 08119284965", "esito_invio": "non_inviato", "verdetto": "dubbio", "motivo": "Prezzo e posto auto ok, ma occupazione ambigua, nessun canone, nessun dato catastale/conformità, €/mq in linea con classe G.", "pro": ["prezzo ingresso basso", "posto auto", "zero spese condominiali", "riscaldamento e clima autonomi", "bagno moderno / porta blindata / fibra", "posizione centrale", "possibile reddito se locato"], "contro": ["classe G", "senza ascensore", "esposizione interna", "€/mq in linea mercato", "occupazione e canone non chiari", "mancano catasto conformità anno", "annuncio fermo dal 08/11/2025"], "occasione_vera": false, "indirizzo_probabile": "Via Massimo Stanzione (da verificare)", "mq": 40, "prezzo_mq": 1475, "piano": "1 di 2", "ascensore": false, "balcone": true, "posto_auto": 1, "classe_energetica": "G", "riscaldamento": "autonomo gas radiatori", "spese_condominio": 0, "stato": "buono", "anno": null, "rendimento": null, "contatto": {"agenzia": "Home Immobiliare", "telefono": "08119284965", "email": null}, "cat": "privato"}, {"id": "immobiliare-126653745", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Monolocale", "titolo": "Monolocale via Massimo Stanzione 75", "zona": "Frattamaggiore", "base": 65000, "omin": null, "fascia": "50-100k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/126653745/", "priorita": "alta", "lat": null, "lon": null, "stato_contatto": "nuovo", "prossimo_passo": "Valutare annuncio privato", "canale": null, "destinatario": null, "esito_invio": "non_inviato", "verdetto": "conviene", "motivo": "Frattamaggiore €65k monolocale — zona forte", "pro": ["Frattamaggiore €65k monolocale — zona forte"], "contro": ["Rapporto completo in arrivo da Radar Mattina"], "occasione_vera": false}, {"id": "immobiliare-129134750", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Bilocale", "titolo": "Bilocale via Riscatto 45, Frattamaggiore", "zona": "Frattamaggiore", "base": 70000, "omin": null, "fascia": "50-100k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/129134750/", "priorita": "alta", "lat": null, "lon": null, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "conviene", "motivo": "Frattamaggiore €70k bilocale — zona forte", "pro": ["Frattamaggiore €70k bilocale — zona forte"], "contro": ["Rapporto completo in arrivo da Radar Mattina"], "occasione_vera": false}, {"id": "immobiliare-132529216", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Bilocale", "titolo": "Bilocale via Genoino 96, Frattamaggiore", "zona": "Frattamaggiore", "base": 79000, "omin": null, "fascia": "50-100k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/132529216/", "priorita": "alta", "lat": null, "lon": null, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "conviene", "motivo": "Frattamaggiore €79k bilocale — zona forte", "pro": ["Frattamaggiore €79k bilocale — zona forte"], "contro": ["Rapporto completo in arrivo da Radar Mattina"], "occasione_vera": false}, {"id": "immobiliare-132505764", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Bilocale", "titolo": "Bilocale via Giulio Giangrande 3", "zona": "Frattamaggiore", "base": 85000, "omin": null, "fascia": "50-100k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/132505764/", "priorita": "alta", "lat": null, "lon": null, "stato_contatto": "nuovo", "prossimo_passo": "Valutare annuncio privato", "canale": null, "destinatario": null, "esito_invio": "non_inviato", "verdetto": "dubbio", "motivo": "Frattamaggiore €85k — zona forte, selettivo", "pro": ["Potenziale da verificare"], "contro": ["Frattamaggiore €85k — zona forte, selettivo"], "occasione_vera": false}, {"id": "immobiliare-129084802", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Bilocale", "titolo": "Bilocale via Regina Margherita 4, Frattamaggiore", "zona": "Frattamaggiore", "base": 89000, "omin": null, "fascia": "50-100k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/129084802/", "priorita": "alta", "lat": null, "lon": null, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "dubbio", "motivo": "Frattamaggiore €89k — zona forte, selettivo", "pro": ["Potenziale da verificare"], "contro": ["Frattamaggiore €89k — zona forte, selettivo"], "occasione_vera": false}, {"id": "immobiliare-124965571", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Appartamento", "titolo": "Appartamento via Pasquale Russo 19", "zona": "Frattamaggiore", "base": 95000, "omin": null, "fascia": "50-100k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/124965571/", "priorita": "alta", "lat": null, "lon": null, "stato_contatto": "nuovo", "prossimo_passo": "Valutare annuncio privato", "canale": null, "destinatario": null, "esito_invio": "non_inviato", "verdetto": "dubbio", "motivo": "Frattamaggiore €95k — zona forte, selettivo", "pro": ["Potenziale da verificare"], "contro": ["Frattamaggiore €95k — zona forte, selettivo"], "occasione_vera": false}, {"id": "immobiliare-127789638", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Appartamento", "titolo": "Appartamento via Riscatto 45", "zona": "Frattamaggiore", "base": 110000, "omin": null, "fascia": "100-150k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/127789638/", "priorita": "media", "lat": null, "lon": null, "stato_contatto": "nuovo", "prossimo_passo": "Valutare annuncio privato", "canale": null, "destinatario": null, "esito_invio": "non_inviato", "verdetto": "dubbio", "motivo": "Frattamaggiore €110k — margine da verificare", "pro": ["Potenziale da verificare"], "contro": ["Frattamaggiore €110k — margine da verificare"], "occasione_vera": false}, {"id": "immobiliare-132443428", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Bilocale", "titolo": "Bilocale via Camillo Benso Cavour 68, Frattamaggiore", "zona": "Frattamaggiore", "base": 120000, "omin": null, "fascia": "100-150k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/132443428/", "priorita": "media", "lat": null, "lon": null, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "dubbio", "motivo": "Frattamaggiore €120k — margine da verificare", "pro": ["Potenziale da verificare"], "contro": ["Frattamaggiore €120k — margine da verificare"], "occasione_vera": false}, {"id": "immobiliare-118439343", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Bilocale", "titolo": "Bilocale via Michelarcangelo Lupoli 11, Frattamaggiore", "zona": "Frattamaggiore", "base": 135000, "omin": null, "fascia": "100-150k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/118439343/", "priorita": "media", "lat": null, "lon": null, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "no", "motivo": "Zona forte sopra €100k — fuori lista selettiva", "pro": [], "contro": ["Zona forte sopra €100k — fuori lista selettiva"], "occasione_vera": false}, {"id": "immobiliare-127123727", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Trilocale", "titolo": "Trilocale via Cumana 147", "zona": "Frattamaggiore", "base": 135000, "omin": null, "fascia": "100-150k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/127123727/", "priorita": "media", "lat": null, "lon": null, "stato_contatto": "nuovo", "prossimo_passo": "Valutare annuncio privato", "canale": null, "destinatario": null, "esito_invio": "non_inviato", "verdetto": "no", "motivo": "Zona forte sopra €100k — fuori lista selettiva", "pro": [], "contro": ["Zona forte sopra €100k — fuori lista selettiva"], "occasione_vera": false}, {"id": "immobiliare-131347004", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Trilocale", "titolo": "Trilocale via Cumana, Frattamaggiore", "zona": "Frattamaggiore", "base": 135000, "omin": null, "fascia": "100-150k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/131347004/", "priorita": "media", "lat": null, "lon": null, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "no", "motivo": "Zona forte sopra €100k — fuori lista selettiva", "pro": [], "contro": ["Zona forte sopra €100k — fuori lista selettiva"], "occasione_vera": false}, {"id": "immobiliare-129562048", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Bilocale", "titolo": "Bilocale via Torino 24, Frattamaggiore", "zona": "Frattamaggiore", "base": 138000, "omin": null, "fascia": "100-150k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/129562048/", "priorita": "media", "lat": null, "lon": null, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "no", "motivo": "Zona forte sopra €100k — fuori lista selettiva", "pro": [], "contro": ["Zona forte sopra €100k — fuori lista selettiva"], "occasione_vera": false}, {"id": "immobiliare-121160526", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Terratetto", "titolo": "Terratetto plurifamiliare Vico II Roma 8", "zona": "Frattamaggiore", "base": 139000, "omin": null, "fascia": "100-150k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/121160526/", "priorita": "media", "lat": null, "lon": null, "stato_contatto": "nuovo", "prossimo_passo": "Valutare annuncio privato", "canale": null, "destinatario": null, "esito_invio": "non_inviato", "verdetto": "no", "motivo": "Zona forte sopra €100k — fuori lista selettiva", "pro": [], "contro": ["Zona forte sopra €100k — fuori lista selettiva"], "occasione_vera": false}, {"id": "immobiliare-133208378", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Quadrilocale", "titolo": "Quadrilocale via Rossini 21, Frattamaggiore", "zona": "Frattamaggiore", "base": 139000, "omin": null, "fascia": "100-150k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/133208378/", "priorita": "media", "lat": null, "lon": null, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "no", "motivo": "Zona forte sopra €100k — fuori lista selettiva", "pro": [], "contro": ["Zona forte sopra €100k — fuori lista selettiva"], "occasione_vera": false}, {"id": "immobiliare-129562040", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Bilocale", "titolo": "Bilocale via Torino 24, Frattamaggiore", "zona": "Frattamaggiore", "base": 148000, "omin": null, "fascia": "100-150k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/129562040/", "priorita": "media", "lat": null, "lon": null, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "no", "motivo": "Zona forte sopra €100k — fuori lista selettiva", "pro": [], "contro": ["Zona forte sopra €100k — fuori lista selettiva"], "occasione_vera": false}, {"id": "immobiliare-129665360", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Bilocale", "titolo": "Bilocale viale Cavalleggeri d'Aosta, Fuorigrotta, Napoli", "zona": "Fuorigrotta", "base": 90000, "omin": null, "fascia": "50-100k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/129665360/", "priorita": "media", "lat": 40.8174, "lon": 14.1877, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "conviene", "motivo": "Fuorigrotta €90k bilocale — zona forte sotto 100k", "pro": ["Fuorigrotta €90k bilocale — zona forte sotto 100k"], "contro": ["Rapporto completo in arrivo da Radar Mattina"], "occasione_vera": false}, {"id": "immobiliare-124116965", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Trilocale", "titolo": "Trilocale via Andrea Doria 40, Fuorigrotta, Napoli", "zona": "Fuorigrotta", "base": 129900, "omin": null, "fascia": "100-150k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/124116965/", "priorita": "media", "lat": 40.8274, "lon": 14.2021, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "dubbio", "motivo": "Fuorigrotta €130k — vicino tetto", "pro": ["Potenziale da verificare"], "contro": ["Fuorigrotta €130k — vicino tetto"], "occasione_vera": false}, {"id": "immobiliare-127061197", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Trilocale", "titolo": "Trilocale via Pasquale Baffi, Arenaccia, Napoli", "zona": "Napoli Centro", "base": 45000, "omin": null, "fascia": "0-50k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/127061197/", "priorita": "alta", "lat": 40.8576, "lon": 14.2696, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "conviene", "motivo": "Napoli Centro €45k trilocale Arenaccia — ingresso forte", "pro": ["Napoli Centro €45k trilocale Arenaccia — ingresso forte"], "contro": ["Rapporto completo in arrivo da Radar Mattina"], "occasione_vera": false}, {"id": "immobiliare-132603982", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Monolocale", "titolo": "Monolocale via Salaiolo dell'Orto del Conte, Mercato, Napoli", "zona": "Napoli Centro", "base": 68000, "omin": null, "fascia": "50-100k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/132603982/", "priorita": "alta", "lat": 40.8496, "lon": 14.2664, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "dubbio", "motivo": "Napoli Centro €68k Mercato — non core", "pro": ["Potenziale da verificare"], "contro": ["Napoli Centro €68k Mercato — non core"], "occasione_vera": false}, {"id": "immobiliare-133245786", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Monolocale", "titolo": "Monolocale via Arenaccia 19, Arenaccia, Napoli", "zona": "Napoli Centro", "base": 70000, "omin": null, "fascia": "50-100k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/133245786/", "priorita": "alta", "lat": 40.8582, "lon": 14.2707, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "dubbio", "motivo": "Napoli Centro €70k Arenaccia — non core", "pro": ["Potenziale da verificare"], "contro": ["Napoli Centro €70k Arenaccia — non core"], "occasione_vera": false}, {"id": "immobiliare-127925014", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Monolocale", "titolo": "Monolocale via Ferrara, Vasto, Napoli", "zona": "Napoli Centro", "base": 89000, "omin": null, "fascia": "50-100k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/127925014/", "priorita": "alta", "lat": 40.8556, "lon": 14.2736, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "no", "motivo": "Napoli Centro €89k Vasto — priorità zone forti", "pro": [], "contro": ["Napoli Centro €89k Vasto — priorità zone forti"], "occasione_vera": false}, {"id": "immobiliare-132204764", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Bilocale", "titolo": "Bilocale Vico Lungo Teatro Nuovo, Quartieri Spagnoli, Napoli", "zona": "Napoli Centro", "base": 95000, "omin": null, "fascia": "50-100k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/132204764/", "priorita": "alta", "lat": 40.8412, "lon": 14.2475, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "no", "motivo": "OK zone — priorità alle zone forti", "pro": [], "contro": ["OK zone — priorità alle zone forti"], "occasione_vera": false}, {"id": "immobiliare-132515290", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Bilocale", "titolo": "Bilocale via Trinità degli Spagnoli 23, Quartieri Spagnoli, Napoli", "zona": "Napoli Centro", "base": 108000, "omin": null, "fascia": "100-150k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/132515290/", "priorita": "media", "lat": 40.8399, "lon": 14.247, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "no", "motivo": "OK zone — priorità alle zone forti", "pro": [], "contro": ["OK zone — priorità alle zone forti"], "occasione_vera": false}, {"id": "immobiliare-131375750", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Quadrilocale", "titolo": "Quadrilocale Vico Pergola All'Avvocata 28, Tribunali, Napoli", "zona": "Napoli Centro storico", "base": 79000, "omin": null, "fascia": "50-100k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/131375750/", "priorita": "alta", "lat": 40.8579, "lon": 14.2654, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "conviene", "motivo": "Centro storico €79k quadrilocale Tribunali", "pro": ["Centro storico €79k quadrilocale Tribunali"], "contro": ["Rapporto completo in arrivo da Radar Mattina"], "occasione_vera": false}, {"id": "immobiliare-132069582", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Monolocale", "titolo": "Monolocale Vico Luigi Volpicelli 5, Centro Storico, Napoli", "zona": "Napoli Centro storico", "base": 82000, "omin": null, "fascia": "50-100k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/132069582/", "priorita": "alta", "lat": 40.8469, "lon": 14.2538, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "dubbio", "motivo": "Centro storico €82k monolocale — selettivo", "pro": ["Potenziale da verificare"], "contro": ["Centro storico €82k monolocale — selettivo"], "occasione_vera": false}, {"id": "immobiliare-133282414", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Bilocale", "titolo": "Bilocale via Duomo, Centro Storico, Napoli", "zona": "Napoli Centro storico", "base": 90000, "omin": null, "fascia": "50-100k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/133282414/", "priorita": "alta", "lat": 40.8538, "lon": 14.2582, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "dubbio", "motivo": "Centro storico €90k bilocale Duomo — selettivo", "pro": ["Potenziale da verificare"], "contro": ["Centro storico €90k bilocale Duomo — selettivo"], "occasione_vera": false}, {"id": "immobiliare-133323368", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Bilocale", "titolo": "Bilocale piazzetta Nilo, Centro Storico, Napoli", "zona": "Napoli Centro storico", "base": 99000, "omin": null, "fascia": "50-100k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/133323368/", "priorita": "alta", "lat": 40.8485, "lon": 14.2557, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "dubbio", "motivo": "Centro storico €99k piazzetta Nilo — selettivo", "pro": ["Potenziale da verificare"], "contro": ["Centro storico €99k piazzetta Nilo — selettivo"], "occasione_vera": false}, {"id": "immobiliare-130117730", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Bilocale", "titolo": "Bilocale Vico del Fico al Purgatorio, Centro Storico, Napoli", "zona": "Napoli Centro storico", "base": 125000, "omin": null, "fascia": "100-150k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/130117730/", "priorita": "media", "lat": 40.8496, "lon": 14.2561, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "dubbio", "motivo": "Centro storico €125k — margine da verificare", "pro": ["Potenziale da verificare"], "contro": ["Centro storico €125k — margine da verificare"], "occasione_vera": false}, {"id": "immobiliare-132517800", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Monolocale", "titolo": "Monolocale Supportico D'Astuti, Santa Lucia, Napoli", "zona": "Napoli Chiaia", "base": 59000, "omin": null, "fascia": "50-100k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/132517800/", "priorita": "alta", "lat": null, "lon": null, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "dubbio", "motivo": "Chiaia €59k monolocale — prezzo anomalo, verificare titolo", "pro": ["Potenziale da verificare"], "contro": ["Chiaia €59k monolocale — prezzo anomalo, verificare titolo"], "occasione_vera": false}, {"id": "immobiliare-111578675", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Monolocale", "titolo": "Monolocale ottimo stato, su più livelli, Chiaia, Napoli", "zona": "Napoli Chiaia", "base": 75000, "omin": null, "fascia": "50-100k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/111578675/", "priorita": "alta", "lat": null, "lon": null, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "conviene", "motivo": "Chiaia €75k monolocale — zona forte", "pro": ["Chiaia €75k monolocale — zona forte"], "contro": ["Rapporto completo in arrivo da Radar Mattina"], "occasione_vera": false}, {"id": "immobiliare-133109602", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Monolocale", "titolo": "Monolocale buono stato, piano terra, Chiaia, Napoli", "zona": "Napoli Chiaia", "base": 95000, "omin": null, "fascia": "50-100k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/133109602/", "priorita": "alta", "lat": null, "lon": null, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "dubbio", "motivo": "Chiaia €95k monolocale — selettivo", "pro": ["Potenziale da verificare"], "contro": ["Chiaia €95k monolocale — selettivo"], "occasione_vera": false}, {"id": "immobiliare-125698039", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Monolocale", "titolo": "Monolocale salita Santa Maria Apparente 12, Chiaia, Napoli", "zona": "Napoli Chiaia", "base": 100000, "omin": null, "fascia": "50-100k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/125698039/", "priorita": "alta", "lat": null, "lon": null, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "dubbio", "motivo": "Chiaia €100k — al confine fascia forte", "pro": ["Potenziale da verificare"], "contro": ["Chiaia €100k — al confine fascia forte"], "occasione_vera": false}, {"id": "immobiliare-129724512", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Terratetto", "titolo": "Terratetto plurifamiliare via San Carlo Alle Mortelle 23, Monte di Dio, Napoli", "zona": "Napoli Chiaia", "base": 100000, "omin": null, "fascia": "50-100k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/129724512/", "priorita": "alta", "lat": null, "lon": null, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "dubbio", "motivo": "Chiaia €100k terratetto Monte di Dio", "pro": ["Potenziale da verificare"], "contro": ["Chiaia €100k terratetto Monte di Dio"], "occasione_vera": false}, {"id": "immobiliare-130669384", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Bilocale", "titolo": "Bilocale via Ferdinando Palasciano 47, Chiaia, Napoli", "zona": "Napoli Chiaia", "base": 100000, "omin": null, "fascia": "50-100k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/130669384/", "priorita": "alta", "lat": null, "lon": null, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "dubbio", "motivo": "Chiaia €100k bilocale Palasciano", "pro": ["Potenziale da verificare"], "contro": ["Chiaia €100k bilocale Palasciano"], "occasione_vera": false}, {"id": "immobiliare-131598606", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Monolocale", "titolo": "Monolocale Vico Antonio Serra 16, Chiaia, Napoli", "zona": "Napoli Chiaia", "base": 105000, "omin": null, "fascia": "100-150k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/131598606/", "priorita": "media", "lat": null, "lon": null, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "dubbio", "motivo": "Chiaia €105k — margine da verificare", "pro": ["Potenziale da verificare"], "contro": ["Chiaia €105k — margine da verificare"], "occasione_vera": false}, {"id": "immobiliare-119679120", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Bilocale", "titolo": "Bilocale via Santa Teresella degli Spagnoli 32, Monte di Dio, Napoli", "zona": "Napoli Chiaia", "base": 120000, "omin": null, "fascia": "100-150k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/119679120/", "priorita": "media", "lat": null, "lon": null, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "dubbio", "motivo": "Chiaia €120k Monte di Dio — margine da verificare", "pro": ["Potenziale da verificare"], "contro": ["Chiaia €120k Monte di Dio — margine da verificare"], "occasione_vera": false}, {"id": "immobiliare-123715377", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Monolocale", "titolo": "Monolocale Vico San Guido 27, Chiaia, Napoli", "zona": "Napoli Chiaia", "base": 135000, "omin": null, "fascia": "100-150k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/123715377/", "priorita": "media", "lat": null, "lon": null, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "no", "motivo": "Zona forte sopra €100k — fuori lista selettiva", "pro": [], "contro": ["Zona forte sopra €100k — fuori lista selettiva"], "occasione_vera": false}, {"id": "immobiliare-131739706", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Bilocale", "titolo": "Bilocale via Monte di Dio Santa Lucia, Napoli Chiaia", "zona": "Napoli Chiaia", "base": 135000, "omin": null, "fascia": "100-150k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/131739706/", "priorita": "media", "lat": 40.8328, "lon": 14.247, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "no", "motivo": "Zona forte sopra €100k — fuori lista selettiva", "pro": [], "contro": ["Zona forte sopra €100k — fuori lista selettiva"], "occasione_vera": false}, {"id": "immobiliare-124658901", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Bilocale", "titolo": "Bilocale Salita Vetriera / adiacente via dei Mille, Napoli Chiaia", "zona": "Napoli Chiaia", "base": 140000, "omin": null, "fascia": "100-150k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/124658901/", "priorita": "media", "lat": 40.835, "lon": 14.238, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "no", "motivo": "Zona forte sopra €100k — fuori lista selettiva", "pro": [], "contro": ["Zona forte sopra €100k — fuori lista selettiva"], "occasione_vera": false}, {"id": "immobiliare-132435922", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Monolocale", "titolo": "Monolocale via Monte di Dio Chiaia", "zona": "Napoli Chiaia", "base": 140000, "omin": null, "fascia": "100-150k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/132435922/", "priorita": "media", "lat": 40.8332, "lon": 14.2465, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "no", "motivo": "Zona forte sopra €100k — fuori lista selettiva", "pro": [], "contro": ["Zona forte sopra €100k — fuori lista selettiva"], "occasione_vera": false}, {"id": "immobiliare-129461812", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Monolocale", "titolo": "Monolocale via Monte di Dio, Santa Lucia, Napoli", "zona": "Napoli Chiaia", "base": 145000, "omin": null, "fascia": "100-150k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/129461812/", "priorita": "media", "lat": null, "lon": null, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "no", "motivo": "Zona forte sopra €100k — fuori lista selettiva", "pro": [], "contro": ["Zona forte sopra €100k — fuori lista selettiva"], "occasione_vera": false}, {"id": "immobiliare-118175999", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Trilocale", "titolo": "Trilocale via Chiatamone 6G, Napoli Chiaia", "zona": "Napoli Chiaia", "base": 150000, "omin": null, "fascia": "100-150k", "occupazione": "locato", "scadenza": null, "link": "https://www.immobiliare.it/annunci/118175999/", "priorita": "media", "lat": 40.8315, "lon": 14.2478, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "dubbio", "motivo": "Chiaia locato €150k — al tetto budget, reddito da verificare", "pro": ["Potenziale da verificare"], "contro": ["Chiaia locato €150k — al tetto budget, reddito da verificare"], "occasione_vera": false}, {"id": "immobiliare-132357366", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Monolocale", "titolo": "Monolocale buono stato, piano terra, Pianura, Napoli", "zona": "Pianura", "base": 49000, "omin": null, "fascia": "0-50k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/132357366/", "priorita": "media", "lat": 40.8629, "lon": 14.1775, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "no", "motivo": "Pianura €49k — OK zone non priorità", "pro": [], "contro": ["Pianura €49k — OK zone non priorità"], "occasione_vera": false}, {"id": "immobiliare-133207610", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Trilocale", "titolo": "Trilocale via Archimede 28, Pianura, Napoli", "zona": "Pianura", "base": 85000, "omin": null, "fascia": "50-100k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/133207610/", "priorita": "media", "lat": 40.8477, "lon": 14.179, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "dubbio", "motivo": "Pianura €85k — OK zone non priorità", "pro": ["Potenziale da verificare"], "contro": ["Pianura €85k — OK zone non priorità"], "occasione_vera": false}, {"id": "immobiliare-132534006", "fonte": "immobiliare.it", "categoria": "privato", "tipo": "Terratetto", "titolo": "Terratetto unifamiliare via Provinciale Montagna Spaccata, Soccavo, Napoli", "zona": "Soccavo", "base": 130000, "omin": null, "fascia": "100-150k", "occupazione": "n/d", "scadenza": null, "link": "https://www.immobiliare.it/annunci/132534006/", "priorita": "media", "lat": 40.8477, "lon": 14.191, "stato_contatto": null, "prossimo_passo": null, "canale": null, "destinatario": null, "esito_invio": null, "verdetto": "no", "motivo": "OK zone — priorità alle zone forti", "pro": [], "contro": ["OK zone — priorità alle zone forti"], "occasione_vera": false}];
+const TODAY = new Date(2026,9,7); // 2026-10-07 local
+const EXCL = /pozzuoli|qualiano|castellammare/i;
+const STRONG = /frattamaggiore|centro storico|chiaia|fuorigrotta/i;
+const LS_KEY = 'radar-napoli-dismissed-v1';
+
+const VIEWS = [
+  {id:'oggi',label:'Oggi',ico:'◎'},
+  {id:'decidi',label:'Decidi',ico:'☑'},
+  {id:'preferiti',label:'Preferiti',ico:'★'},
+  {id:'qa',label:'Domanda/Risposta',ico:'💬'},
+  {id:'piano',label:'Piano / Crescita',ico:'📈'},
+  {id:'mappa',label:'Mappa',ico:'⌖'},
+  {id:'mercato',label:'Mercato',ico:'▦'},
+  {id:'whatsapp',label:'WhatsApp',ico:'✆'},
+  {id:'email',label:'Email',ico:'✉'},
+  {id:'fonti',label:'Fonti',ico:'☰'},
+];
+
+let view = 'oggi';
+let filters = {cat:'',zona:'',fascia:'',occ:'',prio:'',q:'',verdetto:''}; // default: analizzate = conviene+dubbio via baseItems
+let mapInstance = null;
+const SEED_DISMISSED = ['B2427439']; // Andrea ha detto No → scartato
+const SEED_FAVORITES = ['B2431206']; // Scherillo preferito
+const LS_FAV = 'radar-napoli-favorites-v1';
+const LS_INT = 'radar-napoli-interesse-v1';
+const LS_OUTBOX = 'radar-napoli-outreach-outbox-v1';
+const THREADS = [{"id": "B2431206", "titolo": "Scherillo 13 · Pendino/Garibaldi", "stato": "in_attesa_risposta", "destinatario": "daniela.cicirello@gmail.com", "label_stato": "In attesa", "thread": [{"ruolo": "domanda", "canale": "email", "quando": "2026-10-07", "testo": "Info + perizia + possesso/condo → daniela.cicirello@gmail.com"}, {"ruolo": "nota", "canale": "sistema", "quando": "2026-10-07", "testo": "Verdetto → dubbio (abusi non sanabili + no agibilità). 3 email, 0 reply. Non OCCASIONE VERA."}, {"ruolo": "prossima", "canale": "email", "quando": "2026-10-10", "testo": "Richiamo/#3 solo su richiesta. Scarta → Follow-up chiude."}]}];
+let dismissed = new Set(JSON.parse(localStorage.getItem(LS_KEY)||'[]'));
+let favorites = new Set(JSON.parse(localStorage.getItem(LS_FAV)||'[]'));
+let interesse = new Set(JSON.parse(localStorage.getItem(LS_INT)||'[]'));
+
+function saveDismissed(){ localStorage.setItem(LS_KEY, JSON.stringify([...dismissed])); }
+function saveFavorites(){ localStorage.setItem(LS_FAV, JSON.stringify([...favorites])); }
+function loadOutbox(){
+  try { return JSON.parse(localStorage.getItem(LS_OUTBOX)||'[]'); } catch(e){ return []; }
+}
+function saveOutbox(arr){ localStorage.setItem(LS_OUTBOX, JSON.stringify(arr)); }
+function pushOutbox(id, canale){
+  const arr = loadOutbox();
+  const entry = {id, canale, ts: new Date().toISOString()};
+  arr.unshift(entry);
+  saveOutbox(arr.slice(0,50));
+  try {
+    const payload = JSON.stringify(entry);
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(payload).catch(function(){});
+    }
+  } catch (e) {}
+  return entry;
+}
+function saveInteresse(){ localStorage.setItem(LS_INT, JSON.stringify([...interesse])); }
+(function seedDismissed(){
+  let changed=false;
+  for(const id of SEED_DISMISSED){ if(!dismissed.has(id)){ dismissed.add(id); changed=true; } }
+  if(changed) saveDismissed();
+})();
+(function seedFavorites(){
+  let changed=false;
+  for(const id of SEED_FAVORITES){ if(!favorites.has(id)){ favorites.add(id); changed=true; } }
+  if(changed) saveFavorites();
+})();
+
+function parseDate(s){
+  if(!s) return null;
+  const raw = String(s).replace(' ','T');
+  const d = new Date(raw.slice(0,19));
+  return isNaN(d) ? null : d;
+}
+function daysTo(item){
+  const d = parseDate(item.scadenza);
+  if(!d) return null;
+  const a = Date.UTC(d.getFullYear(),d.getMonth(),d.getDate());
+  const b = Date.UTC(TODAY.getFullYear(),TODAY.getMonth(),TODAY.getDate());
+  return Math.round((a-b)/86400000);
+}
+function euro(n){
+  if(n==null||n==='') return '—';
+  return '€'+Number(n).toLocaleString('it-IT');
+}
+function shortTitle(t){ return (t||'').replace(/^Abitazione di tipo civile\s*/i,'').slice(0,72); }
+function mossa8(item){
+  const p = (item.prossimo_passo||'').trim();
+  if(p){
+    const words = p.split(/\s+/).slice(0,8).join(' ');
+    return words + (p.split(/\s+/).length>8?'…':'');
+  }
+  if(item.esito_invio==='email_inviata_wa_skip') return 'Attendi risposta email';
+  if(item.stato_contatto==='da_valutare'||item.stato_contatto==='da_decidere') return 'Decidi sì o no';
+  if(item.stato_contatto==='nuovo'||item.categoria==='privato') return 'Valuta e contatta';
+  if(item.scadenza) return 'Prepara offerta asta';
+  return 'Rivedi scheda';
+}
+function esitoLabel(item){
+  const e = item.esito_invio;
+  if(e==='email_inviata_wa_skip' || e==='inviato' || e==='email_inviata') return {t:'email inviata',c:'ok'};
+  const pending = loadOutbox().some(o=>o.id===item.id && o.canale==='email');
+  if(pending && !(e==='email_inviata_wa_skip' || e==='inviato' || e==='email_inviata')) return {t:'in coda',c:'warn'};
+  if(e==='non_inviato') return {t:'non inviato',c:'soft'};
+  if(item.stato_contatto==='in_attesa_risposta') return {t:'in attesa',c:'blue'};
+  if(item.stato_contatto==='da_valutare'||item.stato_contatto==='da_decidere') return {t:'da decidere',c:'warn'};
+  if(item.stato_contatto==='nuovo') return {t:'nuovo',c:'blue'};
+  return null;
+}
+function parseContacts(dest){
+  if(!dest) return {emails:[], mobiles:[], landlines:[]};
+  const parts = String(dest).split(/[\/,;|]+/).map(s=>s.trim()).filter(Boolean);
+  const emails=[], mobiles=[], landlines=[];
+  for(const p of parts){
+    if(/@/.test(p)) emails.push(p);
+    else {
+      const digits = p.replace(/\D/g,'');
+      if(!digits) continue;
+      if(/^081/.test(digits) || (digits.length<=10 && /^081/.test(digits))) landlines.push(digits);
+      else if(/^(3\d{8,10})$/.test(digits) || digits.length>=9 && digits.startsWith('3')) mobiles.push(digits);
+      else if(digits.startsWith('081')) landlines.push(digits);
+      else mobiles.push(digits);
+    }
+  }
+  return {emails, mobiles, landlines};
+}
+function isExcluded(item){
+  const blob = [item.zona,item.titolo,item.tipo,item.link].join(' ');
+  return EXCL.test(blob);
+}
+function isAnalyzed(item){
+  const v = item.verdetto;
+  return v==='conviene' || v==='dubbio';
+}
+function baseItems(opts={}){
+  // Default: analyzed only (conviene|dubbio). opts.showNo=true for «Solo no / scartati analisi»
+  return FEED.filter(i=>{
+    if(isExcluded(i)) return false;
+    if(dismissed.has(i.id)) return false;
+    if(opts.showNo) return i.verdetto==='no';
+    if(opts.allVerdicts) return true;
+    return isAnalyzed(i);
+  });
+}
+function analysisNoItems(){
+  return FEED.filter(i=>!isExcluded(i) && !dismissed.has(i.id) && i.verdetto==='no');
+}
+function passFilters(item){
+  if(filters.verdetto){
+    if(filters.verdetto==='analizzati'){ if(!isAnalyzed(item)) return false; }
+    else if(item.verdetto!==filters.verdetto) return false;
+  }
+  if(filters.cat && item.categoria!==filters.cat) return false;
+  if(filters.zona && item.zona!==filters.zona) return false;
+  if(filters.fascia && item.fascia!==filters.fascia) return false;
+  if(filters.occ && (item.occupazione||'n/d')!==filters.occ) return false;
+  if(filters.prio && item.priorita!==filters.prio) return false;
+  if(filters.q){
+    const q = filters.q.toLowerCase();
+    const blob = [item.titolo,item.zona,item.id,item.tipo,item.motivo,item.verdetto].join(' ').toLowerCase();
+    if(!blob.includes(q)) return false;
+  }
+  return true;
+}
+function verdPill(item){
+  const v = item.verdetto||'';
+  if(v==='conviene') return '<span class="pill conviene">Conviene</span>';
+  if(v==='dubbio') return '<span class="pill dubbio">Dubbio</span>';
+  if(v==='no') return '<span class="pill no">No</span>';
+  return '';
+}
+function rendLabel(item){
+  if(item.rendimento==null||item.rendimento==='') return '';
+  const n = Number(item.rendimento);
+  return '<span class="pill ok">ROI ~'+n+'%</span>';
+}
+
+/* Exclusive buckets */
+function buckets(items){
+  const used = new Set();
+  const scade=[], attesa=[], decidi=[], rest=[];
+  for(const i of items){
+    const d = daysTo(i);
+    if(d!=null && d>=0 && d<=7){ scade.push(i); used.add(i.id); }
+  }
+  for(const i of items){
+    if(used.has(i.id)) continue;
+    if(i.stato_contatto==='in_attesa_risposta'){ attesa.push(i); used.add(i.id); }
+  }
+  for(const i of items){
+    if(used.has(i.id)) continue;
+    if(i.stato_contatto==='da_decidere'||i.stato_contatto==='da_valutare'||i.stato_contatto==='nuovo'){
+      decidi.push(i); used.add(i.id);
+    }
+  }
+  for(const i of items){ if(!used.has(i.id)) rest.push(i); }
+  scade.sort((a,b)=>(daysTo(a)??99)-(daysTo(b)??99));
+  return {scade, attesa, decidi, rest};
+}
+
+function catPill(cat){
+  const c = (cat||'privato').toLowerCase();
+  const label = c==='asta'?'Asta':c==='enti'?'Enti':'Privato';
+  const cls = c==='asta'?'asta':c==='enti'?'enti':'privato';
+  return `<span class="pill ${cls}">${label}</span>`;
+}
+
+function rowHTML(item, opts={}){
+  const d = daysTo(item);
+  const es = esitoLabel(item);
+  const contacts = parseContacts(item.destinatario);
+  const strong = STRONG.test(item.zona||'');
+  const price = item.omin!=null ? `omin ${euro(item.omin)}` : euro(item.base);
+  const occ = item.occupazione||'n/d';
+  const isFav = favorites.has(item.id);
+  let actions = '';
+  const allowWA = item.id!=='B2431206' && item.esito_invio!=='email_inviata_wa_skip' && contacts.mobiles.length;
+  const allowCall = contacts.mobiles.length;
+  const allowEmail = contacts.emails.length;
+  const noContactYet = item.id==='B2428206'; // Catalana: no contact until yes
+  const showInteresse = isAnalyzed(item);
+
+  actions += `<button class="btn sm star ${isFav?'on':''}" data-act="fav" data-id="${item.id}" title="${isFav?'Togli dai preferiti':'Aggiungi ai preferiti'}">${isFav?'★':'☆'}</button>`;
+  if(!noContactYet){
+    if(allowCall) actions += `<button class="btn sm" data-act="call" data-id="${item.id}">Chiama</button>`;
+    if(allowEmail) actions += `<button class="btn sm" data-act="email" data-id="${item.id}">Scrivi email</button>`;
+    if(allowWA) actions += `<button class="btn sm" data-act="wa" data-id="${item.id}">WhatsApp</button>`;
+  }
+  if(showInteresse && !noContactYet && allowEmail){
+    actions += `<button class="btn sm primary" data-act="interesse" data-id="${item.id}" title="Mette in coda Outreach (manda solo se c'è email)">Email interesse</button>`;
+  } else if(showInteresse && !noContactYet && !allowEmail){
+    actions += `<button class="btn sm" data-act="interesse-noemail" data-id="${item.id}" title="Niente email diretta sull'annuncio">Senza email</button>`;
+  }
+  actions += `<a class="btn sm" href="${item.link||'#'}" target="_blank" rel="noopener">Apri</a>`;
+  actions += `<button class="btn sm danger" data-act="scarta" data-id="${item.id}">Scarta</button>`;
+
+  const ovBadge = item.occasione_vera ? `<span class="pill warn">OCCASIONE VERA</span>` : '';
+  const scadBadge = d!=null ? `<span class="pill ${d<=7?'warn':'soft'}">${d<0?'scaduta':d+'gg'}</span>` : '';
+  const esBadge = es ? `<span class="pill ${es.c}">${es.t}</span>` : '';
+  const schNote = item.id==='B2431206' ? `<div class="motivo"><strong>Nota:</strong> email info già partita (Cicirello). Follow-up #3 = condo+cauzione. Niente WA.</div>` : '';
+  const motivo = item.motivo ? `<div class="motivo"><strong>Perché</strong> ${escapeHtml(item.motivo)}</div>` : '';
+  const proList = (item.pro||[]).map(x=>`<li>${escapeHtml(x)}</li>`).join('');
+  const controList = (item.contro||[]).map(x=>`<li>${escapeHtml(x)}</li>`).join('');
+  const procon = (proList||controList) ? `<div class="procon"><div class="pro"><strong>Pro</strong><ul>${proList||'<li>—</li>'}</ul></div><div class="contro"><strong>Contro</strong><ul>${controList||'<li>—</li>'}</ul></div></div>` : '';
+
+  return `<article class="row ${strong?'strong-zone':''}" data-id="${item.id}">
+    <div class="row-main">
+      <div class="row-top">
+        ${catPill(item.categoria)}
+        ${ovBadge}${verdPill(item)}
+        ${rendLabel(item)}
+        ${scadBadge}${esBadge}
+        ${item.priorita?`<span class="pill soft">${item.priorita}</span>`:''}
+        ${isFav?'<span class="pill fav">★ preferito</span>':''}
+      </div>
+      <h4 class="row-title"><a href="${item.link||'#'}" target="_blank" rel="noopener">${escapeHtml(shortTitle(item.titolo))}</a></h4>
+      <div class="row-meta">
+        <span>📍 ${escapeHtml(item.zona||'—')}</span>
+        <span>💶 ${price}</span>
+        <span>🏠 ${escapeHtml(occ)}</span>
+        <span>▦ ${escapeHtml(item.fascia||'—')}</span>
+      </div>
+      ${motivo}${procon}${schNote}
+      <div class="row-mossa"><strong>Mossa</strong>${escapeHtml(mossa8(item))}</div>
+    </div>
+    <div class="row-actions">${actions}</div>
+  </article>`;
+}
+
+function escapeHtml(s){
+  return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function renderSidebar(){
+  const base = baseItems();
+  const b = buckets(base);
+  const favCount = [...favorites].filter(id=>{
+    const it=FEED.find(x=>x.id===id);
+    return it && !dismissed.has(id) && !isExcluded(it);
+  }).length;
+  const nConv = base.filter(i=>i.verdetto==='conviene').length;
+  const nDub = base.filter(i=>i.verdetto==='dubbio').length;
+  const counts = {
+    oggi:b.scade.length+b.attesa.length+b.decidi.length,
+    decidi:b.decidi.length,
+    preferiti:favCount,
+    mercato:base.length,
+    whatsapp: base.filter(waEligible).length,
+    email: base.filter(emailEligible).length
+  };
+  document.getElementById('sidebar').innerHTML = `
+    <div class="brand"><h1>Radar Napoli</h1><p>Opportunità analizzate · piano 100</p></div>
+    ${VIEWS.map(v=>`<button class="nav-btn ${view===v.id?'active':''}" data-view="${v.id}">
+      <span class="ico">${v.ico}</span>${v.label}
+      ${counts[v.id]!=null?`<span class="badge">${counts[v.id]}</span>`:''}
+    </button>`).join('')}
+    <div class="side-foot">
+      Analisi: <strong>${nConv} conviene</strong> · <strong>${nDub} dubbio</strong><br/>
+      Esclusioni: <strong>Pozzuoli · Qualiano · Castellammare · posti auto</strong><br/>
+      Scartati: <strong id="sideDismissed">${dismissed.size}</strong> · Preferiti: <strong>${favCount}</strong>
+    </div>`;
+  document.getElementById('tabsMobile').innerHTML = VIEWS.map(v=>
+    `<button class="${view===v.id?'active':''}" data-view="${v.id}">${v.label}</button>`).join('');
+}
+
+function filterBar(zones, fasce, occs, prios, visibleCount, totalCount){
+  const vv = filters.verdetto||'';
+  return `<div class="verdetto-bar">
+    <button type="button" data-verd="" class="${!vv?'active':''}">Tutti analizzati</button>
+    <button type="button" data-verd="conviene" class="${vv==='conviene'?'active':''}">Conviene</button>
+    <button type="button" data-verd="dubbio" class="${vv==='dubbio'?'active':''}">Dubbio</button>
+    <button type="button" data-verd="no" class="${vv==='no'?'active':''}">Solo no / scartati analisi</button>
+    <span class="hint">Analizzate · conviene + dubbio</span>
+  </div>
+  <div class="filters">
+    <select data-f="cat"><option value="">Categoria</option>
+      <option value="asta" ${filters.cat==='asta'?'selected':''}>Asta</option>
+      <option value="enti" ${filters.cat==='enti'?'selected':''}>Enti</option>
+      <option value="privato" ${filters.cat==='privato'?'selected':''}>Privato</option></select>
+    <select data-f="zona"><option value="">Zona</option>${zones.map(z=>`<option value="${escapeHtml(z)}" ${filters.zona===z?'selected':''}>${escapeHtml(z)}</option>`).join('')}</select>
+    <select data-f="fascia"><option value="">Fascia</option>${fasce.map(z=>`<option value="${escapeHtml(z)}" ${filters.fascia===z?'selected':''}>${escapeHtml(z)}</option>`).join('')}</select>
+    <select data-f="occ"><option value="">Occupazione</option>${occs.map(z=>`<option value="${escapeHtml(z)}" ${filters.occ===z?'selected':''}>${escapeHtml(z)}</option>`).join('')}</select>
+    <select data-f="prio"><option value="">Priorità</option>${prios.map(z=>`<option value="${escapeHtml(z)}" ${filters.prio===z?'selected':''}>${escapeHtml(z)}</option>`).join('')}</select>
+    <input data-f="q" placeholder="Cerca…" value="${escapeHtml(filters.q)}" style="min-width:120px;flex:1"/>
+    <button class="btn-ghost" type="button" id="resetFilters">Reset</button>
+    <span class="chip-count">${visibleCount} / ${totalCount} schede</span>
+  </div>`;
+}
+
+function uniqueSorted(arr){ return [...new Set(arr.filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b),'it')); }
+
+function radarSVG(items){
+  const withScad = items.filter(i=>daysTo(i)!=null && daysTo(i)>=0 && daysTo(i)<=60);
+  const W=400, CX=200, CY=200;
+  const rings=[7,14,30,60];
+  const maxR=170;
+  const scale = d => Math.max(18, (d/60)*maxR);
+  let ringsHtml = rings.map((d,i)=>{
+    const r = scale(d);
+    return `<circle cx="${CX}" cy="${CY}" r="${r}" fill="none" stroke="#e7e5e4" stroke-width="1.5"/>
+      <text x="${CX+4}" y="${CY-r+3}" font-size="10" fill="#a8a29e" font-family="inherit">${d}gg</text>`;
+  }).join('');
+  // place dots by angle hash
+  let dots = withScad.map((item,idx)=>{
+    const d = daysTo(item);
+    const r = scale(Math.min(60,Math.max(0,d)));
+    const angle = ((hash(item.id)%360)+idx*37)%360 * Math.PI/180;
+    const x = CX + r*Math.cos(angle);
+    const y = CY + r*Math.sin(angle);
+    const color = item.categoria==='asta'?'#ea580c':item.categoria==='enti'?'#7c3aed':'#059669';
+    const title = escapeHtml(shortTitle(item.titolo));
+    return `<a href="${item.link||'#'}" target="_blank" rel="noopener">
+      <circle class="rdot" cx="${x}" cy="${y}" r="7" fill="${color}" stroke="#fff" stroke-width="2"
+        data-tip="${title} · ${d}gg · ${item.categoria}" style="cursor:pointer">
+        <title>${title}</title>
+      </circle></a>`;
+  }).join('');
+  return `<div class="radar-box">
+    <svg viewBox="0 0 ${W} ${W}" role="img" aria-label="Radar scadenze">
+      <circle cx="${CX}" cy="${CY}" r="${maxR+8}" fill="#fafafa" stroke="#e7e5e4"/>
+      ${ringsHtml}
+      <circle cx="${CX}" cy="${CY}" r="4" fill="#2563eb"/>
+      <text x="${CX}" y="${CY+18}" text-anchor="middle" font-size="10" fill="#78716c">oggi</text>
+      ${dots}
+    </svg>
+    <div class="radar-tip" id="radarTip"></div>
+  </div>`;
+}
+function hash(s){ let h=0; for(let i=0;i<s.length;i++) h=(h*31+s.charCodeAt(i))|0; return Math.abs(h); }
+
+function waEligible(i){
+  if(i.id==='B2431206'||i.esito_invio==='email_inviata_wa_skip') return false;
+  return parseContacts(i.destinatario).mobiles.length>0;
+}
+function emailEligible(i){
+  return parseContacts(i.destinatario).emails.length>0 || i.canale==='email' || i.esito_invio==='email_inviata_wa_skip';
+}
+
+function renderMain(){
+  const showNo = filters.verdetto==='no';
+  const all = showNo ? analysisNoItems() : baseItems();
+  const filtered = all.filter(passFilters);
+  const b = buckets(filtered);
+  const zones = uniqueSorted(all.map(i=>i.zona));
+  const fasce = uniqueSorted(all.map(i=>i.fascia));
+  const occs = uniqueSorted(all.map(i=>i.occupazione||'n/d'));
+  const prios = uniqueSorted(all.map(i=>i.priorita));
+  const nConv = baseItems().filter(i=>i.verdetto==='conviene').length;
+  const nDub = baseItems().filter(i=>i.verdetto==='dubbio').length;
+  const titles = {
+    oggi:'Oggi', decidi:'Da decidere', preferiti:'Preferiti', qa:'Domanda / Risposta', piano:'Piano → 100 · Crescita SRL',
+    mappa:'Mappa', mercato:'Mercato',
+    whatsapp:'Coda WhatsApp', email:'Coda Email', fonti:'Fonti'
+  };
+  let body = '';
+  const subTxt = view==='oggi'
+    ? `Analizzate · ${nConv} conviene · ${nDub} dubbio · sezioni esclusive`
+    : (view==='piano' ? 'Villa Cristina Srl · target 100 case' : 'Radar Napoli · aggiornato 7 ott 2026');
+  const head = `<div class="main-head"><div>
+      <h2>${titles[view]||'Radar Napoli'}</h2>
+      <div class="sub">${subTxt}</div>
+    </div>
+    <div class="view-meta">
+      <span class="pill conviene">${nConv} conviene</span>
+      <span class="pill dubbio">${nDub} dubbio</span>
+      <span class="pill soft">${filtered.length} visibili</span>
+      ${dismissed.size?`<button class="btn sm" id="toggleScartati">Scartati (${dismissed.size})</button>`:''}
+    </div></div>`;
+
+  if(view==='qa'){
+    body = renderQA();
+  } else if(view==='piano'){
+    body = renderPiano();
+  } else if(view==='preferiti'){
+    const favItems = FEED.filter(i=>favorites.has(i.id) && !dismissed.has(i.id) && !isExcluded(i) && isAnalyzed(i));
+    body = `<div class="sub" style="margin-bottom:12px">★ Solo preferiti locali · star ≠ contatto (Outreach via Email interesse / WA)</div>`;
+    body += section('I tuoi preferiti', favItems);
+    if(!favItems.length) body += `<div class="empty">Nessun preferito — clicca ★ su una scheda</div>`;
+  } else if(view==='oggi'){
+    body = filterBar(zones,fasce,occs,prios,filtered.length,all.length);
+    body += `<div class="radar-wrap"><div class="rh"><h3>Cosa si avvicina</h3>
+      <div class="radar-legend"><span><i class="asta"></i>Asta</span><span><i class="priv"></i>Privato</span></div></div>
+      ${radarSVG(filtered)}
+      <div style="text-align:center;font-size:12px;color:var(--muted);margin-top:6px">${filtered.filter(i=>daysTo(i)!=null&&daysTo(i)>=0&&daysTo(i)<=60).length} scadenze ≤60gg · click sul punto = apri scheda</div>
+    </div>`;
+    const ov = filtered.filter(i=>i.occasione_vera);
+    body += section('Occasione vera', ov, 'warn');
+    body += section('Scade ≤7 giorni', b.scade, 'warn');
+    body += section('In attesa', b.attesa, 'blue');
+    body += section('Da decidere', b.decidi.slice(0,12), 'warn');
+    if(b.decidi.length>12) body += `<div class="empty" style="padding:12px">+${b.decidi.length-12} altri in Decidi / Mercato</div>`;
+  } else if(view==='decidi'){
+    body = filterBar(zones,fasce,occs,prios,b.decidi.length,all.length);
+    body += section('Decisioni aperte', b.decidi);
+  } else if(view==='mercato'){
+    body = filterBar(zones,fasce,occs,prios,filtered.length,all.length);
+    body += section(showNo?'Scartati analisi (verdetto no)':'Catalogo analizzato', filtered);
+  } else if(view==='whatsapp'){
+    const list = filtered.filter(waEligible);
+    body = filterBar(zones,fasce,occs,prios,list.length,all.length);
+    body += section('Solo contatti con cellulare', list);
+    body += `<div class="empty" style="margin-top:8px">Scherillo escluso (email già inviata · solo email). Nessun badge WA falso.</div>`;
+  } else if(view==='email'){
+    const list = filtered.filter(emailEligible);
+    body = filterBar(zones,fasce,occs,prios,list.length,all.length);
+    body += section('Coda email', list);
+  } else if(view==='mappa'){
+    body = `<div id="map"></div><div class="sub" style="margin-top:8px">Esri World Street · solo analizzate (conviene/dubbio)</div>`;
+  } else if(view==='fonti'){
+    body = `<div class="list">
+      <div class="row"><div class="row-main"><h4 class="row-title">astalegale</h4><div class="row-meta">Aste giudiziarie Napoli · scadenze e base/omin</div></div></div>
+      <div class="row"><div class="row-main"><h4 class="row-title">immobiliare.it</h4><div class="row-meta">Privato ≤€150k · zone target</div></div></div>
+      <div class="row"><div class="row-main"><h4 class="row-title">Analisi verdetto</h4><div class="row-meta">Heuristica: budget ≤€150k · zone forti (Frattamaggiore, Centro storico, Chiaia, Fuorigrotta) · esclusioni Pozzuoli/Qualiano/Castellammare/posti auto · commerciale selettivo · default solo conviene|dubbio</div></div></div>
+      <div class="row"><div class="row-main"><h4 class="row-title">follow-up / outreach</h4><div class="row-meta">Stato contatto, esiti invio, Email interesse/WA → toast Inviato + payload clipboard → team/Outreach send live</div></div></div>
+      <div class="row"><div class="row-main"><h4 class="row-title">Esclusioni permanenti</h4><div class="row-meta">Pozzuoli · Qualiano · Castellammare · posti auto</div></div></div>
+    </div>`;
+  }
+
+  document.getElementById('main').innerHTML = head + body + dismissedPanel();
+  if(view==='mappa') setTimeout(()=>initMap(all.filter(i=>i.lat&&i.lon)),30);
+}
+
+
+function renderQA(){
+  const outbox = loadOutbox();
+  let html = `<div class="sub" style="margin-bottom:12px">Thread Follow-up · domanda → risposta. Email interesse / WA = toast «In coda» (mai «Inviato» finché Outreach non manda), payload {id, canale, ts} in clipboard. Passa il payload in chat (o a Dashboard Ops) → Outreach manda live (email Gmail / WA via Grok, cell 3xx).</div>`;
+  if(outbox.length){
+    html += `<div class="section-head"><h3>Coda Outreach (locale)</h3><span class="n">${outbox.length}</span></div><div class="list">`;
+    for(const o of outbox.slice(0,12)){
+      const it = findItem(o.id) || {};
+      html += `<article class="row"><div class="row-main"><h4 class="row-title">${escapeHtml(shortTitle(it.titolo||o.id))}</h4>
+        <div class="row-meta">${escapeHtml(o.canale)} · ${escapeHtml((o.ts||'').slice(0,16).replace('T',' '))} · id ${escapeHtml(o.id)}</div></div></article>`;
+    }
+    html += `</div>`;
+  }
+  html += `<div class="section-head" style="margin-top:16px"><h3>Thread</h3><span class="n">${THREADS.length}</span></div>`;
+  for(const t of THREADS){
+    html += `<div class="panel-block" style="margin-bottom:12px"><h4>${escapeHtml(t.titolo||t.id)} · <span class="pill wait">${escapeHtml(t.label_stato||t.stato||'')}</span>${t.destinatario?` · <span class="muted">${escapeHtml(t.destinatario)}</span>`:''}</h4>`;
+    for(const m of (t.thread||[])){
+      const label = m.ruolo==='domanda'?'Domanda':m.ruolo==='risposta'?'Risposta':m.ruolo==='prossima'?'Prossima':'Nota';
+      html += `<div class="move" style="margin-top:8px"><div class="mt">${escapeHtml(label)} · ${escapeHtml(m.canale||'')} · ${escapeHtml(m.quando||'')}</div><div class="md">${escapeHtml(m.testo||'')}</div></div>`;
+    }
+    html += `</div>`;
+  }
+  if(!THREADS.length) html += `<div class="empty">Nessun thread ancora — Follow-up alimenta questa sezione</div>`;
+  return html;
+}
+
+function renderPiano(){
+  const base = baseItems();
+  const nConv = base.filter(i=>i.verdetto==='conviene').length;
+  const nDub = base.filter(i=>i.verdetto==='dubbio').length;
+  const nOV = base.filter(i=>i.occasione_vera).length;
+  const nEnti = base.filter(i=>i.categoria==='enti' || i.fonte==='enti').length;
+  const nComm = base.filter(i=>i.tipo==='commerciale' || /negozio|commerciale/i.test(i.titolo||'')).length;
+  const cur = 0;
+  return `
+  <div class="sub" style="margin-bottom:12px">Villa Cristina Srl · target 100 case + crescita fatturato. Badge <strong>OCCASIONE VERA</strong> = vai (oggi ${nOV}).</div>
+  <div class="piano-card">
+    <h4>Oggi · portfolio target</h4>
+    <ul>
+      <li><strong>Villa Cristina Srl</strong> — crescita verso 100 case</li>
+      <li>Budget occasione <strong>≤€150k</strong></li>
+      <li>In vista: <strong>${nConv} conviene</strong> · <strong>${nDub} dubbio</strong> · OV ${nOV} · commerciali ${nComm} · enti ${nEnti}</li>
+    </ul>
+  </div>
+  <div class="piano-card">
+    <h4>Tappe verso 100</h4>
+    <div class="tappe">
+      <div class="tappa now"><div class="n">${cur}/1</div><div class="l">Partenza</div></div>
+      <div class="tappa"><div class="n">0/10</div><div class="l">Base</div></div>
+      <div class="tappa"><div class="n">0/25</div><div class="l">Scala</div></div>
+      <div class="tappa"><div class="n">0/50</div><div class="l">Metà</div></div>
+      <div class="tappa"><div class="n">0/100</div><div class="l">Target</div></div>
+    </div>
+  </div>
+  <h3 style="margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)">Crescita Villa Cristina Srl</h3>
+  <div class="sub" style="margin-bottom:8px">Priorità 1 = attivare la SRL (oggi inattiva). Feed enti da Radar Mattina.</div>
+  <div class="crescita-grid">
+    <div class="crescita-card"><span class="tag">1 · priorità</span><h4>Attivare SRL</h4><p>Visura: inattiva. Allineo ATECO / unità locali. Senza attivazione, bandi e concessioni restano carta.</p></div>
+    <div class="crescita-card"><span class="tag">2</span><h4>Commerciale / uso società</h4><p>≤€150k — negozio/sede operativa. Abusi non sanabili → max dubbio.</p></div>
+    <div class="crescita-card"><span class="tag">3</span><h4>Demanio / alienazioni enti</h4><p>Campania–Napoli: alienazioni, valorizzazioni, locali da enti.</p></div>
+    <div class="crescita-card"><span class="tag">4</span><h4>Bandi & concessioni</h4><p>Invitalia, Regione, Comune — agevolazioni UE/regionali.</p></div>
+    <div class="crescita-card"><span class="tag">5</span><h4>Ricavi ricorrenti</h4><p>Locazioni / short-term su stock (Praiano + Napoli).</p></div>
+  </div>
+  <div class="piano-card" style="margin-top:14px">
+    <h4>Regola verdetto + OCCASIONE VERA</h4>
+    <ul>
+      <li>Ogni scheda: <strong>pro / contro / verdetto / motivo</strong></li>
+      <li>Abusi non sanabili / no agibilità → max <strong>dubbio</strong></li>
+      <li><strong>OCCASIONE VERA</strong> (raro): rapporto a fondo, zone forti, ≤150k, ROI/spread solido, zero abusi non sanabili → vai</li>
+    </ul>
+  </div>`;
+}
+
+function section(title, items, tone){
+  if(!items.length) return `<div class="section"><div class="section-head"><h3>${title}</h3><span class="n">0</span></div><div class="empty">Niente qui</div></div>`;
+  return `<div class="section"><div class="section-head"><h3>${title}</h3><span class="n">${items.length}</span></div>
+    <div class="list">${items.map(i=>rowHTML(i)).join('')}</div></div>`;
+}
+
+function dismissedPanel(){
+  if(!dismissed.size) return '';
+  const all = FEED.filter(i=>dismissed.has(i.id));
+  return `<div class="section" id="scartatiBox" style="margin-top:28px">
+    <div class="section-head"><h3>Scartati (localStorage)</h3><span class="n">${all.length}</span>
+      <button class="btn sm" id="clearDismissed">Svuota</button></div>
+    <div class="list">${all.map(i=>`<article class="row dim"><div class="row-main">
+      <div class="row-top">${catPill(i.categoria)}<span class="pill soft">${escapeHtml(i.id)}</span></div>
+      <h4 class="row-title">${escapeHtml(shortTitle(i.titolo))}</h4>
+      <div class="row-meta">${escapeHtml(i.zona||'')} · ${euro(i.base)}</div>
+    </div><div class="row-actions"><button class="btn sm primary" data-act="restore" data-id="${i.id}">Ripristina</button></div></article>`).join('')}</div>
+  </div>`;
+}
+
+function renderRight(){
+  const all = baseItems();
+  const b = buckets(all);
+  const pallucci = all.find(i=>i.id==='B2427439');
+  const privatiNew = b.decidi.filter(i=>i.categoria==='privato').slice(0,8);
+  const moves = [];
+  // Scherillo monitor
+  const sch = all.find(i=>i.id==='B2431206');
+  if(sch) moves.push(sch);
+  if(pallucci) moves.push(pallucci);
+  for(const i of all){
+    if(moves.length>=5) break;
+    if(moves.find(m=>m.id===i.id)) continue;
+    if(parseContacts(i.destinatario).emails.length||parseContacts(i.destinatario).mobiles.length) moves.push(i);
+  }
+
+  document.getElementById('right').innerHTML = `
+    <div class="cta">
+      <h3>Cosa aspetto da te</h3>
+      <div class="hint">Decisioni concrete — senza queste il team è fermo</div>
+      ${pallucci?`<div class="cta-item">
+        <div class="t">Pallucci (B2427439)</div>
+        <div class="d">Sì/no su omin ~€122.663 (base €163.550 sopra budget). Scade tra ${daysTo(pallucci)}gg.</div>
+        <div class="cta-actions">
+          <button class="btn primary sm" data-act="note" data-id="B2427439" data-note="Pallucci: SÌ omin">Sì</button>
+          <button class="btn sm danger" data-act="scarta" data-id="B2427439" title="No = scarta dalla vista">No</button>
+          <a class="btn sm" href="${pallucci.link}" target="_blank">Scheda</a>
+        </div>
+      </div>`:`<div class="cta-item"><div class="t">Pallucci</div><div class="d">Scartato (No) — fuori dalla vista</div></div>`}
+      <div class="cta-item">
+        <div class="t">Pick 2–3 privati analizzati</div>
+        <div class="d">${privatiNew.length} nuovi in Decidi. Scegli e manda a Outreach.</div>
+        <div class="cta-actions">
+          <button class="btn primary sm" data-view-jump="decidi">Apri Decidi</button>
+        </div>
+        <div style="margin-top:8px;font-size:11.5px;color:var(--muted)">${privatiNew.slice(0,3).map(p=>'· '+escapeHtml(shortTitle(p.titolo).slice(0,42))+' ('+euro(p.base)+')').join('<br/>')}</div>
+      </div>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi warn"><div class="v">${b.scade.length}</div><div class="l">Scade ≤7gg</div></div>
+      <div class="kpi ok"><div class="v">${all.filter(i=>i.verdetto==='conviene').length}</div><div class="l">Conviene</div></div>
+      <div class="kpi blue"><div class="v">${all.filter(i=>i.verdetto==='dubbio').length}</div><div class="l">Dubbio</div></div>
+    </div>
+    <div class="panel-block">
+      <h4>Prossime mosse</h4>
+      ${moves.map(i=>{
+        const c=parseContacts(i.destinatario);
+        const noCat = i.id==='B2428206';
+        let btns='';
+        if(!noCat){
+          if(c.mobiles.length) btns+=`<button class="btn sm" data-act="call" data-id="${i.id}">Chiama</button>`;
+          if(c.emails.length) btns+=`<button class="btn sm" data-act="email" data-id="${i.id}">Scrivi email</button>`;
+          if(i.id!=='B2431206' && i.esito_invio!=='email_inviata_wa_skip' && c.mobiles.length)
+            btns+=`<button class="btn sm" data-act="wa" data-id="${i.id}">WA</button>`;
+        }
+        const _c=parseContacts(i.destinatario); if(isAnalyzed(i)&&i.id!=='B2428206'&&_c.emails.length) btns+=`<button class=\"btn sm primary\" data-act=\"interesse\" data-id=\"${i.id}\">Email interesse</button>`;
+        const es=esitoLabel(i);
+        return `<div class="move">
+          <div class="mt">${catPill(i.categoria)} ${escapeHtml(shortTitle(i.titolo).slice(0,40))}</div>
+          <div class="md">${escapeHtml(mossa8(i))}${es?' · '+es.t:''}</div>
+          <div class="ma">${btns}</div>
+        </div>`;
+      }).join('')||'<div class="empty">Nessuna mossa</div>'}
+    </div>
+    <div class="dismissed-bar"><span>Scartati in questo browser</span><strong>${dismissed.size}</strong></div>
+  `;
+}
+
+function initMap(points){
+  const el = document.getElementById('map');
+  if(!el) return;
+  if(mapInstance){ mapInstance.remove(); mapInstance=null; }
+  mapInstance = L.map(el).setView([40.8518,14.2681],12);
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',{
+    attribution:'Tiles © Esri', maxZoom:19
+  }).addTo(mapInstance);
+  const group=[];
+  for(const i of points){
+    const color = i.categoria==='asta'?'#ea580c':i.categoria==='enti'?'#7c3aed':'#059669';
+    const m = L.circleMarker([i.lat,i.lon],{radius:7,color:'#fff',weight:2,fillColor:color,fillOpacity:0.95})
+      .bindPopup(`<strong>${escapeHtml(shortTitle(i.titolo))}</strong><br/>${catPill(i.categoria)} ${escapeHtml(i.zona||'')}<br/>${euro(i.base)} · <a href="${i.link}" target="_blank">Apri</a>`);
+    m.addTo(mapInstance); group.push([i.lat,i.lon]);
+  }
+  if(group.length) mapInstance.fitBounds(group,{padding:[30,30],maxZoom:13});
+  setTimeout(()=>mapInstance.invalidateSize(),100);
+}
+
+function findItem(id){ return FEED.find(i=>i.id===id); }
+
+function toast(msg){
+  let t=document.getElementById('toast');
+  if(!t){ t=document.createElement('div'); t.id='toast';
+    t.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#1c1917;color:#fff;padding:10px 16px;border-radius:10px;font-size:13px;z-index:99;box-shadow:var(--shadow)';
+    document.body.appendChild(t);
+  }
+  t.textContent=msg; t.style.opacity='1';
+  clearTimeout(t._h); t._h=setTimeout(()=>{t.style.opacity='0';},2200);
+}
+
+function onAction(act,id,el){
+  const item = findItem(id);
+  if(act==='scarta'){
+    if(!id){ toast('Errore: id mancante'); return; }
+    dismissed.add(id); saveDismissed();
+    favorites.delete(id); saveFavorites();
+    const tit = shortTitle((findItem(id)||{}).titolo || id);
+    toast('Scartato · '+tit);
+    render(); return;
+  }
+  if(act==='restore'){
+    dismissed.delete(id); saveDismissed(); toast('Ripristinato: '+id); render(); return;
+  }
+  if(act==='fav'){
+    if(!id) return;
+    if(favorites.has(id)){
+      favorites.delete(id); saveFavorites();
+      toast('Tolto dai preferiti · '+id);
+    } else {
+      favorites.add(id); saveFavorites();
+      toast('★ Preferito · '+shortTitle((item||{}).titolo||id));
+    }
+    render(); return;
+  }
+  if(act==='interesse-noemail'){
+    toast('Niente email diretta — non inviato (solo form/fisso)');
+    return;
+  }
+  if(act==='interesse'){
+    if(!id) return;
+    const it = findItem(id)||{};
+    const cc = parseContacts(it.destinatario);
+    if(!cc.emails.length){
+      toast('Niente email diretta — non inviato');
+      return;
+    }
+    if(id==='B2428206'){
+      toast('Catalana in hold — aspetta il tuo sì');
+      return;
+    }
+    interesse.add(id); saveInteresse();
+    const entry = pushOutbox(id, 'email');
+    toast('In coda Outreach · payload copiato (non ancora inviato)');
+    console.log('RADAR_OUTREACH_PAYLOAD', entry);
+    render();
+    return;
+  }
+  if(act==='note'){
+    const note = (el.dataset.note||'');
+    if(/NO/i.test(note) && (id||note.includes('Pallucci'))){
+      const did = id || 'B2427439';
+      dismissed.add(did); saveDismissed();
+      favorites.delete(did); saveFavorites();
+      toast(note+' · scartato dalla vista');
+      render(); return;
+    }
+    if(/S[IÌ]/i.test(note) && note.includes('Pallucci')){
+      toast('Pallucci: SÌ omin — Outreach può contattare');
+      return;
+    }
+    toast(note||'Ok'); return;
+  }
+  if(!item) return;
+  const c = parseContacts(item.destinatario);
+  if(act==='call' && c.mobiles[0]){ window.open('tel:'+c.mobiles[0]); return; }
+  if(act==='email' && c.emails[0]){
+    const sub = encodeURIComponent('Radar Napoli — '+shortTitle(item.titolo));
+    window.open('mailto:'+c.emails[0]+'?subject='+sub); return;
+  }
+  if(act==='wa'){
+    if(!id) return;
+    const it = findItem(id)||{};
+    const cc = parseContacts(it.destinatario);
+    if(!cc.mobiles.length){
+      toast('Niente cell 3xx — non inviato');
+      return;
+    }
+    pushOutbox(id, 'wa');
+    toast('In coda Outreach · payload copiato (non ancora inviato)');
+    render();
+    return;
+  }
+}
+
+function render(){
+  renderSidebar();
+  renderMain();
+  renderRight();
+}
+
+document.addEventListener('click',e=>{
+  const verdBtn = e.target.closest('[data-verd]');
+  if(verdBtn){
+    filters.verdetto = verdBtn.getAttribute('data-verd')||'';
+    if(filters.verdetto==='no') view = 'mercato';
+    render(); return;
+  }
+  const nav = e.target.closest('[data-view]');
+  if(nav && !nav.dataset.act){
+    view = nav.dataset.view; render(); return;
+  }
+  const jump = e.target.closest('[data-view-jump]');
+  if(jump){ view = jump.dataset.viewJump; render(); return; }
+  const btn = e.target.closest('[data-act]');
+  if(btn){ onAction(btn.dataset.act, btn.dataset.id, btn); return; }
+  if(e.target.id==='resetFilters'){ filters={cat:'',zona:'',fascia:'',occ:'',prio:'',q:'',verdetto:''}; render(); return; }
+  if(e.target.id==='clearDismissed'){ dismissed.clear(); saveDismissed(); toast('Scartati svuotati'); render(); return; }
+  if(e.target.id==='toggleScartati'){
+    document.getElementById('scartatiBox')?.scrollIntoView({behavior:'smooth'}); return;
+  }
+});
+document.addEventListener('change',e=>{
+  const f = e.target.dataset?.f;
+  if(f){ filters[f]=e.target.value; render(); }
+});
+document.addEventListener('input',e=>{
+  const f = e.target.dataset?.f;
+  if(f==='q'){ filters.q=e.target.value; render(); }
+});
+
+render();
+</script>
+</body>
+</html>

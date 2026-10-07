@@ -1,0 +1,29 @@
+[
+  {
+    "id": "B2431206",
+    "titolo": "Scherillo 13 · Pendino/Garibaldi",
+    "stato": "in_attesa_risposta",
+    "destinatario": "daniela.cicirello@gmail.com",
+    "label_stato": "In attesa",
+    "thread": [
+      {
+        "ruolo": "domanda",
+        "canale": "email",
+        "quando": "2026-10-07",
+        "testo": "Info + perizia + possesso/condo → daniela.cicirello@gmail.com"
+      },
+      {
+        "ruolo": "nota",
+        "canale": "sistema",
+        "quando": "2026-10-07",
+        "testo": "3 email inviate oggi (09:49 · 10:29 · 11:07) · 0 risposte."
+      },
+      {
+        "ruolo": "prossima",
+        "canale": "email",
+        "quando": "2026-10-10",
+        "testo": "Se silenzio → richiamo sera 10/10. #3 condo/cauzione solo su richiesta (scadenza asta 12/10)."
+      }
+    ]
+  }
+]

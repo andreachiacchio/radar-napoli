@@ -1,0 +1,5 @@
+.herenow/
+*.bak
+*.bak-*
+_preview_patched.html
+.DS_Store
