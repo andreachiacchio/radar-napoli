@@ -697,7 +697,7 @@ function renderMain(){
       <div class="row"><div class="row-main"><h4 class="row-title">astalegale</h4><div class="row-meta">Aste giudiziarie Napoli · scadenze e base/omin</div></div></div>
       <div class="row"><div class="row-main"><h4 class="row-title">immobiliare.it</h4><div class="row-meta">Privato ≤€150k · zone target</div></div></div>
       <div class="row"><div class="row-main"><h4 class="row-title">Analisi verdetto</h4><div class="row-meta">Heuristica: budget ≤€150k · zone forti (Frattamaggiore, Centro storico, Chiaia, Fuorigrotta) · esclusioni Pozzuoli/Qualiano/Castellammare/posti auto · commerciale selettivo · default solo conviene|dubbio</div></div></div>
-      <div class="row"><div class="row-main"><h4 class="row-title">follow-up / outreach</h4><div class="row-meta">Stato contatto, esiti invio, Email interesse/WA → toast Inviato + payload clipboard → team/Outreach send live</div></div></div>
+      <div class="row"><div class="row-main"><h4 class="row-title">follow-up / outreach</h4><div class="row-meta">Stato contatto, esiti invio · Sì contatta apre Chat team (group) · Outreach manda live dopo ok</div></div></div>
       <div class="row"><div class="row-main"><h4 class="row-title">Esclusioni permanenti</h4><div class="row-meta">Pozzuoli · Qualiano · Castellammare · posti auto</div></div></div>
     </div>`;
   }
@@ -709,7 +709,7 @@ function renderMain(){
 
 function renderQA(){
   const outbox = loadOutbox();
-  let html = `<div class="sub" style="margin-bottom:12px">Thread Follow-up · domanda → risposta. Email interesse / WA = toast «In coda» (mai «Inviato» finché Outreach non manda), payload {id, canale, ts} in clipboard. Passa il payload in chat (o a Dashboard Ops) → Outreach manda live (email Gmail / WA via Grok, cell 3xx).</div>`;
+  let html = `<div class="sub" style="margin-bottom:12px">Thread Follow-up · domanda → risposta. Email interesse / WA = toast «In coda» (mai «Inviato» finché Outreach non manda). Sì contatta apre Chat team; Outreach manda live (email Gmail / WA via Grok, cell 3xx).</div>`;
   if(outbox.length){
     html += `<div class="section-head"><h3>Coda Outreach (locale)</h3><span class="n">${outbox.length}</span></div><div class="list">`;
     for(const o of outbox.slice(0,12)){
@@ -898,6 +898,7 @@ function toast(msg){
 }
 
 
+const TEAM_CHAT = "grokbot://app/v1/agent?id=cb0a8a02-3d77-46e0-9cf2-b250d282b78f";
 function chatContext(section, item){
   const bits = ['Radar Napoli · ' + (section||view||'oggi')];
   if(item && item.id){
@@ -907,37 +908,30 @@ function chatContext(section, item){
   }
   return bits.join(' · ');
 }
-function openChatPanel(section, item, preset){
-  let panel = document.getElementById('chatPanel');
-  if(!panel){
-    const wrap = document.createElement('div');
-    wrap.className = 'chat-fab';
-    wrap.innerHTML = `<button type="button" class="btn primary chat-open" id="chatFabBtn">💬 Chat team</button>
-      <div class="chat-panel" id="chatPanel">
-        <h4>Chat team Radar Napoli</h4>
-        <div class="ctx" id="chatCtx"></div>
-        <textarea id="chatNote" placeholder="Scrivi cosa vuoi dal team (Outreach / Radar / Follow-up)…"></textarea>
-        <div class="row-actions">
-          <button type="button" class="btn sm primary" id="chatCopy">Copia per il group</button>
-          <button type="button" class="btn sm" id="chatClose">Chiudi</button>
-        </div>
-        <div class="sub" style="margin-top:8px">Incolla nel group Grok Bot (Radar Napoli). Il sito non può postare da solo.</div>
-      </div>`;
-    document.body.appendChild(wrap);
-    panel = document.getElementById('chatPanel');
-    document.getElementById('chatFabBtn').onclick = ()=> openChatPanel(view, null, null);
-    document.getElementById('chatClose').onclick = ()=> panel.classList.remove('open');
-    document.getElementById('chatCopy').onclick = ()=>{
-      const ctx = document.getElementById('chatCtx').textContent||'';
-      const note = document.getElementById('chatNote').value||'';
-      const msg = ctx + (note?('\n\n'+note):'');
-      try{ navigator.clipboard.writeText(msg); toast('Copiato — incolla nel group'); }
-      catch(e){ toast('Copia manuale dal riquadro'); }
-    };
-  }
-  document.getElementById('chatCtx').textContent = chatContext(section, item) + (preset?('\n'+preset):'');
-  if(preset && !document.getElementById('chatNote').value) document.getElementById('chatNote').value = '';
-  panel.classList.add('open');
+function openTeamChat(section, item, preset){
+  // Apre il group Radar Napoli nell'app Grok Bot (niente clipboard).
+  const ctx = chatContext(section, item) + (preset?(' · '+preset):'');
+  try{ sessionStorage.setItem('radar-napoli-last-chat-ctx', ctx); }catch(e){}
+  const a = document.createElement('a');
+  a.href = TEAM_CHAT;
+  a.rel = 'noopener';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  // fallback browser se il protocollo non apre
+  setTimeout(function(){
+    toast('Apro Chat team (group Radar Napoli)');
+  }, 50);
+}
+function openChatPanel(section, item, preset){ openTeamChat(section, item, preset); }
+
+function ensureChatFab(){
+  if(document.querySelector('.chat-fab')) return;
+  const w = document.createElement('div');
+  w.className = 'chat-fab';
+  w.innerHTML = '<button type="button" class="btn primary chat-open" id="chatFabBtn">💬 Chat team</button>';
+  document.body.appendChild(w);
+  document.getElementById('chatFabBtn').onclick = function(){ openTeamChat(view, null, null); };
 }
 
 function onAction(act,id,el){
@@ -980,21 +974,21 @@ function onAction(act,id,el){
     if(!cc.emails.length && !cc.mobiles.length){
       const payload = {id, canale:'form_immobiliare', azione:act, ts:new Date().toISOString(), titolo: shortTitle(it.titolo||id)};
       try{ navigator.clipboard && navigator.clipboard.writeText(JSON.stringify(payload)); }catch(e){}
-      openChatPanel(view, it, label + ' · niente email/3xx → Radar form Immobiliare. Payload copiato.');
-      toast('Senza email/3xx · apri Chat team (Radar form)');
+      openTeamChat(view, it, label + ' · niente email/3xx → Radar form Immobiliare');
+      toast('Senza email/3xx · Chat team aperta');
       return;
     }
     const canale = cc.emails.length ? 'email' : 'wa';
     pushOutbox(id, canale);
     interesse.add(id); saveInteresse();
-    openChatPanel(view, it, label + ' · in coda Outreach ('+canale+'). Incolla in group se non arriva.');
+    openTeamChat(view, it, label + ' · in coda Outreach ('+canale+')');
     toast('In coda Outreach · ' + label + ' (non ancora inviato)');
     render(); return;
   }
   if(act==='visita'){
     const it = findItem(id)||{};
     watch.add(id); saveWatch();
-    openChatPanel(view, it, 'VISITA richiesta · proponete slot / agenzia');
+    openTeamChat(view, it, 'VISITA richiesta · proponete slot / agenzia');
     toast('Visita · Chat team aperta');
     return;
   }
@@ -1006,7 +1000,7 @@ function onAction(act,id,el){
     return;
   }
   if(act==='chat-scheda'){
-    openChatPanel(view, findItem(id)||{id}, 'Messaggio su questa scheda');
+    openTeamChat(view, findItem(id)||{id}, 'Messaggio su questa scheda');
     return;
   }
 
@@ -1028,7 +1022,7 @@ if(act==='interesse-noemail'){
     }
     interesse.add(id); saveInteresse();
     const entry = pushOutbox(id, 'email');
-    toast('In coda Outreach · payload copiato (non ancora inviato)');
+    toast('In coda Outreach · non ancora inviato');
     console.log('RADAR_OUTREACH_PAYLOAD', entry);
     render();
     return;
@@ -1064,7 +1058,7 @@ if(act==='interesse-noemail'){
       return;
     }
     pushOutbox(id, 'wa');
-    toast('In coda Outreach · payload copiato (non ancora inviato)');
+    toast('In coda Outreach · non ancora inviato');
     render();
     return;
   }
@@ -1107,10 +1101,7 @@ document.addEventListener('input',e=>{
 });
 
 render();
-openChatPanel(view,null,null); document.getElementById("chatPanel")?.classList.remove("open");
-if(!document.getElementById("chatFabBtn")){ /* created on first open */ }
-// ensure fab exists
-(function(){ const w=document.createElement("div"); if(document.querySelector(".chat-fab")) return; w.className="chat-fab"; w.innerHTML=`<button type="button" class="btn primary chat-open" id="chatFabBtn">💬 Chat team</button><div class="chat-panel" id="chatPanel"><h4>Chat team Radar Napoli</h4><div class="ctx" id="chatCtx"></div><textarea id="chatNote" placeholder="Nota rapida al team…"></textarea><div class="row-actions"><button type="button" class="btn sm primary" id="chatCopy">Copia per il group</button><button type="button" class="btn sm" id="chatClose">Chiudi</button></div><div class="sub" style="margin-top:8px">Incolla nel group Grok · contesto sezione/scheda incluso.</div></div>`; document.body.appendChild(w); document.getElementById("chatFabBtn").onclick=()=>openChatPanel(view,null,null); document.getElementById("chatClose").onclick=()=>document.getElementById("chatPanel").classList.remove("open"); document.getElementById("chatCopy").onclick=()=>{ const msg=(document.getElementById("chatCtx").textContent||"")+"\n\n"+(document.getElementById("chatNote").value||""); try{navigator.clipboard.writeText(msg); toast("Copiato — incolla nel group");}catch(e){toast("Seleziona e copia");} }; })();
+ensureChatFab();
 </script>
 </body>
 </html>
