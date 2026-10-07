@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta name="radar-cache-bust" content="v18">
+<meta name="radar-cache-bust" content="v19">
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Radar Napoli — Operativo</title>
@@ -784,7 +784,7 @@ function renderMain(){
       <div class="row"><div class="row-main"><h4 class="row-title">astalegale</h4><div class="row-meta">Aste giudiziarie Napoli · scadenze e base/omin</div></div></div>
       <div class="row"><div class="row-main"><h4 class="row-title">immobiliare.it</h4><div class="row-meta">Privato ≤€150k · zone target</div></div></div>
       <div class="row"><div class="row-main"><h4 class="row-title">Analisi verdetto</h4><div class="row-meta">Heuristica: budget ≤€150k · zone forti (Frattamaggiore, Centro storico, Chiaia, Fuorigrotta) · esclusioni Pozzuoli/Qualiano/Castellammare/posti auto · commerciale selettivo · default solo conviene|dubbio</div></div></div>
-      <div class="row"><div class="row-main"><h4 class="row-title">follow-up / outreach</h4><div class="row-meta">Stato contatto, esiti invio · Sì contatta apre Chat team (group) · Outreach manda live dopo ok</div></div></div>
+      <div class="row"><div class="row-main"><h4 class="row-title">follow-up / outreach</h4><div class="row-meta">Stato contatto, esiti invio · Sì contatta → Outreach (email/WA) · 💬 = Chat team</div></div></div>
       <div class="row"><div class="row-main"><h4 class="row-title">Esclusioni permanenti</h4><div class="row-meta">Pozzuoli · Qualiano · Castellammare · posti auto</div></div></div>
     </div>`;
   }
@@ -1103,24 +1103,29 @@ function onAction(act,id,el){
     if(!id) return;
     const it = findItem(id)||{};
     if(isPecItem(it)){
-      openTeamChat(view, it, 'SÌ PEC · non è Gmail — Outreach prepara PEC');
-      toast('Questa è PEC · usa Sì PEC (niente coda Gmail)');
+      toast('Questa è PEC · usa Sì PEC (niente coda Gmail/WA)');
       return;
     }
     const cc = parseContacts(it.destinatario || (it.contatto && (it.contatto.email||it.contatto.telefono)) || '');
     const label = act==='si-contatta' ? 'SÌ CONTATTA' : 'CHIEDI INFO';
     if(!cc.emails.length && !cc.mobiles.length){
-      const payload = {id, canale:'form_immobiliare', azione:act, ts:new Date().toISOString(), titolo: shortTitle(it.titolo||id)};
+      const payload = {id, canale:'nessuno', azione:act, ts:new Date().toISOString(), titolo: shortTitle(it.titolo||id)};
       try{ navigator.clipboard && navigator.clipboard.writeText(JSON.stringify(payload)); }catch(e){}
-      openTeamChat(view, it, label + ' · niente email/3xx → Radar form Immobiliare');
-      toast('Senza email/3xx · Chat team aperta');
+      console.log('RADAR_OUTREACH_PAYLOAD', payload);
+      toast('Senza email/3xx · non parte (usa 💬 Chat team)');
       return;
     }
+    // Prefer email; WA solo se cell 3xx e niente email
     const canale = cc.emails.length ? 'email' : 'wa';
-    pushOutbox(id, canale);
+    const entry = pushOutbox(id, canale);
+    entry.azione = act;
+    entry.titolo = shortTitle(it.titolo||id);
+    entry.destinatario = (canale==='email' ? cc.emails[0] : cc.mobiles[0]) || '';
+    try{ navigator.clipboard && navigator.clipboard.writeText(JSON.stringify(entry)); }catch(e){}
+    console.log('RADAR_OUTREACH_PAYLOAD', entry);
     interesse.add(id); saveInteresse();
-    openTeamChat(view, it, label + ' · in coda Outreach ('+canale+')');
-    toast('In coda Outreach · ' + label + ' (non ancora inviato)');
+    // Niente Chat team — trigger Outreach via payload {id,canale}
+    toast('Outreach · ' + id + ' · ' + canale + ' (incolla JSON in chat se non parte)');
     render(); return;
   }
   if(act==='visita'){
