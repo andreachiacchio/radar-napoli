@@ -1,5 +1,26 @@
 [
   {
+    "id": "comune-na-nuovo-tempio",
+    "titolo": "Nuovo Tempio 27/29 · Comune NA",
+    "stato": "da_decidere",
+    "destinatario": "tutela.patrimonio@pec.comune.napoli.it",
+    "label_stato": "Sopralluogo 15/10",
+    "thread": [
+      {
+        "ruolo": "nota",
+        "canale": "sistema",
+        "quando": "2026-10-07",
+        "testo": "OCCASIONE VERA ×2. Attesa sì Andrea per PEC sopralluogo."
+      },
+      {
+        "ruolo": "prossima",
+        "canale": "pec",
+        "quando": "2026-10-15",
+        "testo": "PEC tutela.patrimonio@pec.comune.napoli.it entro 12:00. Plico offerte 28/10."
+      }
+    ]
+  },
+  {
     "id": "B2431206",
     "titolo": "Scherillo 13 · Pendino/Garibaldi",
     "stato": "in_attesa_risposta",
@@ -16,13 +37,13 @@
         "ruolo": "nota",
         "canale": "sistema",
         "quando": "2026-10-07",
-        "testo": "3 email inviate oggi (09:49 · 10:29 · 11:07) · 0 risposte."
+        "testo": "Verdetto → dubbio (abusi non sanabili + no agibilità). 3 email, 0 reply. Non OCCASIONE VERA."
       },
       {
         "ruolo": "prossima",
         "canale": "email",
         "quando": "2026-10-10",
-        "testo": "Se silenzio → richiamo sera 10/10. #3 condo/cauzione solo su richiesta (scadenza asta 12/10)."
+        "testo": "Richiamo/#3 solo su richiesta. Scarta → Follow-up chiude."
       }
     ]
   }

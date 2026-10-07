@@ -1,5 +1,70 @@
 [
   {
+    "id": "comune-na-nuovo-tempio-29",
+    "fonte": "Comune Napoli Tutela Patrimonio",
+    "categoria": "enti",
+    "tipo": "locazione_locale_commerciale",
+    "titolo": "Locazione C/1 Via Nuovo Tempio 29 S.Pietro a Patierno",
+    "zona": "San Pietro a Patierno",
+    "base": 425,
+    "omin": null,
+    "fascia": null,
+    "scadenza": "2026-10-28",
+    "link": "https://www.comune.napoli.it/novita/avviso-pubblico-per-lassegnazione-in-locazione-di-2-locali-di-proprieta-del-comune-di-napoli-ad-uso-non-abitativo-siti-in-napoli-a-via-nuovo-tempio-nn-27-29-quartiere-s-pietro-a-patierno/",
+    "priorita": "alta",
+    "occupazione": "libero",
+    "pro": [
+      "stesso bando",
+      "€425/mese",
+      "SRL ok",
+      "interrato potenzialmente utile"
+    ],
+    "contro": [
+      "interrato ostruito",
+      "zona periferica",
+      "sanatorie a carico"
+    ],
+    "verdetto": "conviene",
+    "motivo": "Gemello 27 ancora agibile; valutare interrato in sopralluogo.",
+    "occasione_vera": true,
+    "note_partecipazione": "Sopralluogo separato per n.29; due plichi se entrambi",
+    "destinatario": "tutela.patrimonio@pec.comune.napoli.it",
+    "esito_invio": "non_inviato"
+  },
+  {
+    "id": "comune-na-nuovo-tempio-27",
+    "fonte": "Comune Napoli Tutela Patrimonio",
+    "categoria": "enti",
+    "tipo": "locazione_locale_commerciale",
+    "titolo": "Locazione C/1 Via Nuovo Tempio 27 S.Pietro a Patierno",
+    "zona": "San Pietro a Patierno",
+    "base": 435,
+    "omin": null,
+    "fascia": null,
+    "scadenza": "2026-10-28",
+    "link": "https://www.comune.napoli.it/novita/avviso-pubblico-per-lassegnazione-in-locazione-di-2-locali-di-proprieta-del-comune-di-napoli-ad-uso-non-abitativo-siti-in-napoli-a-via-nuovo-tempio-nn-27-29-quartiere-s-pietro-a-patierno/",
+    "priorita": "alta",
+    "occupazione": "libero",
+    "pro": [
+      "sopralluogo fino 15/10",
+      "C/1 libero 68mq €435/mese",
+      "SRL eleggibile",
+      "6+6 anni",
+      "edge patrimonio comunale"
+    ],
+    "contro": [
+      "zona periferica da verificare",
+      "difformità a carico",
+      "obbligo attività in loco"
+    ],
+    "verdetto": "conviene",
+    "motivo": "Finestra comunale agibile: canone ok, libero, SRL fit.",
+    "occasione_vera": true,
+    "note_partecipazione": "PEC tutela.patrimonio@pec.comune.napoli.it entro 15/10 12:00; plico 28/10",
+    "destinatario": "tutela.patrimonio@pec.comune.napoli.it",
+    "esito_invio": "non_inviato"
+  },
+  {
     "id": "demanio-caivano-fondo-peschiera-nab0005",
     "fonte": "Agenzia del Demanio – DR Campania",
     "categoria": "enti",
