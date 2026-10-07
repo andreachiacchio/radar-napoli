@@ -29,7 +29,9 @@
     "occasione_vera": true,
     "note_partecipazione": "Sopralluogo separato per n.29; due plichi se entrambi",
     "destinatario": "tutela.patrimonio@pec.comune.napoli.it",
-    "esito_invio": "non_inviato"
+    "esito_invio": "non_inviato",
+    "stato_contatto": "da_decidere",
+    "prossimo_passo": "Andrea: sì/no PEC sopralluogo entro 15/10 12:00"
   },
   {
     "id": "comune-na-nuovo-tempio-27",
@@ -62,7 +64,9 @@
     "occasione_vera": true,
     "note_partecipazione": "PEC tutela.patrimonio@pec.comune.napoli.it entro 15/10 12:00; plico 28/10",
     "destinatario": "tutela.patrimonio@pec.comune.napoli.it",
-    "esito_invio": "non_inviato"
+    "esito_invio": "non_inviato",
+    "stato_contatto": "da_decidere",
+    "prossimo_passo": "Andrea: sì/no PEC sopralluogo entro 15/10 12:00"
   },
   {
     "id": "demanio-caivano-fondo-peschiera-nab0005",
