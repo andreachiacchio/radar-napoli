@@ -24,10 +24,11 @@
       "oggetto FV non residenziale/commerciale",
       "serve partner energy",
       "contaminazione in caratterizzazione",
-      "PEF+progetto impegno alto"
+      "PEF+progetto impegno alto",
+      "fuori focus: non commerciale/gestione immobiliare"
     ],
-    "verdetto": "dubbio",
-    "motivo": "Unica gara Demanio Campania aperta; profilo energy — solo con partner tecnico.",
+    "verdetto": "no",
+    "motivo": "Fuori core SRL: FV/agrivoltaico. Andrea vuole solo gare adatte a commerciali/gestione/crescita fatturato — strade poco battute ma pertinenti.",
     "occasione_vera": false,
     "note_partecipazione": "Art.3-bis DL 351/2001. RUP Scarpati. Sopralluogo entro 13/11. CT fg.12 p.lla 26 NAB0005.",
     "destinatario": "",
