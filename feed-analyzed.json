@@ -36,7 +36,7 @@
     "canale": "email",
     "destinatario": "clemente.serpico@odcecnapoli.it (cc livio.toscano@anbsc.it)",
     "esito_invio": "email_inviata",
-    "prossimo_passo": "Attendi Serpico; sollecito se nulla entro 15/10; offerta solo con ok Andrea"
+    "prossimo_passo": "Attendi Serpico; sollecito se nulla entro 15/10"
   },
   {
     "id": "B2436055",
@@ -309,11 +309,11 @@
     "lon": 14.2674505,
     "priorita": "alta",
     "delegato": "Avv. Giovanni Folchino, avvgiovfolchino@libero.it, 335365404",
-    "verdetto": "conviene",
-    "occasione_vera": true,
+    "verdetto": "dubbio",
+    "occasione_vera": false,
     "rendimento": 15,
     "perizia_letta": true,
-    "motivo": "4° esperimento: omin €74,7k vs valore CTU €236k (~32%). Canone CTU €1.150/mese → ~14–18% lordo su base/omin. Difformità solo distribuzione interna (sanabile, ~€2,5k). Fit sia portfolio sia uso commerciale Villa Cristina Srl. Offerte entro lun 12/10 ore 13:00.",
+    "motivo": "Spread forte (omin €74,7k vs CTU €236k), difformità solo interna sanabile ~€2,5k, no vincoli. Ma agibilità NON documentata (da fare dopo l'acquisto) + liberazione sospesa → 4-6 mesi senza reddito. Regola: max dubbio finché Andrea non accetta il rischio.",
     "pro": [
       "Spread fortissimo: omin €74,7k vs CTU €236k (prezzo sceso da €236k → €177k → €133k → €99,7k)",
       "Centro storico (zona OMI B8 Mercato-Mezzocannone), negozio fronte strada vicino Corso Garibaldi",
@@ -325,14 +325,29 @@
       "Termine offerte strettissimo: lunedì 12/10 ore 13:00 (cauzione da preparare subito)",
       "Deposito S1 con volta h max ~1,80 m e scarse condizioni — vale solo come magazzino",
       "3 aste andate deserte: verificare perché (zona Mercato, stato, condominio)",
-      "Agibilità non citata nella perizia: da verificare col delegato prima dell'offerta",
-      "Perizia del 11/2024 — valori OMI 2024"
+      "Perizia del 11/2024 — valori OMI 2024",
+      "Agibilità non documentata (edificio preottocentesco, nessuna pratica comunale): dopo la sanatoria interna serve un tecnico per la SCA prima di affittare",
+      "Liberazione sospesa fino ad aggiudicazione, poi 4-6 mesi senza reddito (Folchino 8/10)"
     ],
     "costi_abusi": "Regolarizzazione urbanistica €2.500; manutenzione -5% già in stima; nessun abuso non sanabile rilevato",
     "destinatario": "Avv. Giovanni Folchino, avvgiovfolchino@libero.it, 335365404",
-    "stato_contatto": "Inviata",
-    "prossimo_passo": "Attendi Folchino; sollecito/chiamata se nulla entro ven 9/10 ore 13; poi Andrea sì/no offerta",
-    "esito_invio": "email_inviata"
+    "stato_contatto": "Risposta",
+    "prossimo_passo": "Andrea sì/no offerta entro ven 9/10 sera (accetta agibilità post-acquisto + 4-6 mesi senza reddito?) · offerte lun 12/10 13:00",
+    "esito_invio": "email_inviata",
+    "agibilita": "non documentata: fabbricato preottocentesco, nessuna pratica all'Edilizia Privata, CTU non cita certificato. Nessun abuso non sanabile.",
+    "perizia": {
+      "ctu": "Arch. Angela Strazzella",
+      "rge": "639/2023",
+      "abusi_sanabili": "diversa distribuzione interna (DPR 380, ~€2.500)",
+      "abusi_non_sanabili": "nessuno",
+      "agibilita": "non documentata (edificio preottocentesco, zero pratiche)",
+      "vincoli_storici": "nessuno",
+      "condominio": "assente",
+      "nuovo_condono": "no (crediti post 2003)",
+      "indennita_occupazione_mese": 930,
+      "canone_mercato_mese": 1150
+    },
+    "canale": "email"
   },
   {
     "id": "comune-na-nuovo-tempio-29",
@@ -471,7 +486,7 @@
     "lat": 40.847761,
     "lon": 14.2007705,
     "stato_contatto": "Risposta",
-    "prossimo_passo": "BLOCCO: Andrea chiama Cicirello o ok a darle il suo numero, entro oggi",
+    "prossimo_passo": "BLOCCO: Andrea sceglie (lascia / chiama Cicirello / ok numero)",
     "canale": "email",
     "destinatario": "daniela.cicirello@gmail.com",
     "esito_invio": "email_inviata_wa_skip",
@@ -1123,11 +1138,11 @@
     "priorita": "media",
     "lat": null,
     "lon": null,
-    "stato_contatto": "nuovo",
-    "prossimo_passo": "Valutare annuncio privato",
-    "canale": null,
-    "destinatario": "Home Immobiliare 08119284965",
-    "esito_invio": "non_inviato",
+    "stato_contatto": "Inviata",
+    "prossimo_passo": "Attendi risposta Home Immobiliare alle domande (prezzo trattabile, agibilità/conformità, spese, libero, visita)",
+    "canale": "email",
+    "destinatario": "homeagenziaimmobiliare@gmail.com / 08119284965",
+    "esito_invio": "email_inviata",
     "verdetto": "dubbio",
     "motivo": "Prezzo e posto auto ok, ma occupazione ambigua, nessun canone, nessun dato catastale/conformità, €/mq in linea con classe G.",
     "pro": [

@@ -1,14 +1,14 @@
 {
-  "updated": "2026-10-08T08:55:00+02:00",
+  "updated": "2026-10-08T13:06:00+02:00",
   "items": [
     {
       "id": "B2427359",
-      "stato_contatto": "Inviata",
+      "stato_contatto": "Risposta",
       "canale": "Gmail",
       "destinatario": "avvgiovfolchino@libero.it",
       "scadenza": "2026-10-12T13:00:00+02:00",
       "urgenza": "alta",
-      "prossimo_passo": "Attendi Folchino; sollecito/chiamata se nulla entro ven 9/10 ore 13; poi Andrea sì/no offerta"
+      "prossimo_passo": "Andrea sì/no offerta entro ven 9/10 sera (accetta agibilità post-acquisto + 4-6 mesi senza reddito?) · offerte lun 12/10 13:00"
     },
     {
       "id": "B2431206",
@@ -17,7 +17,7 @@
       "destinatario": "daniela.cicirello@gmail.com",
       "scadenza": "2026-10-12T23:59:00+02:00",
       "urgenza": "alta",
-      "prossimo_passo": "BLOCCO: Andrea chiama Cicirello o ok a darle il suo numero, entro oggi"
+      "prossimo_passo": "BLOCCO: Andrea sceglie (lascia / chiama Cicirello / ok numero)"
     },
     {
       "id": "ANBSC-NA013",
@@ -26,7 +26,12 @@
       "destinatario": "clemente.serpico@odcecnapoli.it",
       "scadenza": "2026-10-28T17:00:00+02:00",
       "urgenza": "media",
-      "prossimo_passo": "Attendi Serpico; sollecito se nulla entro 15/10; offerta solo con ok Andrea"
+      "prossimo_passo": "Attendi Serpico; sollecito se nulla entro 15/10"
+    },
+    {
+      "id": "immobiliare-124390049",
+      "stato_contatto": "Inviata",
+      "prossimo_passo": "Attendi risposta Home Immobiliare alle domande (prezzo trattabile, agibilità/conformità, spese, libero, visita)"
     }
   ]
 }

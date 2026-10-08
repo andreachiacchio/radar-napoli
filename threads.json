@@ -1,11 +1,33 @@
 [
   {
+    "id": "immobiliare-124390049",
+    "thread": [
+      {
+        "ts": "2026-10-08T10:01:00+02:00",
+        "tipo": "in",
+        "testo": "Agenzia: «salve ditemi»"
+      },
+      {
+        "ts": "2026-10-08T13:06:00+02:00",
+        "tipo": "out",
+        "testo": "Domande info via Gmail"
+      }
+    ],
+    "titolo": "Bilocale Frattamaggiore €59k · Home Immobiliare",
+    "stato": "Inviata",
+    "canale": "Gmail",
+    "destinatario": "homeagenziaimmobiliare@gmail.com",
+    "domanda": "Prezzo trattabile? Agibilità/conformità, spese, libero, visita?",
+    "risposta": null,
+    "prossimo_passo": "Attendi risposta Home Immobiliare alle domande (prezzo trattabile, agibilità/conformità, spese, libero, visita)"
+  },
+  {
     "id": "ANBSC-NA013",
     "titolo": "Panettieri 31 · ANBSC negozio",
     "stato": "Inviata",
     "canale": "Gmail",
     "destinatario": "clemente.serpico@odcecnapoli.it",
-    "prossimo_passo": "Attendi Serpico; sollecito se nulla entro 15/10; offerta solo con ok Andrea",
+    "prossimo_passo": "Attendi Serpico; sollecito se nulla entro 15/10",
     "domanda": "Sopralluogo entro 22/10? Relazione di stima, titoli edilizi/conformità, APE, vincolo/prelazione?",
     "thread": [
       {
@@ -18,18 +40,24 @@
   {
     "id": "B2427359",
     "titolo": "Lavinaio 56 · negozio Centro storico",
-    "stato": "Inviata",
+    "stato": "Risposta",
     "canale": "Gmail",
     "destinatario": "avvgiovfolchino@libero.it",
-    "prossimo_passo": "Attendi Folchino; sollecito/chiamata se nulla entro ven 9/10 ore 13; poi Andrea sì/no offerta",
-    "domanda": "Agibilità? Perché 3 aste deserte? Tempi liberazione? Visita entro venerdì + recapito custode",
+    "prossimo_passo": "Andrea sì/no offerta entro ven 9/10 sera (accetta agibilità post-acquisto + 4-6 mesi senza reddito?) · offerte lun 12/10 13:00",
+    "domanda": "Agibilità/abusi? Perché deserte? Liberazione? Visita?",
     "thread": [
       {
         "ts": "2026-10-08T08:02:00+02:00",
         "tipo": "out",
         "testo": "Email a Avv. Folchino (RGE 639/2023): agibilità, aste deserte, liberazione, visita"
+      },
+      {
+        "ts": "2026-10-08T10:26:00+02:00",
+        "tipo": "in",
+        "testo": "Folchino: agibilità → CTU; deserte per prezzo; liberazione sospesa poi 4-6 mesi; niente visita (negozio aperto)"
       }
-    ]
+    ],
+    "risposta": "Agibilità: vedere CTU. Deserte: prezzo alto. Liberazione sospesa fino ad aggiudicazione, poi 4-6 mesi. Visita no, negozio visibile da fuori"
   },
   {
     "id": "B2431206",
@@ -37,7 +65,7 @@
     "stato": "Risposta",
     "canale": "Gmail",
     "destinatario": "daniela.cicirello@gmail.com",
-    "prossimo_passo": "BLOCCO: Andrea chiama Cicirello o ok a darle il suo numero, entro oggi",
+    "prossimo_passo": "BLOCCO: Andrea sceglie (lascia / chiama Cicirello / ok numero)",
     "thread": [],
     "domanda": "Gara attiva e termine 12/10 23:59? Visita? Soppalco 1,88m/agibilità mezzanino? Difformità?",
     "risposta": "Chiede contatto telefonico (17:22), nessuna risposta nel merito"
