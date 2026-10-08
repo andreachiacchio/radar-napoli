@@ -1,5 +1,21 @@
 [
   {
+    "id": "ANBSC-NA013",
+    "titolo": "Panettieri 31 · ANBSC negozio",
+    "stato": "Inviata",
+    "canale": "Gmail",
+    "destinatario": "clemente.serpico@odcecnapoli.it",
+    "prossimo_passo": "Attendi Serpico: sopralluogo entro 22/10 · sollecito se nulla entro 15/10 · offerte 28/10 17:00 solo con ok Andrea",
+    "domanda": "Sopralluogo entro 22/10? Relazione di stima, titoli edilizi/conformità, APE, vincolo/prelazione?",
+    "thread": [
+      {
+        "ts": "2026-10-08T08:34:00+02:00",
+        "tipo": "out",
+        "testo": "Email a Dott. Serpico (cc Toscano ANBSC): sopralluogo, stima, conformità, APE, vincoli"
+      }
+    ]
+  },
+  {
     "id": "B2427359",
     "titolo": "Lavinaio 56 · negozio Centro storico",
     "stato": "Inviata",
