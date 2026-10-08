@@ -1,20 +1,32 @@
 {
-  "updated": "2026-10-07T13:14:00+02:00",
+  "updated": "2026-10-08T08:55:00+02:00",
   "items": [
     {
+      "id": "B2427359",
+      "stato_contatto": "Inviata",
+      "canale": "Gmail",
+      "destinatario": "avvgiovfolchino@libero.it",
+      "scadenza": "2026-10-12T13:00:00+02:00",
+      "urgenza": "alta",
+      "prossimo_passo": "Attendi Folchino; sollecito/chiamata se nulla entro ven 9/10 ore 13; poi Andrea sì/no offerta"
+    },
+    {
       "id": "B2431206",
-      "fonte": "follow-up",
-      "stato_contatto": "in_attesa_risposta",
-      "qa": [
-        {
-          "domanda": "info + perizia + possesso/condo",
-          "risposta": null,
-          "canale": "email",
-          "destinatario": "daniela.cicirello@gmail.com"
-        }
-      ],
-      "prossimo_passo": "attesa reply; richiamo 10/10 sera se silenzio",
-      "scadenza": "2026-10-12T23:59"
+      "stato_contatto": "Risposta",
+      "canale": "Gmail",
+      "destinatario": "daniela.cicirello@gmail.com",
+      "scadenza": "2026-10-12T23:59:00+02:00",
+      "urgenza": "alta",
+      "prossimo_passo": "BLOCCO: Andrea chiama Cicirello o ok a darle il suo numero, entro oggi"
+    },
+    {
+      "id": "ANBSC-NA013",
+      "stato_contatto": "Inviata",
+      "canale": "Gmail",
+      "destinatario": "clemente.serpico@odcecnapoli.it",
+      "scadenza": "2026-10-28T17:00:00+02:00",
+      "urgenza": "media",
+      "prossimo_passo": "Attendi Serpico; sollecito se nulla entro 15/10; offerta solo con ok Andrea"
     }
   ]
 }

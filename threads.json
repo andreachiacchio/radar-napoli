@@ -5,7 +5,7 @@
     "stato": "Inviata",
     "canale": "Gmail",
     "destinatario": "clemente.serpico@odcecnapoli.it",
-    "prossimo_passo": "Attendi Serpico: sopralluogo entro 22/10 · sollecito se nulla entro 15/10 · offerte 28/10 17:00 solo con ok Andrea",
+    "prossimo_passo": "Attendi Serpico; sollecito se nulla entro 15/10; offerta solo con ok Andrea",
     "domanda": "Sopralluogo entro 22/10? Relazione di stima, titoli edilizi/conformità, APE, vincolo/prelazione?",
     "thread": [
       {
@@ -21,7 +21,7 @@
     "stato": "Inviata",
     "canale": "Gmail",
     "destinatario": "avvgiovfolchino@libero.it",
-    "prossimo_passo": "Attendi reply Folchino entro ven 9/10 (agibilità, aste deserte, liberazione, visita) · offerte lun 12/10 13:00",
+    "prossimo_passo": "Attendi Folchino; sollecito/chiamata se nulla entro ven 9/10 ore 13; poi Andrea sì/no offerta",
     "domanda": "Agibilità? Perché 3 aste deserte? Tempi liberazione? Visita entro venerdì + recapito custode",
     "thread": [
       {
@@ -37,7 +37,7 @@
     "stato": "Risposta",
     "canale": "Gmail",
     "destinatario": "daniela.cicirello@gmail.com",
-    "prossimo_passo": "Andrea: ok numero a Cicirello oppure chiama lui",
+    "prossimo_passo": "BLOCCO: Andrea chiama Cicirello o ok a darle il suo numero, entro oggi",
     "thread": [],
     "domanda": "Gara attiva e termine 12/10 23:59? Visita? Soppalco 1,88m/agibilità mezzanino? Difformità?",
     "risposta": "Chiede contatto telefonico (17:22), nessuna risposta nel merito"

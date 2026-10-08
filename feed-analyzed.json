@@ -1,5 +1,44 @@
 [
   {
+    "id": "ANBSC-NA013",
+    "fonte": "ANBSC / avvisinotarili",
+    "categoria": "enti",
+    "tipo": "asta ente – bene confiscato ANBSC (RAN)",
+    "titolo": "Negozio/laboratorio C/3 33 m² libero – Vico Panettieri 31",
+    "ente": "ANBSC – Agenzia Nazionale Beni Sequestrati e Confiscati",
+    "zona": "Centro storico",
+    "base": 40755,
+    "omin": null,
+    "fascia": "0-50k",
+    "occupazione": "libero",
+    "scadenza": "2026-10-28T17:00:00+02:00",
+    "link": "https://www.avvisinotarili.notariato.it/Avviso/Dettaglio/64647",
+    "priorita": "media",
+    "mq": 33,
+    "pro": [
+      "Base €40.755, cauzione €4.075,50",
+      "Libero, piena proprietà, piano terra",
+      "Tra Via dei Tribunali e Spaccanapoli, zona molto turistica",
+      "Canale poco competitivo: altri lotti ANBSC a Napoli deserti nel 2026",
+      "Modello a reddito: affitto, nessuna attività da gestire in loco"
+    ],
+    "contro": [
+      "Nessuna perizia pubblicata, solo scheda; stato manutentivo non indicato",
+      "Conformità urbanistica/catastale non disponibile; interesse storico da verificare",
+      "Possibile prelazione di enti/fondazioni (art. 48 c.6 d.lgs. 159/2011)",
+      "Controlli antimafia sui familiari di soci e amministratori prima del rogito",
+      "Piccolo (33 m²); canone da stimare"
+    ],
+    "verdetto": "dubbio",
+    "motivo": "Prezzo e canale interessanti, ma senza visita e documenti urbanistici non è occasione vera",
+    "occasione_vera": false,
+    "stato_contatto": "Inviata",
+    "canale": "email",
+    "destinatario": "clemente.serpico@odcecnapoli.it (cc livio.toscano@anbsc.it)",
+    "esito_invio": "email_inviata",
+    "prossimo_passo": "Attendi Serpico; sollecito se nulla entro 15/10; offerta solo con ok Andrea"
+  },
+  {
     "id": "B2436055",
     "fonte": "astalegale",
     "categoria": "asta",
@@ -291,9 +330,9 @@
     ],
     "costi_abusi": "Regolarizzazione urbanistica €2.500; manutenzione -5% già in stima; nessun abuso non sanabile rilevato",
     "destinatario": "Avv. Giovanni Folchino, avvgiovfolchino@libero.it, 335365404",
-    "stato_contatto": "da_decidere",
-    "prossimo_passo": "Andrea sì/no; offerte 12/10 13:00",
-    "esito_invio": "non_inviato"
+    "stato_contatto": "Inviata",
+    "prossimo_passo": "Attendi Folchino; sollecito/chiamata se nulla entro ven 9/10 ore 13; poi Andrea sì/no offerta",
+    "esito_invio": "email_inviata"
   },
   {
     "id": "comune-na-nuovo-tempio-29",
@@ -432,7 +471,7 @@
     "lat": 40.847761,
     "lon": 14.2007705,
     "stato_contatto": "Risposta",
-    "prossimo_passo": "Andrea: ok numero a Cicirello oppure chiama lui",
+    "prossimo_passo": "BLOCCO: Andrea chiama Cicirello o ok a darle il suo numero, entro oggi",
     "canale": "email",
     "destinatario": "daniela.cicirello@gmail.com",
     "esito_invio": "email_inviata_wa_skip",
