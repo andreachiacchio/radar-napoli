@@ -34,9 +34,11 @@
     "occasione_vera": false,
     "stato_contatto": "Inviata",
     "canale": "email",
-    "destinatario": "clemente.serpico@odcecnapoli.it (cc livio.toscano@anbsc.it)",
+    "destinatario": "livio.toscano@anbsc.it",
     "esito_invio": "email_inviata",
-    "prossimo_passo": "Attendi Serpico; sollecito se nulla entro 15/10"
+    "prossimo_passo": "Attendi Toscano; sollecito se nulla entro 15/10 (+ notaio De Stefano Nola se serve); visita entro 22/10; offerte 28/10 17:00",
+    "domanda": "Sopralluogo entro 22/10? Stima, titoli edilizi/conformità, APE, vincolo/prelazione?",
+    "risposta": "Serpico (PEC 8/10 19:30): non è più referente ANBSC, nessuna risposta nel merito → riscritto a Toscano"
   },
   {
     "id": "B2436055",

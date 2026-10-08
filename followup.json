@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-08T13:06:00+02:00",
+  "updated": "2026-10-08T19:52:00+02:00",
   "items": [
     {
       "id": "B2427359",
@@ -26,7 +26,8 @@
       "destinatario": "clemente.serpico@odcecnapoli.it",
       "scadenza": "2026-10-28T17:00:00+02:00",
       "urgenza": "media",
-      "prossimo_passo": "Attendi Serpico; sollecito se nulla entro 15/10"
+      "prossimo_passo": "Attendi Toscano; sollecito se nulla entro 15/10 (+ notaio De Stefano Nola se serve); visita entro 22/10; offerte 28/10 17:00",
+      "priorita": "media"
     },
     {
       "id": "immobiliare-124390049",
