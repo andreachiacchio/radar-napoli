@@ -1,5 +1,21 @@
 [
   {
+    "id": "B2427359",
+    "titolo": "Lavinaio 56 · negozio Centro storico",
+    "stato": "Inviata",
+    "canale": "Gmail",
+    "destinatario": "avvgiovfolchino@libero.it",
+    "prossimo_passo": "Attendi reply Folchino entro ven 9/10 (agibilità, aste deserte, liberazione, visita) · offerte lun 12/10 13:00",
+    "domanda": "Agibilità? Perché 3 aste deserte? Tempi liberazione? Visita entro venerdì + recapito custode",
+    "thread": [
+      {
+        "ts": "2026-10-08T08:02:00+02:00",
+        "tipo": "out",
+        "testo": "Email a Avv. Folchino (RGE 639/2023): agibilità, aste deserte, liberazione, visita"
+      }
+    ]
+  },
+  {
     "id": "B2431206",
     "titolo": "Scherillo 13 · commerciale Pendino",
     "stato": "Risposta",
