@@ -1,0 +1,74 @@
+[
+  {
+    "id": "subito-663443800",
+    "fonte": "subito.it",
+    "categoria": "privato",
+    "tipo": "Monolocale",
+    "titolo": "Monolocale Quartieri Spagnoli (vicino Corso Vittorio Emanuele), 4° piano, 30 mq, arredato",
+    "zona": "Napoli Centro - Quartieri Spagnoli/Montecalvario",
+    "base": 55000,
+    "omin": null,
+    "prezzo": 55000,
+    "fascia": "50-100k",
+    "occupazione": "locato con contratto regolare in scadenza 31/12 (anno non indicato, da confermare) → liberabile a breve",
+    "scadenza": null,
+    "link": "https://www.subito.it/appartamenti/monolocale-a-napoli-napoli-663443800.htm",
+    "url": "https://www.subito.it/appartamenti/monolocale-a-napoli-napoli-663443800.htm",
+    "priorita": "alta",
+    "verdetto": "dubbio",
+    "occasione_vera": false,
+    "rendimento": null,
+    "pro": [
+      "€55k per 30 mq = ~€1.830/mq, basso per i Quartieri Spagnoli",
+      "Stabile d'epoca, esposizione semi-panoramica e luminosa",
+      "Buono stato/abitabile e già arredato, nessun lavoro dichiarato",
+      "Contratto in scadenza al 31/12: si può scegliere tra rinnovo e affitto breve (fit ATECO 55.20.42 Villa Cristina)"
+    ],
+    "contro": [
+      "4° piano senza ascensore",
+      "Classe G, nessun riscaldamento",
+      "Indirizzo non indicato e canone attuale non indicato",
+      "Agibilità e conformità catastale/urbanistica non documentate (agenzia Soluzione Immobiliare srl / Tecnocasa Montesanto)"
+    ],
+    "motivo": "Prezzo d'ingresso molto basso in zona Centro ad alta domanda, liberabile a fine anno. Massimo dubbio per regola finché non si vedono agibilità e conformità; prima cosa da chiedere: indirizzo, canone attuale, data esatta scadenza, planimetria catastale.",
+    "prossimo_passo": "Chiedere all'agenzia indirizzo, canone, scadenza contratto, planimetria e agibilità",
+    "stage": "Nuova",
+    "trovatoOggi": true
+  },
+  {
+    "id": "subito-663475448",
+    "fonte": "subito.it",
+    "categoria": "privato",
+    "tipo": "Trilocale",
+    "titolo": "Appartamento Vico Molino (adiacenze Piazza Mercato), 1° piano con ascensore, 70 mq, locato",
+    "zona": "Napoli Centro storico - Mercato/Carmine",
+    "base": 98000,
+    "omin": null,
+    "prezzo": 98000,
+    "fascia": "50-100k",
+    "occupazione": "locato con regolare contratto fino a dicembre 2028, rendita €6.600/anno",
+    "scadenza": null,
+    "link": "https://www.subito.it/appartamenti/ad-piazza-mercato-app-to-piano-primo-napoli-663475448.htm",
+    "url": "https://www.subito.it/appartamenti/ad-piazza-mercato-app-to-piano-primo-napoli-663475448.htm",
+    "priorita": "media",
+    "verdetto": "dubbio",
+    "occasione_vera": false,
+    "rendimento": 6.7,
+    "pro": [
+      "Già a reddito: €6.600/anno su €98k = ~6,7% lordo dal giorno uno",
+      "~€1.400/mq, sotto la media del centro storico",
+      "1° piano con ascensore, soggiorno + 2 camere + cucina abitabile + balcone esterno",
+      "Vicino Basilica del Carmine, servizi e mezzi"
+    ],
+    "contro": [
+      "Stato solo «discreto»: lavori probabili alla liberazione",
+      "Contratto fino a dic. 2028: niente affitto breve né rivalutazione canone prima",
+      "Nessun riscaldamento; classe energetica non indicata",
+      "Agibilità e conformità non documentate nell'annuncio (agenzia)"
+    ],
+    "motivo": "Buon a-reddito in centro storico a prezzo/mq contenuto, ma rendimento nella media e immobile da rinfrescare. Massimo dubbio finché non si vedono agibilità, conformità e contratto registrato.",
+    "prossimo_passo": "Chiedere copia contratto registrato, APE, planimetria e agibilità",
+    "stage": "Nuova",
+    "trovatoOggi": true
+  }
+]
