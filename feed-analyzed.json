@@ -373,7 +373,7 @@
     "costi_abusi": "Regolarizzazione urbanistica €2.500; manutenzione -5% già in stima; nessun abuso non sanabile rilevato",
     "destinatario": "Avv. Giovanni Folchino, avvgiovfolchino@libero.it, 335365404",
     "stato_contatto": "Risposta",
-    "prossimo_passo": "Andrea sì/no OGGI 9/10: se sì, bonifico cauzione ~€7,5k (10% omin) oggi · offerta online astetelematiche.it entro lun 12/10 13:00",
+    "prossimo_passo": "Andrea sì/no entro lun 12/10 mattina; se sì bonifico cauzione (≥€7.474, conto Banca Sella) lun mattina + offerta entro 13:00 con CRO · asta mar 13/10 13:00",
     "esito_invio": "email_inviata",
     "agibilita": "non documentata: fabbricato preottocentesco, nessuna pratica all'Edilizia Privata, CTU non cita certificato. Nessun abuso non sanabile.",
     "perizia": {
@@ -388,7 +388,9 @@
       "indennita_occupazione_mese": 930,
       "canone_mercato_mese": 1150
     },
-    "canale": "email"
+    "canale": "email",
+    "urgenza": "alta",
+    "note_partecipazione": "Offerta SRL: cauzione 10% (≥€7.474), PEC villacristina-srl@pec.it, marca da bollo telematica, documento, visura con poteri. Cauzione accreditata entro 23:59 lun 12/10; rilanci min €2.000; saldo 120 gg."
   },
   {
     "id": "comune-na-nuovo-tempio-29",
