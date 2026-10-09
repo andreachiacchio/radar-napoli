@@ -11,15 +11,20 @@
         "ts": "2026-10-08T13:06:00+02:00",
         "tipo": "out",
         "testo": "Domande info via Gmail"
+      },
+      {
+        "ts": "2026-10-09T09:46:00+02:00",
+        "tipo": "in",
+        "testo": "Home Immobiliare: «contattateci al 3513225637» (cellulare)"
       }
     ],
     "titolo": "Bilocale Frattamaggiore €59k · Home Immobiliare",
-    "stato": "Inviata",
-    "canale": "Gmail",
-    "destinatario": "homeagenziaimmobiliare@gmail.com",
+    "stato": "Risposta",
+    "canale": "Gmail→WA",
+    "destinatario": "3513225637",
     "domanda": "Prezzo trattabile? Agibilità/conformità, spese, libero, visita?",
-    "risposta": null,
-    "prossimo_passo": "Attendi risposta Home Immobiliare alle domande (prezzo trattabile, agibilità/conformità, spese, libero, visita)"
+    "risposta": "Home Immobiliare (9/10 9:46): «contattateci al 3513225637»",
+    "prossimo_passo": "WA a 3513225637 da mandare (Andrea → Grok Bot in privato); poi Inviata"
   },
   {
     "id": "ANBSC-NA013",
@@ -54,7 +59,7 @@
     "stato": "Risposta",
     "canale": "Gmail",
     "destinatario": "avvgiovfolchino@libero.it",
-    "prossimo_passo": "Andrea sì/no offerta entro ven 9/10 sera (accetta agibilità post-acquisto + 4-6 mesi senza reddito?) · offerte lun 12/10 13:00",
+    "prossimo_passo": "Andrea sì/no OGGI 9/10: se sì, bonifico cauzione ~€7,5k (10% omin) oggi · offerta online astetelematiche.it entro lun 12/10 13:00",
     "domanda": "Agibilità/abusi? Perché deserte? Liberazione? Visita?",
     "thread": [
       {
