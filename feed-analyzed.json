@@ -1,5 +1,44 @@
 [
   {
+    "id": "CRESCITA-PC-SFOLLATI-2026",
+    "fonte": "Regione Campania – Protezione Civile",
+    "categoria": "enti",
+    "tipo": "convenzione ospitalità",
+    "titolo": "Ospitalità sfollati Campi Flegrei – Accordo Quadro Regione Campania/Federalberghi",
+    "ente": "Regione Campania – DG Protezione Civile / Federalberghi Campania",
+    "zona": "Struttura da confermare (Chiaia = solo sede legale; Praiano = ditta individuale)",
+    "base": null,
+    "omin": null,
+    "fascia": null,
+    "occupazione": "n/d",
+    "scadenza": null,
+    "link": "https://protezionecivile-geniocivile.regione.campania.it/accordo-quadro-tra-la-regione-campania-e-federalberghi-campania-per-accoglienza-in-strutture-ricettive-di-popolazione-eventualmente-sfollata",
+    "priorita": "media",
+    "pro": [
+      "Entrata pubblica anche in bassa stagione",
+      "Zero investimento se c'è una struttura autorizzata",
+      "Coerente con ATECO 55.20.42",
+      "Attivabile subito"
+    ],
+    "contro": [
+      "STRUTTURA DA CONFERMARE: a Chiaia la SRL ha solo la sede legale, unico SUAP ricettivo attivo è Praiano (ditta individuale, separata)",
+      "Tariffa calmierata non nota",
+      "Accesso per affittacamere non socio Federalberghi non confermato",
+      "Domanda legata all'emergenza",
+      "Tempi di pagamento PA ignoti",
+      "Nessun avviso con scadenza"
+    ],
+    "verdetto": "dubbio",
+    "motivo": "Strada attiva e in linea con l'attività, ma struttura da confermare, e mancano tariffa, accesso per non soci e domanda residua",
+    "occasione_vera": false,
+    "note_partecipazione": "Nessun termine di adesione; accordo DGR 25/2024 (triennale, da verificare), attivato 03/08/2026.",
+    "destinatario": "direzione.protezionecivile@regione.campania.it",
+    "canale": "email",
+    "stato_contatto": "da_decidere",
+    "esito_invio": "non_inviato",
+    "prossimo_passo": "BLOCCO: Andrea sceglie la struttura (Chiaia autorizzata / Praiano ditta individuale / lasciamo stare); mail info Outreach in pausa"
+  },
+  {
     "id": "ANBSC-NA013",
     "fonte": "ANBSC / avvisinotarili",
     "categoria": "enti",
