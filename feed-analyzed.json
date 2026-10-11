@@ -529,7 +529,7 @@
     "lat": 40.847761,
     "lon": 14.2007705,
     "stato_contatto": "Risposta",
-    "prossimo_passo": "BLOCCO: Andrea sceglie (lascia / chiama Cicirello / ok numero)",
+    "prossimo_passo": "BLOCCO: Andrea sceglie entro lun 12/10 mattina (chiama Cicirello / ok numero); senza risposta si lascia scadere (offerte lun 23:59)",
     "canale": "email",
     "destinatario": "daniela.cicirello@gmail.com",
     "esito_invio": "email_inviata_wa_skip",
