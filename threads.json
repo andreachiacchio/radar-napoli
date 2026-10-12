@@ -29,10 +29,10 @@
   {
     "id": "ANBSC-NA013",
     "titolo": "Panettieri 31 · ANBSC negozio",
-    "stato": "Inviata",
+    "stato": "Risposta",
     "canale": "Gmail",
     "destinatario": "livio.toscano@anbsc.it",
-    "prossimo_passo": "Attendi Toscano; sollecito se nulla entro 15/10 (+ notaio De Stefano Nola se serve); visita entro 22/10; offerte 28/10 17:00",
+    "prossimo_passo": "Attendi date sopralluogo da ANBSC; docs su sito Notariato (bando/disciplinare/scheda, nessuna perizia); sollecito 15/10 se nessuna data (visita entro 22/10, offerte 28/10 17:00)",
     "domanda": "Sopralluogo entro 22/10? Stima, titoli edilizi/conformità, APE, vincolo/prelazione?",
     "thread": [
       {
@@ -49,17 +49,22 @@
         "ts": "2026-10-08T19:52:00+02:00",
         "tipo": "out",
         "testo": "Riscritto a livio.toscano@anbsc.it (stesse domande + a chi per visita); thread 1a11a36b51d16c2b"
+      },
+      {
+        "ts": "2026-10-12T12:31:00+02:00",
+        "tipo": "in",
+        "testo": "Toscano: documentazione sul sito Notariato; sopralluogo in verifica disponibilità colleghi sede competente; aggiorneranno"
       }
     ],
-    "risposta": "Serpico: non più referente ANBSC; nel merito nulla"
+    "risposta": "Toscano (12/10 12:31): docs solo su Notariato; sopralluogo in verifica presso sede competente, aggiorneranno"
   },
   {
     "id": "B2427359",
     "titolo": "Lavinaio 56 · negozio Centro storico",
-    "stato": "Risposta",
+    "stato": "Chiuso",
     "canale": "Gmail",
     "destinatario": "avvgiovfolchino@libero.it",
-    "prossimo_passo": "Andrea sì/no entro lun 12/10 mattina; se sì bonifico cauzione (≥€7.474, conto Banca Sella) lun mattina + offerta entro 13:00 con CRO · asta mar 13/10 13:00",
+    "prossimo_passo": "Scaduto 12/10 13:00: nessun sì di Andrea, offerta non presentata",
     "domanda": "Agibilità/abusi? Perché deserte? Liberazione? Visita?",
     "thread": [
       {
