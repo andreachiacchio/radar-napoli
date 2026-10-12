@@ -75,7 +75,7 @@
   "canale": "email",
   "destinatario": "livio.toscano@anbsc.it",
   "esito_invio": "email_inviata",
-  "prossimo_passo": "Attendi Toscano; sollecito se nulla entro 15/10 (+ notaio De Stefano Nola se serve); visita entro 22/10; offerte 28/10 17:00",
+  "prossimo_passo": "Sollecito 15/10; visita entro 22/10",
   "domanda": "Sopralluogo entro 22/10? Stima, titoli edilizi/conformità, APE, vincolo/prelazione?",
   "risposta": "Serpico (PEC 8/10 19:30): non è più referente ANBSC, nessuna risposta nel merito → riscritto a Toscano"
  },
@@ -289,7 +289,8 @@
   "costi_abusi": "Demolizione balcone abusivo non sanabile (costo da quantificare) + regolarizzazione catastale",
   "destinatario": "Avv. Sofia Nazzaro, sofianazzaro1@gmail.com, 3356900318 / 081 5754361",
   "stato_contatto": "da_decidere",
-  "esito_invio": "non_inviato"
+  "esito_invio": "non_inviato",
+  "prossimo_passo": "Sì/no Andrea entro mer 14/10 per richiesta info al delegato (offerte 19/10 23:59)"
  },
  {
   "id": "B2431366",
@@ -373,7 +374,7 @@
   "costi_abusi": "Regolarizzazione urbanistica €2.500; manutenzione -5% già in stima; nessun abuso non sanabile rilevato",
   "destinatario": "avvgiovfolchino@libero.it / 335365404",
   "stato_contatto": "Risposta",
-  "prossimo_passo": "Andrea sì/no entro lun 12/10 mattina; se sì bonifico cauzione (≥€7.474, conto Banca Sella) lun mattina + offerta entro 13:00 con CRO · asta mar 13/10 13:00",
+  "prossimo_passo": "OGGI sì/no Andrea; se sì cauzione ≥€7.474 Sella + offerta con CRO e firma Aruba entro 13:00 · asta 13/10 13:00",
   "esito_invio": "email_inviata",
   "canale": "email",
   "agibilita": "non documentata: fabbricato preottocentesco, nessuna pratica all'Edilizia Privata, CTU non cita certificato. Nessun abuso non sanabile.",
@@ -529,7 +530,7 @@
   "lat": 40.847761,
   "lon": 14.2007705,
   "stato_contatto": "Risposta",
-  "prossimo_passo": "BLOCCO: Andrea sceglie entro lun 12/10 mattina (chiama Cicirello / ok numero); senza risposta si lascia scadere (offerte lun 23:59)",
+  "prossimo_passo": "Scade stasera 23:59 salvo chiamata di Andrea a Cicirello",
   "canale": "email",
   "destinatario": "daniela.cicirello@gmail.com",
   "esito_invio": "email_inviata_wa_skip",
@@ -1210,7 +1211,7 @@
   "lat": null,
   "lon": null,
   "stato_contatto": "Risposta",
-  "prossimo_passo": "WA a 3513225637 da mandare (Andrea → Grok Bot in privato); poi Inviata",
+  "prossimo_passo": "Ok Andrea per WA info a 3513225637 (fermo dal 9/10)",
   "canale": "email",
   "destinatario": "3513225637 (cell) / homeagenziaimmobiliare@gmail.com",
   "esito_invio": "email_inviata",
