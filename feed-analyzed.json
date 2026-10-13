@@ -3017,5 +3017,45 @@
   "prossimo_passo": "Visita + agibilità/planimetria + verifica soppalco e titoli ricettivi; confrontare sconto vs 664326958",
   "stage": "Nuova",
   "trovatoOggi": true
+ },
+ {
+  "id": "lucci-96-proc-65-2015-lotto70",
+  "fonte": "rivistaastegiudiziarie",
+  "categoria": "asta",
+  "tipo": "abitazione",
+  "titolo": "Bilocale Corso Arnaldo Lucci 96, scala A, 6° piano int. 18",
+  "zona": "Vasto/Vicaria - Corso Lucci (zona Stazione Centrale)",
+  "base": 106000,
+  "omin": 79500,
+  "scadenza": "2026-10-19T23:59:00+02:00",
+  "link": "https://www.rivistaastegiudiziarie.it/aste/4555206/1001/abitazione-di-tipo-civile-napoli",
+  "priorita": "media",
+  "occupazione": "locato",
+  "fascia": "100-150k",
+  "verdetto": "dubbio",
+  "occasione_vera": false,
+  "motivo": "Trust trascritto 28/06/2024 (dopo il pignoramento) non cancellabile dal delegato: resta sul bene, serve parere legale scritto sull'inopponibilità. Agibilità assente. Locato con contratto opponibile (€600/mese, rinnovo tacito al 30/06/2028). Base €106k / omin €79.5k entro budget.",
+  "pro": [
+   "Base €106k e offerta minima €79.5k, sotto il budget di €150k",
+   "Bilocale 61 m² commerciali + 9 m² di balconi (3), 6° piano con ascensore, altezza 3 m",
+   "Buono stato di manutenzione (perizia arch. Merito): gres, impianti in normale stato",
+   "Reddito subito: canone €7.200/anno (lordo ~6,8% sulla base, ~9,1% sull'omin), giudicato congruo",
+   "Unica difformità: diversa distribuzione interna, sanabile ex art. 37 DPR 380/01 (~€2.500, già detratti)",
+   "Nessun accertamento di abusi presso l'Antiabusivismo; morosità condominiali e oneri già tolti dalla stima (-16,98% complessivo)"
+  ],
+  "contro": [
+   "Trust (atto istitutivo trascritto 28/06/2024, rep. 4960/3495 notaio Battista) non cancellabile dal delegato: rischio di contenzioso per l'aggiudicatario",
+   "Nessuna pratica di agibilità rinvenuta dal 1975",
+   "Locato a terzi con contratto opponibile (scad. 30/06/2026, rinnovo tacito 2 anni → 30/06/2028): niente uso diretto",
+   "Lavori straordinari ascensore scala A deliberati il 29/10/2025 (€5.600 totali, riparto ignoto): quota possibile a carico dell'acquirente",
+   "Manca l'APE (€500, già detratti); altre visite non garantite dal delegato",
+   "Procedura vecchia (65/2015 con 3 riunite)"
+  ],
+  "lat": 40.8485748,
+  "lon": 14.2754121,
+  "stato_contatto": "Risposta",
+  "prossimo_passo": "Borrelli ha risposto il 13/10 alle 17:18: trust non cancellabile, condominio già nella stima, visite non garantite. Prima di un'offerta serve un parere legale scritto sul trust; sì/no di Andrea entro le 23:59 del 19/10 (asta 20/10 ore 15:00, telematica su astetelematiche.it)",
+  "canale": "Gmail",
+  "destinatario": "avvborrelli@yahoo.it"
  }
 ]
