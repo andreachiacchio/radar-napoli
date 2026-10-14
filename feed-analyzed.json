@@ -3057,5 +3057,82 @@
   "prossimo_passo": "Borrelli ha risposto il 13/10 alle 17:18: trust non cancellabile, condominio già nella stima, visite non garantite. Prima di un'offerta serve un parere legale scritto sul trust; sì/no di Andrea entro le 23:59 del 19/10 (asta 20/10 ore 15:00, telematica su astetelematiche.it)",
   "canale": "Gmail",
   "destinatario": "avvborrelli@yahoo.it"
+ },
+ {
+  "id": "subito-664452736",
+  "fonte": "subito.it",
+  "categoria": "privato",
+  "tipo": "Terraneo (monolocale)",
+  "titolo": "Terraneo zona Santa Chiara, uso abitativo dichiarato, 30 mq, ristrutturato e arredato, venditore privato",
+  "zona": "Napoli Centro storico - Santa Chiara",
+  "base": 85000,
+  "omin": null,
+  "prezzo": 85000,
+  "fascia": "50-100k",
+  "occupazione": "libero",
+  "rendimento": null,
+  "scadenza": null,
+  "link": "https://www.subito.it/appartamenti/terraneo-napoli-centro-napoli-664452736.htm",
+  "url": "https://www.subito.it/appartamenti/terraneo-napoli-centro-napoli-664452736.htm",
+  "priorita": "pipeline",
+  "priorita_lavoro": "media",
+  "lat": 40.8473,
+  "lon": 14.2527,
+  "coord_note": "coordinate approssimate (Santa Chiara): l'annuncio non ha geolocalizzazione",
+  "verdetto": "dubbio",
+  "occasione_vera": false,
+  "pro": [
+   "Zona forte Centro storico (Santa Chiara), alta domanda turistica e studentesca",
+   "Privato, niente provvigione; €85k per 30 mq (~€2.830/mq), sotto budget",
+   "Ristrutturato (ottimo), arredato, riscaldamento autonomo, disponibile subito"
+  ],
+  "contro": [
+   "Terraneo a piano strada: luce, umidità e privacy da verificare",
+   "Categoria catastale (A vs C/2-C/1) e agibilità non documentate: per regola verdetto massimo dubbio",
+   "Annuncio scarno (niente foto descritte, piano, planimetria); il campo «posto auto riservato» è poco credibile in centro storico",
+   "Classe energetica non classificabile; resa non indicata"
+  ],
+  "motivo": "Micro-taglio libero in zona forte e prezzo privato contenuto, ma da terraneo senza visura/agibilità resta dubbio.",
+  "prossimo_passo": "Chiedere visura catastale, planimetria, agibilità e indirizzo esatto",
+  "stage": "Nuova",
+  "trovatoOggi": true
+ },
+ {
+  "id": "subito-664465220",
+  "fonte": "subito.it",
+  "categoria": "privato",
+  "tipo": "Bilocale",
+  "titolo": "Bilocale Pedamentina di San Martino, 35 mq, 1° piano stabile '800, ristrutturato con zona notte soppalcata, balconata vista Santa Chiara",
+  "zona": "Napoli Centro - Montesanto/Pedamentina San Martino (confine Vomero)",
+  "base": 95000,
+  "omin": null,
+  "prezzo": 95000,
+  "fascia": "50-100k",
+  "occupazione": "n/d",
+  "rendimento": null,
+  "scadenza": null,
+  "link": "https://www.subito.it/appartamenti/2-locali-a-napoli-napoli-664465220.htm",
+  "url": "https://www.subito.it/appartamenti/2-locali-a-napoli-napoli-664465220.htm",
+  "priorita": "pipeline",
+  "priorita_lavoro": "media",
+  "lat": 40.845074,
+  "lon": 14.2423725,
+  "verdetto": "dubbio",
+  "occasione_vera": false,
+  "pro": [
+   "Pedamentina appena restaurata e molto frequentata dai turisti: buon fit affitto breve/ricettivo per Villa Cristina",
+   "Ristrutturato, ottime condizioni interne, A/C, riscaldamento autonomo, balconata con vista",
+   "€95k per 35 mq (~€2.710/mq), sotto budget"
+  ],
+  "contro": [
+   "Zona al confine: Subito la classifica Vomero/Arenella, non tra le zone OK in senso stretto",
+   "Accesso pedonale (una quindicina di gradoni dalla Funicolare di Montesanto): scomodo per bagagli/ospiti",
+   "Zona notte soppalcata: regolarità urbanistica del soppalco e agibilità non documentate (max dubbio)",
+   "Classe energetica G; annuncio di agenzia, provvigione da aggiungere"
+  ],
+  "motivo": "Taglio piccolo con forte appeal turistico, ma zona borderline, soppalco e agibilità da verificare: dubbio.",
+  "prossimo_passo": "Chiedere agibilità, planimetria catastale con soppalco, spese condominiali e stima canone breve",
+  "stage": "Nuova",
+  "trovatoOggi": true
  }
 ]
