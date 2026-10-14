@@ -99,7 +99,7 @@
   "destinatario": "paolaciuoffo@gmail.com",
   "domanda": "Richiesta info al delegato (14/10 8:22-8:27)",
   "risposta": "",
-  "prossimo_passo": "Sollecito 15/10 se nulla; offerte 19/10",
+  "prossimo_passo": "Sollecito 15/10 se nulla; offerte 19/10 ore 12:00",
   "thread": [
    {
     "ts": "2026-10-14T08:25:00+02:00",
@@ -160,23 +160,6 @@
   ]
  },
  {
-  "id": "puglie-230-proc-468-2024",
-  "titolo": "Via delle Puglie 230 · asta proc. 468-2024",
-  "stato": "Inviata",
-  "canale": "Gmail",
-  "destinatario": "avvborrelli@yahoo.it",
-  "domanda": "Richiesta info al delegato (14/10 8:22-8:27)",
-  "risposta": "",
-  "prossimo_passo": "Attendi risposta, sollecito 16/10; asta 10/11",
-  "thread": [
-   {
-    "ts": "2026-10-14T08:25:00+02:00",
-    "tipo": "out",
-    "testo": "Richiesta info via Gmail"
-   }
-  ]
- },
- {
   "id": "zecca-9-proc-61-2025",
   "titolo": "Vico Zecca 9 · asta proc. 61-2025",
   "stato": "Inviata",
@@ -201,7 +184,7 @@
   "destinatario": "avv.danielanappi@gmail.com",
   "domanda": "Richiesta info al delegato (14/10 8:22-8:27)",
   "risposta": "",
-  "prossimo_passo": "Attendi risposta, sollecito 16/10; asta 24/11",
+  "prossimo_passo": "Attendi risposta, sollecito 16/10; offerte 23/11 ore 13:00, cauzione 20%",
   "thread": [
    {
     "ts": "2026-10-14T08:25:00+02:00",
