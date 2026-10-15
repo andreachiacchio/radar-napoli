@@ -71,11 +71,11 @@
   "verdetto": "dubbio",
   "motivo": "Prezzo e canale interessanti, ma senza visita e documenti urbanistici non è occasione vera",
   "occasione_vera": false,
-  "stato_contatto": "Inviata",
+  "stato_contatto": "Risposta",
   "canale": "Gmail",
   "destinatario": "livio.toscano@anbsc.it",
   "esito_invio": "email_inviata",
-  "prossimo_passo": "Sollecito inviato 15/10 9:01; attendi date sopralluogo; se nulla entro 19/10 email info visita al notaio De Stefano; offerte 28/10 17:00",
+  "prossimo_passo": "Attendi esito occupazione da Toscano; se occupato, accesso via Commissariato entro 22/10; offerte 28/10 17:00",
   "domanda": "Sopralluogo entro 22/10? Stima, titoli edilizi/conformità, APE, vincolo/prelazione?",
   "risposta": "Toscano (12/10 12:31): docs solo su Notariato; sopralluogo in verifica; aggiorneranno. Prima: Serpico non più referente.",
   "thread": "1a11a36b51d16c2b"
