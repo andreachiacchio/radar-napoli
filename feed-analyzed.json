@@ -71,13 +71,14 @@
   "verdetto": "dubbio",
   "motivo": "Prezzo e canale interessanti, ma senza visita e documenti urbanistici non è occasione vera",
   "occasione_vera": false,
-  "stato_contatto": "Risposta",
+  "stato_contatto": "Inviata",
   "canale": "Gmail",
   "destinatario": "livio.toscano@anbsc.it",
   "esito_invio": "email_inviata",
-  "prossimo_passo": "Attendi date sopralluogo da ANBSC; docs su sito Notariato; sollecito 15/10 se nessuna data (visita entro 22/10, offerte 28/10 17:00)",
+  "prossimo_passo": "Sollecito inviato 15/10 9:01; attendi date sopralluogo; se nulla entro 19/10 email info visita al notaio De Stefano; offerte 28/10 17:00",
   "domanda": "Sopralluogo entro 22/10? Stima, titoli edilizi/conformità, APE, vincolo/prelazione?",
-  "risposta": "Toscano (12/10 12:31): docs solo su Notariato; sopralluogo in verifica; aggiorneranno. Prima: Serpico non più referente."
+  "risposta": "Toscano (12/10 12:31): docs solo su Notariato; sopralluogo in verifica; aggiorneranno. Prima: Serpico non più referente.",
+  "thread": "1a11a36b51d16c2b"
  },
  {
   "id": "B2436055",
@@ -290,7 +291,7 @@
   "destinatario": "sofianazzaro1@gmail.com",
   "stato_contatto": "Risposta",
   "esito_invio": "non_inviato",
-  "prossimo_passo": "Andrea manda il suo numero a Nazzaro prima della visita 14/10 18:15; offerte 19/10 23:59",
+  "prossimo_passo": "Sì/no offerta 19/10; telefono ad Andrea→Nazzaro se pratica viva; visita 14/10 status incerto",
   "canale": "Gmail",
   "thread": "1a1342b4f2f149c5",
   "ts": "2026-10-13T09:30:00+02:00",
@@ -1214,8 +1215,8 @@
   "priorita": "media",
   "lat": null,
   "lon": null,
-  "stato_contatto": "Risposta",
-  "prossimo_passo": "Ok Andrea per WA info a 3513225637 (fermo dal 9/10)",
+  "stato_contatto": "Bloccato",
+  "prossimo_passo": "Ok Andrea per WA a 3513225637 (fermo dal 9/10)",
   "canale": "email",
   "destinatario": "3513225637 (cell) / homeagenziaimmobiliare@gmail.com",
   "esito_invio": "email_inviata",
@@ -3054,9 +3055,10 @@
   "lat": 40.8485748,
   "lon": 14.2754121,
   "stato_contatto": "Risposta",
-  "prossimo_passo": "Borrelli ha risposto il 13/10 alle 17:18: trust non cancellabile, condominio già nella stima, visite non garantite. Prima di un'offerta serve un parere legale scritto sul trust; sì/no di Andrea entro le 23:59 del 19/10 (asta 20/10 ore 15:00, telematica su astetelematiche.it)",
+  "prossimo_passo": "Parere legale trust; sì/no Andrea entro 19/10",
   "canale": "Gmail",
-  "destinatario": "avvborrelli@yahoo.it"
+  "destinatario": "avvborrelli@yahoo.it",
+  "urgenza": "alta"
  },
  {
   "id": "subito-664452736",
@@ -3172,7 +3174,7 @@
    "Termine offerte alle 12:00 del 19/10, non 23:59"
   ],
   "destinatario": "paolaciuoffo@gmail.com",
-  "prossimo_passo": "Andrea chiama Avv. Apreda 3661005070 per altro slot visita (solo se il prezzo interessa nonostante soppalco non sanabile, no titolo/agibilità, occupato, €6k condominio); offerte 19/10 12:00",
+  "prossimo_passo": "Finestra 14/10 persa; sì/no rilancio Apreda 3661005070; offerte 19/10 12:00",
   "fascia": "50-100k",
   "urgenza": "alta"
  },

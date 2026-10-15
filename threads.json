@@ -19,20 +19,20 @@
    }
   ],
   "titolo": "Bilocale Frattamaggiore €59k · Home Immobiliare",
-  "stato": "Risposta",
+  "stato": "Bloccato",
   "canale": "Gmail→WA",
   "destinatario": "3513225637",
   "domanda": "Prezzo trattabile? Agibilità/conformità, spese, libero, visita?",
   "risposta": "Home Immobiliare (9/10 9:46): «contattateci al 3513225637»",
-  "prossimo_passo": "WA a 3513225637 da mandare (Andrea → Grok Bot in privato); poi Inviata"
+  "prossimo_passo": "Ok Andrea per WA a 3513225637 (fermo dal 9/10)"
  },
  {
   "id": "ANBSC-NA013",
   "titolo": "Panettieri 31 · ANBSC negozio",
-  "stato": "Risposta",
+  "stato": "Inviata",
   "canale": "Gmail",
   "destinatario": "livio.toscano@anbsc.it",
-  "prossimo_passo": "Attendi date sopralluogo da ANBSC; docs su sito Notariato (bando/disciplinare/scheda, nessuna perizia); sollecito 15/10 se nessuna data (visita entro 22/10, offerte 28/10 17:00)",
+  "prossimo_passo": "Sollecito inviato 15/10 9:01; attendi date sopralluogo; se nulla entro 19/10 email info visita al notaio De Stefano; offerte 28/10 17:00",
   "domanda": "Sopralluogo entro 22/10? Stima, titoli edilizi/conformità, APE, vincolo/prelazione?",
   "thread": [
    {
@@ -99,7 +99,7 @@
   "destinatario": "paolaciuoffo@gmail.com",
   "domanda": "Richiesta info al delegato (14/10 8:22-8:27)",
   "risposta": "",
-  "prossimo_passo": "Andrea chiama Avv. Apreda 3661005070 per altro slot visita (solo se il prezzo interessa nonostante soppalco non sanabile, no titolo/agibilità, occupato, €6k condominio); offerte 19/10 12:00",
+  "prossimo_passo": "Finestra 14/10 persa; sì/no rilancio Apreda 3661005070; offerte 19/10 12:00",
   "thread": [
    {
     "ts": "2026-10-14T08:25:00+02:00",
